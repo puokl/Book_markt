@@ -9,14 +9,14 @@ const deserializeUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const accessToken = get(req, "headers.authorization", "").replace(
-    /^Bearer\s/,
-    ""
-  ); // replace bearer with an empty string
+  const accessToken =
+    get(req, "cookies.accessToken") ||
+    get(req, "headers.authorization", "").replace(/^Bearer\s/, ""); // replace bearer with an empty string
 
   // console.log("req", req);
-  console.log("accessToken", accessToken);
-  const refreshToken = get(req, "headers.x-refresh");
+  console.log("accessToken", { accessToken });
+  const refreshToken =
+    get(req, "cookies.accessToken") || get(req, "headers.x-refresh");
   // const refreshToken = req && req.headers && req.headers["x-refresh"];
 
   if (!accessToken) {
@@ -35,6 +35,14 @@ const deserializeUser = async (
 
     if (newAccessToken) {
       res.setHeader("x-access-token", newAccessToken); // we set the new access token on the header
+      res.cookie("accessToken", newAccessToken, {
+        maxAge: 900000, // 15min
+        httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
+        domain: process.env.DOMAIN,
+        path: "/",
+        sameSite: "strict",
+        secure: false, // change to true in production (only https)
+      });
     }
     const result = verifyJwt(newAccessToken as string); // we decode that access token
 

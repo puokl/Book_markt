@@ -1,4 +1,3 @@
-import config from "config";
 import { get } from "lodash";
 import { FilterQuery, UpdateQuery } from "mongoose";
 import SessionModel, { SessionDocument } from "../models/session.model";
@@ -27,7 +26,7 @@ export async function updateSession(
 export async function reIssueAccessToken({
   refreshToken,
 }: {
-  refreshToken: string;
+  refreshToken: any;
 }) {
   const { decoded } = verifyJwt(refreshToken);
 
@@ -47,8 +46,7 @@ export async function reIssueAccessToken({
       session: session._id, // the session is a promise, but we need it to be an object
     },
 
-    // { expiresIn: config.get("accessTokenTtl") } // 15minutes
-    { expiresIn: process.env.ACCESSTOKENTTL }
+    { expiresIn: process.env.ACCESSTOKENTTL } // 15minutes
   );
   console.log("accessToken", accessToken);
   return accessToken;

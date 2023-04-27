@@ -14,8 +14,12 @@ export async function createUserHandler(
     return res.send(user);
   } catch (e: any) {
     logger.error(e);
-    return res.status(409);
+    return res.status(409).send(e.message);
     // .setDefaultEncoding(e.message);
     // 409 for conflict ( we assume it has violated the unique field in the user model)
   }
+}
+
+export async function getCurrentUser(req: Request, res: Response) {
+  return res.send(res.locals.user);
 }

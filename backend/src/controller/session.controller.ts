@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import config from "config";
 import { validatePassword } from "../service/user.service";
 import {
   createSession,
@@ -35,6 +34,24 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     { expiresIn: process.env.REFRESHTOKENTTL }
   );
   // return access & refresh tokens
+  res.cookie("accessToken", accessToken, {
+    maxAge: 900000, // 15min
+    httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
+    domain: process.env.DOMAIN,
+    path: "/",
+    sameSite: "strict",
+    secure: false, // change to true in production (only https)
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    maxAge: 3.154e10, // 1yr
+    httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
+    domain: process.env.DOMAIN,
+    path: "/",
+    sameSite: "strict",
+    secure: false, // change to true in production (only https)
+  });
+
   return res.send({ accessToken, refreshToken });
 }
 
