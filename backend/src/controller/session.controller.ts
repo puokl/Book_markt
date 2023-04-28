@@ -21,7 +21,6 @@ export async function createUserSessionHandler(req: Request, res: Response) {
       ...user,
       session: session._id,
     },
-    // { expiresIn: config.get("accessTokenTtl") } // 15min
     { expiresIn: process.env.ACCESSTOKENTTL } // 15min
   );
   // create a refresh token
@@ -30,8 +29,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
       ...user,
       session: session._id,
     },
-    // { expiresIn: config.get("refreshTokenTtl") } // 15min
-    { expiresIn: process.env.REFRESHTOKENTTL }
+    { expiresIn: process.env.REFRESHTOKENTTL } // 15min
   );
   // return access & refresh tokens
   res.cookie("accessToken", accessToken, {

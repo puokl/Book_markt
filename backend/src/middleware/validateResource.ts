@@ -2,8 +2,8 @@
 import { Request, Response, NextFunction } from "express";
 import { AnyZodObject } from "zod";
 
-// we are creating a function and make that function return another function
-// we are using currying
+// creating a function and make that function return another function
+// using currying
 // because we want to be able to execute this function here with our schema inside of middleware
 // and then we want that to return another function and that next function is going to take the request and response in next.
 //  (req: Request, res: Response, next:NextFunction) this is an express route call

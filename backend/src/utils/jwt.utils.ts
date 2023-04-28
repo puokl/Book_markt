@@ -1,16 +1,5 @@
 import jwt from "jsonwebtoken";
-import config from "config";
 
-// const privateKey = config.get<string>("privateKey");
-// const publicKey = config.get<string>("publicKey");
-// const privateKey = process.env.PRIVATEKEY.replace(/\\n/g, "\n");
-// const publicKey = process.env.PUBLICKEY.replace(/\\n/g, "\n");
-// const privateKey = Buffer.from(process.env.PRIVATEKEY, "base64").toString(
-//   "ascii"
-// );
-// const publicKey = Buffer.from(process.env.PUBLICKEY, "base64").toString(
-//   "ascii"
-// );
 const privateKey = `${process.env.PRIVATEKEY}`;
 const publicKey = `${process.env.PUBLICKEY}`;
 

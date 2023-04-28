@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import logger from "./logger";
 
 async function connect() {
-  // const dbUri = config.get<string>("dbUri");
   const dbUri = process.env.MONGO_URI;
   console.log("dburi", dbUri);
   try {
