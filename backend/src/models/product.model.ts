@@ -6,7 +6,6 @@ const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
 export interface ProductInput {
   user: UserDocument["_id"];
-
   title: string;
   description: string;
   price: number;
@@ -26,7 +25,6 @@ const productSchema = new mongoose.Schema(
       unique: true,
       default: () => `product_${nanoid()}`,
     },
-
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     title: { type: String, required: true },
     description: { type: String, required: true },
