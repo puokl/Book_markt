@@ -4,14 +4,10 @@ const privateKey = `${process.env.PRIVATEKEY}`;
 const publicKey = `${process.env.PUBLICKEY}`;
 
 export function signJwt(object: Object, options?: jwt.SignOptions | undefined) {
-  return jwt.sign(
-    object,
-    privateKey
-    //   {
-    //   ...(options && options), // we spread (if options exists) to provide an alg option
-    //   algorithm: "RS256",
-    // }
-  );
+  return jwt.sign(object, privateKey, {
+    ...(options && options), // we spread (if options exists) to provide an alg option
+    // algorithm: "RS256",
+  });
 }
 
 export function verifyJwt(token: string) {

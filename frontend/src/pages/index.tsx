@@ -3,6 +3,7 @@ import styles from "@/styles/Home.module.css";
 import useSwr from "swr";
 import fetcher from "@/utils/fetcher";
 import { GetServerSideProps, NextPage } from "next";
+import getGoogleOAuthURL from "@/utils/getGoogleUrl";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +32,9 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
   }
   return (
     <>
-      <div className={styles.container}>Please login</div>
+      <div className={styles.container}>
+        <a href={getGoogleOAuthURL()}>Login with Google</a> Please login
+      </div>
     </>
   );
 };

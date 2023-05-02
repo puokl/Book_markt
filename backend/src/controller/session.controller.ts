@@ -1,21 +1,42 @@
-import { Request, Response } from "express";
-import { validatePassword } from "../service/user.service";
+import { CookieOptions, Request, Response } from "express";
+import {
+  findAndUpdateUser,
+  getGoogleOAuthTokens,
+  getGoogleUser,
+  validatePassword,
+} from "../service/user.service";
 import {
   createSession,
   findSessions,
   updateSession,
 } from "../service/session.service";
 import { signJwt } from "../utils/jwt.utils";
+import log from "../utils/logger";
+import jwt from "jsonwebtoken";
+
+const accessTokenCookieOptions: CookieOptions = {
+  maxAge: 900000, // 15min
+  httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
+  domain: process.env.DOMAIN,
+  path: "/",
+  sameSite: "lax",
+  secure: false, // change to true in production (only https)
+};
+
+const refreshTokenCookieOptions: CookieOptions = {
+  ...accessTokenCookieOptions,
+  maxAge: 3.154e10, // 1yr
+};
 
 export async function createUserSessionHandler(req: Request, res: Response) {
-  // validate the user's password
+  // 1. validate the user's password
   const user = await validatePassword(req.body);
   if (!user) {
     return res.status(401).send("Invalid email or password");
   }
-  // create a session
+  // 2. create a session
   const session = await createSession(user._id, req.get("user-agent") || "");
-  // create an access token
+  // 3. create an access token
   const accessToken = signJwt(
     {
       ...user,
@@ -23,7 +44,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     },
     { expiresIn: process.env.ACCESSTOKENTTL } // 15min
   );
-  // create a refresh token
+  // 4. create a refresh token
   const refreshToken = signJwt(
     {
       ...user,
@@ -31,24 +52,10 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     },
     { expiresIn: process.env.REFRESHTOKENTTL } // 15min
   );
-  // return access & refresh tokens
-  res.cookie("accessToken", accessToken, {
-    maxAge: 900000, // 15min
-    httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
-    domain: process.env.DOMAIN,
-    path: "/",
-    sameSite: "strict",
-    secure: false, // change to true in production (only https)
-  });
+  // 5. return access & refresh tokens
+  res.cookie("accessToken", accessToken, accessTokenCookieOptions);
 
-  res.cookie("refreshToken", refreshToken, {
-    maxAge: 3.154e10, // 1yr
-    httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
-    domain: process.env.DOMAIN,
-    path: "/",
-    sameSite: "strict",
-    secure: false, // change to true in production (only https)
-  });
+  res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
   return res.send({ accessToken, refreshToken });
 }
@@ -74,4 +81,79 @@ export async function deleteSessionHandler(req: Request, res: Response) {
     accessToken: null,
     refreshToken: null,
   });
+}
+
+export async function googleOauthHandler(req: Request, res: Response) {
+  // 1. get the code from qs
+  const code = req.query.code as string;
+  console.log("code", { code });
+  // console.log("req.query", req.query);
+  // console.log("req", req);
+
+  try {
+    // 2. get the id and access token with the code
+    const { id_token, access_token } = await getGoogleOAuthTokens({ code });
+    console.log({ id_token, access_token });
+    // 3. get user with tokens
+    // we can either use the token to get the user or through a network request
+    const googleUser = await getGoogleUser({ id_token, access_token });
+    // jwt.decode(id_token);
+    console.log("{googleUser}", { googleUser });
+    //! we use jwt.decode (same as going to jwt.io) attention-> it is not going to verify the token,
+    // but we know that the token is signed by google because we make this request server side
+
+    // 4. upsert the user
+
+    if (!googleUser.verified_email) {
+      return res.status(403).send("Google account is not verified");
+    }
+    const user = await findAndUpdateUser(
+      {
+        email: googleUser.email,
+      },
+      {
+        email: googleUser.email,
+        name: googleUser.name,
+        picture: googleUser.picture,
+      },
+      {
+        upsert: true,
+        new: true,
+      }
+    );
+    // 5. create a session
+
+    const session = await createSession(user?._id, req.get("user-agent") || "");
+
+    // 6. create access & refresh tokens
+
+    const userJSON = user?.toJSON();
+    const accessToken = signJwt(
+      {
+        ...userJSON,
+        session: session._id,
+      },
+      { expiresIn: `${process.env.ACCESSTOKENTTL}` } // 15min
+    );
+
+    const refreshToken = signJwt(
+      {
+        ...userJSON,
+        session: session._id,
+      },
+      { expiresIn: `${process.env.REFRESHTOKENTTL}` } // 1 year
+    );
+
+    // 7. set cookies
+
+    res.cookie("accessToken", accessToken, accessTokenCookieOptions);
+
+    res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+    // 8. redirect back to client
+    res.redirect(`${process.env.ORIGIN}`);
+  } catch (error: any) {
+    // console.log("oauth error", error.response.data.error);
+    log.error(error, "Failed to authorize Google user");
+    return res.redirect(`${process.env.ORIGIN}/oauth/error`);
+  }
 }
