@@ -18,8 +18,12 @@ const deserializeUser = async (
   const refreshToken =
     get(req, "cookies.accessToken") || get(req, "headers.x-refresh");
   // const refreshToken = req && req.headers && req.headers["x-refresh"];
+  console.log("refreshToken", refreshToken);
 
   if (!accessToken) {
+    console.log("No accessToken", accessToken);
+    console.log("req.cookie", req.cookies);
+    console.dir(req.cookies, { depth: null });
     return next();
   }
 

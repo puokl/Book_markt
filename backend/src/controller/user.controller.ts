@@ -23,3 +23,7 @@ export async function createUserHandler(
 export async function getCurrentUser(req: Request, res: Response) {
   return res.send(res.locals.user);
 }
+
+export async function getLog(req: Request, res: Response) {
+  return res.send(console.log("getLog works", res.locals.user));
+}

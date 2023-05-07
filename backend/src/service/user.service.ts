@@ -65,7 +65,9 @@ export async function getGoogleOAuthTokens({
       url,
       qs.stringify(values),
       {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       }
     );
     console.log("res.data", res.data);

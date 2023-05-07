@@ -13,6 +13,7 @@ import {
 import { signJwt } from "../utils/jwt.utils";
 import log from "../utils/logger";
 import jwt from "jsonwebtoken";
+import { access } from "fs";
 
 const accessTokenCookieOptions: CookieOptions = {
   maxAge: 900000, // 15min
@@ -26,6 +27,11 @@ const accessTokenCookieOptions: CookieOptions = {
 const refreshTokenCookieOptions: CookieOptions = {
   ...accessTokenCookieOptions,
   maxAge: 3.154e10, // 1yr
+};
+
+const deleteCookies: CookieOptions = {
+  ...accessTokenCookieOptions,
+  expires: new Date(0),
 };
 
 export async function createUserSessionHandler(req: Request, res: Response) {
@@ -57,26 +63,48 @@ export async function createUserSessionHandler(req: Request, res: Response) {
 
   res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
-  return res.send({ accessToken, refreshToken });
+  //FIXME - send user to client
+
+  return res.send({ user });
 }
 
 export async function getUserSessionHandler(req: Request, res: Response) {
-  console.log("res.locals", res.locals);
   const userId = res.locals.user._id;
 
-  console.log("userId", userId);
   const sessions = await findSessions({ user: userId, valid: true });
 
-  console.log({ sessions });
+  console.log("session", { sessions });
+
   return res.send(sessions);
 }
 
 export async function deleteSessionHandler(req: Request, res: Response) {
   const sessionId = res.locals.user.session;
 
-  await updateSession({ _id: sessionId }, { valid: false });
-  // we're not deleting the session, but turn it to false
+  //ANCHOR - since user somehow can have multiple session, i loop through all the user'session and delete them all,
+  //get array of sessions
+  const userId = res.locals.user._id;
+  const sessions = await findSessions({ user: userId, valid: true });
+  const sessionIds = [];
+  for (const session of sessions) {
+    if (session.user.equals(userId)) {
+      sessionIds.push(session._id);
+    }
+  }
 
+  const sessionIdsStr = sessionIds.map((id) => id.toString());
+  //ANCHOR -
+
+  // Clear the access token and refresh token cookies
+
+  res.clearCookie("accessToken", accessTokenCookieOptions);
+  res.clearCookie("refreshToken", refreshTokenCookieOptions);
+  console.log("cookies should be deleted");
+  console.log(res.locals);
+
+  await updateSession({ _id: sessionIdsStr }, { valid: false });
+  // we're not deleting the session, but turn it to false
+  // we're deleting all the session linked to a single user
   return res.send({
     accessToken: null,
     refreshToken: null,
@@ -84,6 +112,8 @@ export async function deleteSessionHandler(req: Request, res: Response) {
 }
 
 export async function googleOauthHandler(req: Request, res: Response) {
+  // // Set Access-Control-Allow-Origin header to allow requests from your frontend domain
+  // res.set("Access-Control-Allow-Origin", "http://localhost:3000");
   // 1. get the code from qs
   const code = req.query.code as string;
   console.log("code", { code });
@@ -154,6 +184,8 @@ export async function googleOauthHandler(req: Request, res: Response) {
   } catch (error: any) {
     // console.log("oauth error", error.response.data.error);
     log.error(error, "Failed to authorize Google user");
+
+    //FIXME - check `${process.env.ORIGIN}/oauth/error` url and manage page
     return res.redirect(`${process.env.ORIGIN}/oauth/error`);
   }
 }

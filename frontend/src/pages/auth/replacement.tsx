@@ -30,6 +30,30 @@ function LoginPage() {
     resolver: zodResolver(createSessionSchema),
   });
 
+  const handleGoogleLogin = async () => {
+    getGoogleOAuthURL();
+    try {
+      // Make a request to your backend API endpoint that handles the Google OAuth flow
+      const res = await axios.get("/api/sessions/oauth/google", {
+        withCredentials: true,
+      });
+
+      // Dispatch the LOGIN_SUCCESS action with the user's details
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: {
+          username: res.data.user.name,
+          email: res.data.user.email,
+        },
+      });
+
+      // Redirect the user to the home page
+      router.replace("/");
+    } catch (err: any) {
+      dispatch({ type: "LOGIN_FAILURE", payload: err.response });
+    }
+  };
+
   const handleClick = async (values: CreateSessionInput) => {
     console.log("clicked");
     dispatch({ type: "LOGIN_START" });
@@ -59,21 +83,21 @@ function LoginPage() {
     }
   };
 
-  async function onSubmit(values: CreateSessionInput) {
-    try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
-        values,
-        { withCredentials: true }
-      );
-      router.push("/");
-    } catch (e: any) {
-      setLoginError(e.message);
-    }
+  // async function onSubmit(values: CreateSessionInput) {
+  //   try {
+  //     await axios.post(
+  //       `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
+  //       values,
+  //       { withCredentials: true }
+  //     );
+  //     router.push("/");
+  //   } catch (e: any) {
+  //     setLoginError(e.message);
+  //   }
 
-    console.log("values", values);
-  }
-  console.log("errors", { errors });
+  //   console.log("values", values);
+  // }
+  // console.log("errors", { errors });
   return (
     <>
       <p>{loginError}</p>
@@ -102,7 +126,9 @@ function LoginPage() {
 
         <button type="submit">SUBMIT</button>
         <p>Or login with Google</p>
-        <a href={getGoogleOAuthURL()}>Login with Google</a>
+        <button type="button" onClick={handleGoogleLogin}>
+          Login with Google
+        </button>
       </form>
     </>
   );

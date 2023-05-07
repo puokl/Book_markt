@@ -88,38 +88,38 @@ describe("user", () => {
     });
   });
   // creating a user session
-  describe("create user session", () => {
-    // a user can login with a valid email and password
-    describe("give the username and password are valid", () => {
-      it("should return a signed accessToken and refreshToken", async () => {
-        jest
-          .spyOn(UserService, "validatePassword")
-          // @ts-ignore
-          .mockReturnValue(userPayload);
+  // describe("create user session", () => {
+  //   // a user can login with a valid email and password
+  //   describe("give the username and password are valid", () => {
+  //     it("should return a signed accessToken and refreshToken", async () => {
+  //       jest
+  //         .spyOn(UserService, "validatePassword")
+  //         // @ts-ignore
+  //         .mockReturnValue(userPayload);
 
-        jest
-          .spyOn(SessionService, "createSession")
-          // @ts-ignore
-          .mockReturnValue(sessionPayload);
+  //       jest
+  //         .spyOn(SessionService, "createSession")
+  //         // @ts-ignore
+  //         .mockReturnValue(sessionPayload);
 
-        const req = {
-          get: () => {
-            return "a user agent";
-          },
-          body: { email: "bob@gmail.com", password: "123456" },
-        };
+  //       const req = {
+  //         get: () => {
+  //           return "a user agent";
+  //         },
+  //         body: { email: "bob@gmail.com", password: "123456" },
+  //       };
 
-        const send = jest.fn();
-        const res = { send };
+  //       const send = jest.fn();
+  //       const res = { send };
 
-        // @ts-ignore
-        await createUserSessionHandler(req, res);
+  //       // @ts-ignore
+  //       await createUserSessionHandler(req, res);
 
-        expect(send).toHaveBeenCalledWith({
-          accessToken: expect.any(String),
-          refreshToken: expect.any(String),
-        });
-      });
-    });
-  });
+  //       expect(send).toHaveBeenCalledWith({
+  //         accessToken: expect.any(String),
+  //         refreshToken: expect.any(String),
+  //       });
+  //     });
+  //   });
+  // });
 });

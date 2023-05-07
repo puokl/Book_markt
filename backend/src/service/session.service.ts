@@ -20,7 +20,8 @@ export async function updateSession(
   query: FilterQuery<SessionDocument>,
   update: UpdateQuery<SessionDocument>
 ) {
-  return SessionModel.updateOne(query, update);
+  // return SessionModel.updateOne(query, update);
+  return SessionModel.deleteMany(query, update);
 }
 
 export async function reIssueAccessToken({

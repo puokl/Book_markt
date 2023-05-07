@@ -2,6 +2,7 @@ import { Express, Request, Response } from "express";
 import {
   createUserHandler,
   getCurrentUser,
+  getLog,
 } from "./controller/user.controller";
 import { createUser } from "./service/user.service";
 import validateResource from "./middleware/validateResource";
@@ -31,21 +32,28 @@ import {
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
 
+  //NOTE - USERS
+  app.get("/api/me", requireUser, getCurrentUser);
   app.post("/api/users", validateResource(createUserSchema), createUserHandler);
 
-  app.get("/api/me", requireUser, getCurrentUser);
-
+  //NOTE - SESSIONS
+  app.get("/api/sessions", requireUser, getUserSessionHandler);
+  app.get("/api/sessions/oauth/google", googleOauthHandler);
   app.post(
     "/api/sessions",
     validateResource(createSessionSchema),
     createUserSessionHandler
   );
-
-  app.get("/api/sessions", requireUser, getUserSessionHandler);
   app.delete("/api/sessions", requireUser, deleteSessionHandler);
 
-  app.get("/api/sessions/oauth/google", googleOauthHandler);
+  app.get("/api/sessions/getLog", requireUser, getLog);
 
+  //NOTE - PRODUCTS
+  app.get(
+    "/api/products/:productId",
+    validateResource(getProductSchema),
+    getProductHandler
+  );
   app.post(
     "/api/products",
     [requireUser, validateResource(createProductSchema)],
@@ -56,12 +64,6 @@ function routes(app: Express) {
     [requireUser, validateResource(updateProductSchema)],
     updateProductHandler
   );
-  app.get(
-    "/api/products/:productId",
-    validateResource(getProductSchema),
-    getProductHandler
-  );
-
   app.delete(
     "/api/products/:productId",
     [requireUser, validateResource(deleteProductSchema)],
