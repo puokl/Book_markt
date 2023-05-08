@@ -19,8 +19,9 @@ const createSessionSchema = object({
 type CreateSessionInput = TypeOf<typeof createSessionSchema>;
 
 function LoginPage() {
-  const { dispatch } = useContext(AuthContext);
+  // const { dispatch } = useContext(AuthContext);
   const router = useRouter();
+  // const { login } = useContext(AuthContext);
   const [loginError, setLoginError] = useState(null);
   const {
     register,
@@ -32,7 +33,7 @@ function LoginPage() {
 
   const handleClick = async (values: CreateSessionInput) => {
     console.log("clicked");
-    dispatch({ type: "LOGIN_START" });
+    // dispatch({ type: "LOGIN_START" });
     try {
       //REVIEW - fix server response
       const res = await axios.post(
@@ -45,35 +46,37 @@ function LoginPage() {
       // const { name, email } = res;
       // console.log('"name"', name);
       console.log("res.data", res.data.user.email);
-      dispatch({
-        type: "LOGIN_SUCCESS",
-        payload: { username: res.data.user.name, email: res.data.user.email },
-      });
-      console.log("handleClick good", res.data);
-      console.log("dispatch.payload", dispatch);
+      // dispatch({
+      //   type: "LOGIN_SUCCESS",
+      //   payload: { username: res.data.user.name, email: res.data.user.email },
+      // });
+      // console.log("handleClick good", res.data);
+      // console.log("dispatch.payload", dispatch);
       // prevent going back to login, it works only once
       router.replace("/");
     } catch (err: any) {
       console.log("handleClick failed");
-      dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+      // dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
   };
 
-  async function onSubmit(values: CreateSessionInput) {
-    try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
-        values,
-        { withCredentials: true }
-      );
-      router.push("/");
-    } catch (e: any) {
-      setLoginError(e.message);
-    }
+  // async function onSubmit(values: CreateSessionInput) {
+  //   try {
+  //     await axios.post(
+  //       `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
+  //       values,
+  //       { withCredentials: true }
+  //     );
+  //     router.push("/");
+  //   } catch (e: any) {
+  //     setLoginError(e.message);
+  //   }
 
-    console.log("values", values);
-  }
+  //   console.log("values", values);
+  // }
   console.log("errors", { errors });
+
+  const googleUr = getGoogleOAuthURL();
   return (
     <>
       <p>{loginError}</p>
@@ -102,7 +105,7 @@ function LoginPage() {
 
         <button type="submit">SUBMIT</button>
         <p>Or login with Google</p>
-        <a href={getGoogleOAuthURL()}>Login with Google</a>
+        <a href={googleUr}>Login with Google</a>
       </form>
     </>
   );

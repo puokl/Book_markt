@@ -7,7 +7,8 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ interface User {
 
 const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
   const [testState, setTestState] = useState<User | null>(fallbackData);
+  const { dispatch } = useContext(AuthContext);
   const router = useRouter();
   console.log("testState", testState);
 
@@ -34,6 +36,29 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
     { fallbackData }
   );
   console.log("data before delete", data);
+
+  useEffect(() => {
+    dispatch({
+      type: "LOGIN_START",
+      payload: {},
+    });
+    if (data) {
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: { username: data?.name, email: data?.email },
+      });
+    } else {
+      dispatch({ type: "LOGIN_FAILURE", payload: "no data" });
+    }
+  }, [data?.name]);
+  // if (data) {
+  //   dispatch({
+  //     type: "LOGIN_SUCCESS",
+  //     payload: { username: data?.name, email: data?.email },
+  //   });
+  // } else {
+  //   dispatch({ type: "LOGIN_FAILURE", payload: "no data" });
+  // }
 
   async function logOut() {
     try {
@@ -49,6 +74,10 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
 
       console.log("data after delete", data);
       localStorage.removeItem("user");
+      dispatch({
+        type: "LOGOUT",
+        payload: {},
+      });
       router.push("/");
       // redirect("/");
       console.log("redirect works");

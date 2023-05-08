@@ -4,9 +4,9 @@ interface Test {
   username: string;
   email: string;
 }
-
+//FIXME - adjust object type
 interface State {
-  user: Test | null; //FIXME - adjust object type
+  user: Test | null;
   loading: boolean;
   error: object | null;
 }
@@ -79,24 +79,20 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
 
+  // const login = (email, password) => {
+  //   console.log("%cemnail", "color:red", email);
+  // };
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
 
   console.log("state", state);
   return (
-    // <AuthContext.Provider
-    //   value={{
-    //     user: state.user,
-    //     loading: state.loading,
-    //     error: state.error,
-    //     dispatch,
-    //   }}
-    // >
     <AuthContext.Provider
       value={{
         state,
         dispatch,
+        // login,
       }}
     >
       {children}
