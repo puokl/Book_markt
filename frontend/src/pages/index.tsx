@@ -2,9 +2,7 @@ import { Inter } from "next/font/google";
 import useSwr from "swr";
 import fetcher from "@/utils/fetcher";
 import { GetServerSideProps, NextPage } from "next";
-import getGoogleOAuthURL from "@/utils/getGoogleUrl";
 import axios from "axios";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
@@ -35,34 +33,30 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
     fetcher,
     { fallbackData }
   );
-  console.log("data before delete", data);
 
   useEffect(() => {
-    dispatch({
-      type: "LOGIN_START",
-      payload: {},
-    });
     if (data) {
       dispatch({
-        type: "LOGIN_SUCCESS",
-        payload: { username: data?.name, email: data?.email },
+        type: "LOGIN",
+        payload: { username: data?.name, email: data?.email, isLoggedIn: true },
       });
     } else {
-      dispatch({ type: "LOGIN_FAILURE", payload: "no data" });
+      dispatch({
+        type: "FAILURE",
+        payload: {
+          // username: data!.name,
+          // email: data!.email,
+          username: undefined,
+          email: undefined,
+          isLoggedIn: false,
+        },
+      });
     }
   }, [data?.name]);
-  // if (data) {
-  //   dispatch({
-  //     type: "LOGIN_SUCCESS",
-  //     payload: { username: data?.name, email: data?.email },
-  //   });
-  // } else {
-  //   dispatch({ type: "LOGIN_FAILURE", payload: "no data" });
-  // }
 
   async function logOut() {
     try {
-      const data = await axios.delete(
+      await axios.delete(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
         {
           withCredentials: true,
@@ -70,21 +64,20 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
       );
 
       setTestState(null);
-      console.log("session deleted");
 
-      console.log("data after delete", data);
       localStorage.removeItem("user");
+
       dispatch({
         type: "LOGOUT",
-        payload: {},
+        payload: {
+          username: data!.name,
+          email: data!.email,
+          isLoggedIn: false,
+        },
       });
       router.push("/");
-      // redirect("/");
-      console.log("redirect works");
     } catch (error: any) {
-      // console.log("accessToken", accessToken);
-      console.log("there was an error on delete session");
-      console.log(error);
+      console.log("error on logOut()", error);
     }
   }
 
@@ -96,16 +89,14 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
           withCredentials: true,
         }
       );
-
-      console.log("data from getSession", data);
+      console.log("getSession data", data);
     } catch (error: any) {
-      console.log("there was an error on get session");
-      console.log("error", error);
+      console.log("error on getSession()", error);
     }
   }
 
   if (testState) {
-    console.log("data && data.session", testState.session);
+    // console.log("data && data.session", testState.session);
     return (
       <>
         <div>Welcome! {testState.name}</div>
@@ -125,8 +116,7 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
   );
 };
 
-// when we refresh the page it only loads me on the client and we see the please login flash up
-// so we want to render this on the server
+// fetching data on the server and to populate useSwr
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await fetcher(
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/me`,
@@ -134,6 +124,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
   return { props: { fallbackData: data } };
 };
-// it fetches data on the server and we can populate useSwr with this data
 
 export default Home;

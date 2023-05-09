@@ -1,11 +1,10 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf } from "zod";
 import getGoogleOAuthURL from "@/utils/getGoogleUrl";
-import { AuthContext } from "@/context/AuthContext";
 
 const createSessionSchema = object({
   email: string().nonempty({
@@ -33,9 +32,7 @@ function LoginPage() {
 
   const handleClick = async (values: CreateSessionInput) => {
     console.log("clicked");
-    // dispatch({ type: "LOGIN_START" });
     try {
-      //REVIEW - fix server response
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
         values,
@@ -43,20 +40,12 @@ function LoginPage() {
           withCredentials: true,
         }
       );
-      // const { name, email } = res;
-      // console.log('"name"', name);
-      console.log("res.data", res.data.user.email);
-      // dispatch({
-      //   type: "LOGIN_SUCCESS",
-      //   payload: { username: res.data.user.name, email: res.data.user.email },
-      // });
-      // console.log("handleClick good", res.data);
-      // console.log("dispatch.payload", dispatch);
-      // prevent going back to login, it works only once
+
+      //FIXME -  prevent going back to login, it works only once
       router.replace("/");
-    } catch (err: any) {
-      console.log("handleClick failed");
-      // dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+    } catch (error: any) {
+      setLoginError(error.message);
+      console.log("handleClick() error", error);
     }
   };
 
@@ -67,14 +56,12 @@ function LoginPage() {
   //       values,
   //       { withCredentials: true }
   //     );
-  //     router.push("/");
   //   } catch (e: any) {
   //     setLoginError(e.message);
   //   }
 
   //   console.log("values", values);
   // }
-  console.log("errors", { errors });
 
   const googleUr = getGoogleOAuthURL();
   return (

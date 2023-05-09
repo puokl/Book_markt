@@ -3,19 +3,27 @@ import React, { useContext, useEffect, useState } from "react";
 
 const index: React.FC = () => {
   const { state } = useContext(AuthContext);
-  console.log("state on test", state?.user?.username);
+  const { isLoggedIn, username, email } = state;
+  const [hydrated, setHydrated] = useState(false);
 
-  const [username, setUsername] = useState("");
-  // const {username} = state
-  // console.log("dispatch on test", dispatch);
+  console.log("state on test test", state);
+
+  // to prevent hydration error
   useEffect(() => {
-    setUsername(state?.user?.username || "");
-  }, [state]);
+    setHydrated(true);
+  }, [state.isLoggedIn]);
+
+  if (!hydrated) {
+    return <div>Loading...</div>;
+  }
+
+  // const username = state?.username;
+  // const email = state?.email;
 
   return (
     <>
       <div>Have a good coding {username}!</div>
-      <div></div>
+      <div>Email: {email}</div>
       {/* {console.log(state)} */}
     </>
   );
