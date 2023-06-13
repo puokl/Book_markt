@@ -42,7 +42,9 @@ function RegisterPage() {
       );
       router.push("/");
     } catch (e: any) {
-      setRegisterError(e.message);
+      console.log("e", e);
+      console.log("there is an error on the registration");
+      setRegisterError(e.response.data);
     }
 
     console.log("values", values);
@@ -50,7 +52,6 @@ function RegisterPage() {
   console.log("errors", { errors });
   return (
     <>
-      <p>{registerError}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-element">
           <label htmlFor="email">Email</label>
@@ -92,6 +93,7 @@ function RegisterPage() {
           />
           <p>{errors.passwordConfirmation?.message?.toString()}</p>
         </div>
+        <p>{registerError}</p>
         <button type="submit">SUBMIT</button>
       </form>
     </>

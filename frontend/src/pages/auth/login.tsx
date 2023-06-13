@@ -33,13 +33,17 @@ function LoginPage() {
   const handleClick = async (values: CreateSessionInput) => {
     console.log("clicked");
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
         values,
         {
           withCredentials: true,
         }
       );
+      console.log("values", values);
+      console.log("response", response.data);
+      const { user, accessToken } = response.data;
+      sessionStorage.setItem("accessToken", accessToken);
 
       //FIXME -  prevent going back to login, it works only once
       router.replace("/");

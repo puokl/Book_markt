@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
+import { Button, ButtonGroup } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,10 +24,9 @@ interface User {
 }
 
 const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
-  const [testState, setTestState] = useState<User | null>(fallbackData);
+  const [userState, setUserState] = useState<User | null>(fallbackData);
   const { dispatch } = useContext(AuthContext);
   const router = useRouter();
-  console.log("testState", testState);
 
   const { data } = useSwr<User | null>(
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/me`,
@@ -35,6 +35,7 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
   );
 
   useEffect(() => {
+    // console.log("data", data);
     if (data) {
       dispatch({
         type: "LOGIN",
@@ -63,9 +64,7 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
         }
       );
 
-      setTestState(null);
-
-      localStorage.removeItem("user");
+      setUserState(null);
 
       dispatch({
         type: "LOGOUT",
@@ -95,13 +94,13 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
     }
   }
 
-  if (testState) {
+  if (userState) {
     // console.log("data && data.session", testState.session);
     return (
       <>
-        <div>Welcome! {testState.name}</div>
-        <button onClick={logOut}>Delete session</button>
-        <button onClick={getSession}>getSession</button>
+        <div>Welcome! {userState.name}</div>
+        <Button onClick={logOut}>Delete session</Button>
+        <Button onClick={getSession}>getSession</Button>
         <h1 className="title">
           Read <Link href="/test">this page!</Link>
         </h1>
@@ -111,17 +110,21 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
   return (
     <>
       <div>Please login to visit the website</div>
-      <a href="/auth/login">Login</a>
+      <Button>
+        <a href="/auth/login">Login</a>
+      </Button>
     </>
   );
 };
 
 // fetching data on the server and to populate useSwr
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await fetcher(
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/me`,
     context.req.headers
   );
+  console.log("context.req", context.req);
   return { props: { fallbackData: data } };
 };
 
