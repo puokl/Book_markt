@@ -10,6 +10,9 @@ import {
   findProduct,
 } from "../service/product.service";
 
+// @desc    Create a single product
+// @route   POST /api/products/
+// @access  Private
 export async function createProductHandler(
   req: Request<{}, {}, CreateProductInput["body"]>,
   res: Response
@@ -20,6 +23,10 @@ export async function createProductHandler(
   const product = await createProduct({ ...body, user: userId });
   return res.send(product);
 }
+
+// @desc    Update a single product
+// @route   PUT /api/products/:productId
+// @access  Private
 export async function updateProductHandler(
   req: Request<UpdateProductInput["params"]>,
   res: Response
@@ -43,6 +50,9 @@ export async function updateProductHandler(
   return res.send(updatedProduct);
 }
 
+// @desc    Get a single product
+// @route   GET /api/products/:productId
+// @access  Public
 export async function getProductHandler(
   req: Request<UpdateProductInput["params"]>,
   res: Response
@@ -57,6 +67,9 @@ export async function getProductHandler(
   return res.send(product);
 }
 
+// @desc    Delete a single product
+// @route   DELETE /api/products/:productId
+// @access  Private
 export async function deleteProductHandler(
   req: Request<UpdateProductInput["params"]>,
   res: Response

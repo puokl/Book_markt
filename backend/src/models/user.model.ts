@@ -8,6 +8,20 @@ export interface UserInput {
   picture?: string;
 }
 
+export interface UserInputTest {
+  email: string;
+  name: string;
+  password: string;
+  picture?: string;
+  isLoggedIn: boolean;
+  publishedBooks?: string[];
+  avatar?: string;
+  age?: number;
+  location?: string;
+  ratings?: string;
+  feedback?: string;
+}
+
 export interface UserDocument extends UserInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;

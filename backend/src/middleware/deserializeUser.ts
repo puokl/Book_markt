@@ -13,40 +13,35 @@ const deserializeUser = async (
     get(req, "cookies.accessToken") ||
     get(req, "headers.authorization", "").replace(/^Bearer\s/, ""); // replace bearer with an empty string
 
-  // console.log("req", req);
-  console.log("accessToken", { accessToken });
   const refreshToken =
-    get(req, "cookies.accessToken") || get(req, "headers.x-refresh");
-  // const refreshToken = req && req.headers && req.headers["x-refresh"];
-  console.log("refreshToken", refreshToken);
+    get(req, "cookies.refreshToken") || get(req, "headers.x-refresh");
 
-  if (!accessToken) {
-    console.log("No accessToken", accessToken);
-    console.log("req.cookie", req.cookies);
-    console.dir(req.cookies, { depth: null });
-    return next();
-  }
-
-  const { decoded, expired } = verifyJwt(accessToken);
-  console.log("decoded", decoded);
+  const { decoded } = verifyJwt(accessToken);
 
   if (decoded) {
     res.locals.user = decoded;
+    console.log("DECODED");
     return next();
   }
-  if (expired && refreshToken) {
+  if (!accessToken && refreshToken) {
+    console.log("EXPIRED");
     const newAccessToken = await reIssueAccessToken({ refreshToken }); // we check if refresh token is valid and we issue a new access toke
 
     if (newAccessToken) {
       res.setHeader("x-access-token", newAccessToken); // we set the new access token on the header
       res.cookie("accessToken", newAccessToken, {
-        maxAge: 900000, // 15min
+        maxAge: 9000, // 15min
         httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
         domain: process.env.DOMAIN,
         path: "/",
         sameSite: "strict",
         secure: false, // change to true in production (only https)
       });
+    }
+
+    if (!refreshToken) {
+      console.log("No Token", refreshToken);
+      return next();
     }
     const result = verifyJwt(newAccessToken as string); // we decode that access token
 

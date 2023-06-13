@@ -27,6 +27,8 @@ import {
   getProductHandler,
   updateProductHandler,
 } from "./controller/product.controller";
+import multer from "multer";
+// import multerUploa
 
 // responsible to take the http request and forwarding it on to a controller
 function routes(app: Express) {
@@ -35,6 +37,10 @@ function routes(app: Express) {
   //NOTE - USERS
   app.get("/api/me", requireUser, getCurrentUser);
   app.post("/api/users", validateResource(createUserSchema), createUserHandler);
+
+  //NOTE - image
+
+  // app.post("api/users", multerUpload.single("image"), uploadImageHandler);
 
   //NOTE - SESSIONS
   app.get("/api/sessions", requireUser, getUserSessionHandler);

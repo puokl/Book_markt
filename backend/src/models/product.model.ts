@@ -11,6 +11,20 @@ export interface ProductInput {
   price: number;
   image: string;
 }
+export interface ProductInputTest {
+  user_creater: UserDocument["_id"];
+  title: string;
+  author: string;
+  description: string;
+  price: number;
+  image: string;
+  pages: number;
+  language: string;
+  year: number;
+  location: string;
+  isAvailable: boolean;
+}
+
 export interface ProductDocument extends ProductInput, mongoose.Document {
   productId: string;
   createdAt: Date;

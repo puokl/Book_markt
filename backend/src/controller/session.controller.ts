@@ -16,7 +16,7 @@ import jwt from "jsonwebtoken";
 import { access } from "fs";
 
 const accessTokenCookieOptions: CookieOptions = {
-  maxAge: 900000, // 15min
+  maxAge: 9000, // 15min
   httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
   domain: process.env.DOMAIN,
   path: "/",
@@ -34,6 +34,9 @@ const deleteCookies: CookieOptions = {
   expires: new Date(0),
 };
 
+// @desc    Create a user's session
+// @route   POST /api/sessions
+// @access  Private
 export async function createUserSessionHandler(req: Request, res: Response) {
   // 1. validate the user's password
   const user = await validatePassword(req.body);
@@ -56,7 +59,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
       ...user,
       session: session._id,
     },
-    { expiresIn: process.env.REFRESHTOKENTTL } // 15min
+    { expiresIn: process.env.REFRESHTOKENTTL } // 1y
   );
   // 5. return access & refresh tokens
   res.cookie("accessToken", accessToken, accessTokenCookieOptions);
@@ -65,9 +68,12 @@ export async function createUserSessionHandler(req: Request, res: Response) {
 
   //FIXME - send user to client
 
-  return res.send({ user });
+  return res.send({ user, accessToken });
 }
 
+// @desc    Get a single product
+// @route   GET /api/products/:productId
+// @access  Public
 export async function getUserSessionHandler(req: Request, res: Response) {
   const userId = res.locals.user._id;
 
@@ -78,6 +84,9 @@ export async function getUserSessionHandler(req: Request, res: Response) {
   return res.send(sessions);
 }
 
+// @desc    Delete a  product
+// @route   DELETE /api/sessions
+// @access  Private
 export async function deleteSessionHandler(req: Request, res: Response) {
   const sessionId = res.locals.user.session;
 
