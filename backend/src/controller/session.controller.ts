@@ -26,7 +26,7 @@ const accessTokenCookieOptions: CookieOptions = {
 
 const refreshTokenCookieOptions: CookieOptions = {
   ...accessTokenCookieOptions,
-  maxAge: 3.154e10, // 1yr
+  maxAge: 86400000, // 1day
 };
 
 const deleteCookies: CookieOptions = {
@@ -71,7 +71,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   return res.send({ user, accessToken });
 }
 
-// @desc    Get a single product
+// @desc    Get user's session
 // @route   GET /api/products/:productId
 // @access  Public
 export async function getUserSessionHandler(req: Request, res: Response) {
