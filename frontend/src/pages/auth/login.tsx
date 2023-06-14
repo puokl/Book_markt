@@ -5,6 +5,7 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf } from "zod";
 import getGoogleOAuthURL from "@/utils/getGoogleUrl";
+import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 
 const createSessionSchema = object({
   email: string().nonempty({
@@ -43,7 +44,6 @@ function LoginPage() {
       console.log("values", values);
       console.log("response", response.data);
       const { user, accessToken } = response.data;
-      sessionStorage.setItem("accessToken", accessToken);
 
       //FIXME -  prevent going back to login, it works only once
       router.replace("/");
@@ -70,6 +70,32 @@ function LoginPage() {
   const googleUr = getGoogleOAuthURL();
   return (
     <>
+      <Text as="p">{loginError}</Text>
+      <form onSubmit={handleSubmit(handleClick)}>
+        <FormControl isRequired>
+          <FormLabel>Email</FormLabel>
+          <Input
+            id="email"
+            type="email"
+            placeholder="john.doe@example.com"
+            {...register("email")}
+          />
+          <FormLabel>Password</FormLabel>
+          <Input
+            id="password"
+            type="password"
+            placeholder="********"
+            {...register("password")}
+          />
+          <Text as="p">{errors.password?.message?.toString()}</Text>
+          <Button type="submit">SUBMIT</Button>
+          <Text as="p">Or login with Google</Text>
+          <Text as="a" href={googleUr}>
+            Login with Google
+          </Text>
+        </FormControl>
+      </form>
+      {/* 
       <p>{loginError}</p>
       <form onSubmit={handleSubmit(handleClick)}>
         <div className="form-element">
@@ -97,7 +123,7 @@ function LoginPage() {
         <button type="submit">SUBMIT</button>
         <p>Or login with Google</p>
         <a href={googleUr}>Login with Google</a>
-      </form>
+      </form> */}
     </>
   );
 }

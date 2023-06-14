@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Button, ButtonGroup, Flex, Text, Box } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -88,7 +88,7 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
           withCredentials: true,
         }
       );
-      console.log("getSession data", data);
+      // console.log("getSession data", data);
     } catch (error: any) {
       console.log("error on getSession()", error);
     }
@@ -98,21 +98,33 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
     // console.log("data && data.session", testState.session);
     return (
       <>
-        <div>Welcome! {userState.name}</div>
-        <Button onClick={logOut}>Delete session</Button>
-        <Button onClick={getSession}>getSession</Button>
-        <h1 className="title">
+        <Flex justifyContent="space-evenly">
+          <Text>Welcome! {userState.name}</Text>
+          <Box>
+            <Button onClick={logOut}>Logout</Button>
+            <Button onClick={getSession}>getSession</Button>
+          </Box>
+        </Flex>
+        <Text>
           Read <Link href="/test">this page!</Link>
-        </h1>
+        </Text>
       </>
     );
   }
   return (
     <>
-      <div>Please login to visit the website</div>
-      <Button>
-        <a href="/auth/login">Login</a>
-      </Button>
+      <Flex justifyContent="space-evenly">
+        <Text>Please login to visit the website</Text>
+        <Flex alignItems="center">
+          <Button as="a" href="/auth/login">
+            Login
+          </Button>
+          <Text>OR</Text>
+          <Button as="a" href="/auth/register">
+            Register
+          </Button>
+        </Flex>
+      </Flex>
     </>
   );
 };
@@ -124,7 +136,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/me`,
     context.req.headers
   );
-  console.log("context.req", context.req);
+  // console.log("context.req", context.req);
   return { props: { fallbackData: data } };
 };
 
