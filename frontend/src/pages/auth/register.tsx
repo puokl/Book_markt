@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf } from "zod";
+import { FormControl, FormLabel, Input, Button, Text } from "@chakra-ui/react";
 
 const createUserSchema = object({
   name: string().nonempty({
@@ -53,7 +54,43 @@ function RegisterPage() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-element">
+        <FormControl isRequired>
+          <FormLabel>Email</FormLabel>
+          <Input
+            id="email"
+            type="email"
+            placeholder="john.doe@example.com"
+            {...register("email")}
+          />
+          <Text as="p">{errors.email?.message?.toString()}</Text>
+          <FormLabel>Name</FormLabel>
+          <Input
+            id="name"
+            type="text"
+            placeholder="John Doe"
+            {...register("name")}
+          />
+          <Text as="p">{errors.name?.message?.toString()}</Text>
+          <FormLabel>Password</FormLabel>
+          <Input
+            id="password"
+            type="password"
+            placeholder="********"
+            {...register("password")}
+          />
+          <Text as="p">{errors.password?.message?.toString()}</Text>
+          <FormLabel>Confirm Password</FormLabel>
+          <Input
+            id="password"
+            type="password"
+            placeholder="********"
+            {...register("passwordConfirmation")}
+          />
+          <Text as="p">{errors.passwordConfirmation?.message?.toString()}</Text>
+          <Text as="p">{registerError}</Text>
+          <Button type="submit">SUBMIT</Button>
+        </FormControl>
+        {/* <div className="form-element">
           <label htmlFor="email">Email</label>
           <input
             id="email"
@@ -94,7 +131,7 @@ function RegisterPage() {
           <p>{errors.passwordConfirmation?.message?.toString()}</p>
         </div>
         <p>{registerError}</p>
-        <button type="submit">SUBMIT</button>
+        <button type="submit">SUBMIT</button> */}
       </form>
     </>
   );
