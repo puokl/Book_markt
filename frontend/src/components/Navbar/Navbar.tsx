@@ -1,6 +1,6 @@
-import { AuthContext } from "@/context/AuthContext";
-import React, { useContext, useEffect, useState } from "react";
-import Login from "./Login/Login";
+import { useContext, useEffect, useState } from "react";
+import { Flex, Button, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
 interface UserData {
   username: string;
@@ -8,7 +8,7 @@ interface UserData {
 }
 
 const Navbar: React.FC = () => {
-  const { state } = useContext(AuthContext);
+  // const { state } = useContext(AuthContext);
   //   console.log("state on test", state?.user?.username);
 
   //   const [data, setData] = useState<UserData>({ username: "", email: "" });
@@ -20,8 +20,24 @@ const Navbar: React.FC = () => {
   //   }, [state.user]);
   return (
     <>
-      <div>Hi from navbar</div>
-      {/* <Login data={data} /> */}
+      <Flex justifyContent="space-between">
+        <Link href="/">Home</Link>
+        {/* <Flex>
+        <Link href="/auth/login">login</Link>
+        <Button as="a" href="/auth/login">
+          Login
+        </Button>
+      </Flex> */}
+        <Flex alignItems="center">
+          <Button as="a" href="/auth/login">
+            Login
+          </Button>
+          <Text>OR</Text>
+          <Button as="a" href="/auth/register">
+            Register
+          </Button>
+        </Flex>
+      </Flex>
     </>
   );
 };

@@ -90,48 +90,6 @@ function RegisterPage() {
           <Text as="p">{registerError}</Text>
           <Button type="submit">SUBMIT</Button>
         </FormControl>
-        {/* <div className="form-element">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="john.doe@example.com"
-            {...register("email")}
-          />
-          <p>{errors.email?.message?.toString()}</p>
-        </div>
-        <div className="form-element">
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="John Doe"
-            {...register("name")}
-          />
-          <p>{errors.name?.message?.toString()}</p>
-        </div>
-        <div className="form-element">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            placeholder="********"
-            {...register("password")}
-          />
-          <p>{errors.password?.message?.toString()}</p>
-        </div>
-        <div className="form-element">
-          <label htmlFor="passwordConfirmation">Confirm Password</label>
-          <input
-            id="password"
-            type="password"
-            placeholder="********"
-            {...register("passwordConfirmation")}
-          />
-          <p>{errors.passwordConfirmation?.message?.toString()}</p>
-        </div>
-        <p>{registerError}</p>
-        <button type="submit">SUBMIT</button> */}
       </form>
     </>
   );

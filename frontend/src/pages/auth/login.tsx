@@ -5,7 +5,15 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf } from "zod";
 import getGoogleOAuthURL from "@/utils/getGoogleUrl";
-import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+  Flex,
+} from "@chakra-ui/react";
 
 const createSessionSchema = object({
   email: string().nonempty({
@@ -19,9 +27,7 @@ const createSessionSchema = object({
 type CreateSessionInput = TypeOf<typeof createSessionSchema>;
 
 function LoginPage() {
-  // const { dispatch } = useContext(AuthContext);
   const router = useRouter();
-  // const { login } = useContext(AuthContext);
   const [loginError, setLoginError] = useState(null);
   const {
     register,
@@ -31,8 +37,7 @@ function LoginPage() {
     resolver: zodResolver(createSessionSchema),
   });
 
-  const handleClick = async (values: CreateSessionInput) => {
-    console.log("clicked");
+  const handleLogin = async (values: CreateSessionInput) => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
@@ -41,11 +46,7 @@ function LoginPage() {
           withCredentials: true,
         }
       );
-      console.log("values", values);
-      console.log("response", response.data);
-      const { user, accessToken } = response.data;
 
-      //FIXME -  prevent going back to login, it works only once
       router.replace("/");
     } catch (error: any) {
       setLoginError(error.message);
@@ -53,26 +54,13 @@ function LoginPage() {
     }
   };
 
-  // async function onSubmit(values: CreateSessionInput) {
-  //   try {
-  //     await axios.post(
-  //       `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
-  //       values,
-  //       { withCredentials: true }
-  //     );
-  //   } catch (e: any) {
-  //     setLoginError(e.message);
-  //   }
-
-  //   console.log("values", values);
-  // }
-
   const googleUr = getGoogleOAuthURL();
   return (
     <>
-      <Text as="p">{loginError}</Text>
-      <form onSubmit={handleSubmit(handleClick)}>
-        <FormControl isRequired>
+      <Flex maxWidth="400px" direction="column" alignItems="center">
+        <Text as="p">{loginError}</Text>
+
+        <FormControl as="form" isRequired onSubmit={handleSubmit(handleLogin)}>
           <FormLabel>Email</FormLabel>
           <Input
             id="email"
@@ -90,40 +78,14 @@ function LoginPage() {
           <Text as="p">{errors.password?.message?.toString()}</Text>
           <Button type="submit">SUBMIT</Button>
           <Text as="p">Or login with Google</Text>
-          <Text as="a" href={googleUr}>
-            Login with Google
-          </Text>
+          <Button as="a" href={googleUr}>
+            Google Login
+          </Button>
+          {/* <Text as="a" href={googleUr}>
+              Login with Google
+            </Text> */}
         </FormControl>
-      </form>
-      {/* 
-      <p>{loginError}</p>
-      <form onSubmit={handleSubmit(handleClick)}>
-        <div className="form-element">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="john.doe@example.com"
-            {...register("email")}
-          />
-          <p>{errors.email?.message?.toString()}</p>
-        </div>
-
-        <div className="form-element">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            placeholder="********"
-            {...register("password")}
-          />
-          <p>{errors.password?.message?.toString()}</p>
-        </div>
-
-        <button type="submit">SUBMIT</button>
-        <p>Or login with Google</p>
-        <a href={googleUr}>Login with Google</a>
-      </form> */}
+      </Flex>
     </>
   );
 }

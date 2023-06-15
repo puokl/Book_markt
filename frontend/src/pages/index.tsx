@@ -113,18 +113,7 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
   }
   return (
     <>
-      <Flex justifyContent="space-evenly">
-        <Text>Please login to visit the website</Text>
-        <Flex alignItems="center">
-          <Button as="a" href="/auth/login">
-            Login
-          </Button>
-          <Text>OR</Text>
-          <Button as="a" href="/auth/register">
-            Register
-          </Button>
-        </Flex>
-      </Flex>
+      <Text>Hello!</Text>
     </>
   );
 };
