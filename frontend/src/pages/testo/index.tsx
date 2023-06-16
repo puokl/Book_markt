@@ -1,3 +1,4 @@
+import AppBar from "@/components/Appbar";
 import { AuthContext } from "@/context/AuthContext";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -21,6 +22,7 @@ const index: React.FC = () => {
 
   return (
     <>
+      <AppBar />
       <div>Have a good coding {username}!</div>
       <div>Email: {email}</div>
       {/* {console.log(state)} */}
