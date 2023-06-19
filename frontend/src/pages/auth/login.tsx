@@ -46,7 +46,8 @@ function LoginPage() {
           withCredentials: true,
         }
       );
-
+      console.log("response", response);
+      localStorage.setItem("user", response.data.user.name);
       router.replace("/");
     } catch (error: any) {
       setLoginError(error.message);

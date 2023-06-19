@@ -39,15 +39,15 @@ const deserializeUser = async (
       });
     }
 
-    if (!refreshToken) {
-      console.log("No Token", refreshToken);
-      return next();
-    }
     const result = verifyJwt(newAccessToken as string); // we decode that access token
 
     res.locals.user = result.decoded; // we attach the user back to res.locals
     // if they send a request with an expired access token the req flow is just going to continue as if they sent the req with a
     // valid access token given that the refresh token was valid
+    return next();
+  }
+  if (!refreshToken) {
+    console.log("No Token", refreshToken);
     return next();
   }
   return next();

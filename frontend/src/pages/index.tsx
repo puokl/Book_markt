@@ -8,51 +8,45 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { Button, ButtonGroup, Flex, Text, Box } from "@chakra-ui/react";
+import { UserType } from "@/types/userType";
 
 const inter = Inter({ subsets: ["latin"] });
 
-interface User {
-  _id: string;
-  email: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-  session: string;
-  iat: number;
-  exp: number;
-}
-
-const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
-  const [userState, setUserState] = useState<User | null>(fallbackData);
-  const { dispatch } = useContext(AuthContext);
+const Home: NextPage<{ fallbackData: UserType }> = ({ fallbackData }) => {
+  const [userState, setUserState] = useState<UserType | null>(fallbackData);
+  const { setUser } = useContext(AuthContext);
   const router = useRouter();
 
-  const { data } = useSwr<User | null>(
+  const { data } = useSwr<UserType | null>(
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/me`,
     fetcher,
     { fallbackData }
   );
 
   useEffect(() => {
-    // console.log("data", data);
+    console.log("fallbackData", fallbackData);
+    console.log("data", data);
     if (data) {
-      dispatch({
-        type: "LOGIN",
-        payload: { username: data?.name, email: data?.email, isLoggedIn: true },
-      });
-    } else {
-      dispatch({
-        type: "FAILURE",
-        payload: {
-          // username: data!.name,
-          // email: data!.email,
-          username: undefined,
-          email: undefined,
-          isLoggedIn: false,
-        },
-      });
+      setUser(data);
+      setUserState(data);
     }
+    // if (data) {
+    //   dispatch({
+    //     type: "LOGIN",
+    //     payload: { username: data?.name, email: data?.email, isLoggedIn: true },
+    //   });
+    // } else {
+    //   dispatch({
+    //     type: "FAILURE",
+    //     payload: {
+    //       // username: data!.name,
+    //       // email: data!.email,
+    //       username: undefined,
+    //       email: undefined,
+    //       isLoggedIn: false,
+    //     },
+    //   });
+    // }
   }, [data?.name]);
 
   async function logOut() {
@@ -65,15 +59,15 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
       );
 
       setUserState(null);
-
-      dispatch({
-        type: "LOGOUT",
-        payload: {
-          username: data!.name,
-          email: data!.email,
-          isLoggedIn: false,
-        },
-      });
+      localStorage.removeItem("user");
+      // dispatch({
+      //   type: "LOGOUT",
+      //   payload: {
+      //     username: data!.name,
+      //     email: data!.email,
+      //     isLoggedIn: false,
+      //   },
+      // });
       router.push("/");
     } catch (error: any) {
       console.log("error on logOut()", error);
@@ -105,6 +99,12 @@ const Home: NextPage<{ fallbackData: User }> = ({ fallbackData }) => {
             <Button onClick={getSession}>getSession</Button>
           </Box>
         </Flex>
+        <Button as="a" href="/testo">
+          testo
+        </Button>
+        <Button as="a" href="/user">
+          user
+        </Button>
         <Text>
           Read <Link href="/test">this page!</Link>
         </Text>

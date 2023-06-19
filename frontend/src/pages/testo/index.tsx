@@ -2,10 +2,10 @@ import { AuthContext } from "@/context/AuthContext";
 import React, { useContext, useEffect, useState } from "react";
 
 const index: React.FC = () => {
-  const { state } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   //   const [hydrated, setHydrated] = useState(false);
-  const { isLoggedIn, username, email } = state;
-  console.log("state on test test", state);
+  // const { isLoggedIn, username, email } = state;
+  console.log("state on user test", user);
 
   //   // to prevent hydration error
   //   useEffect(() => {
@@ -21,8 +21,8 @@ const index: React.FC = () => {
 
   return (
     <>
-      <div>Have a good coding {username}!</div>
-      <div>Email: {email}</div>
+      <div>Have a good coding !</div>
+      <div>Email: </div>
       {/* {console.log(state)} */}
     </>
   );
