@@ -2,9 +2,10 @@ import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 import ProductModel, {
   ProductDocument,
   ProductInput,
+  ProductInputTest,
 } from "../models/product.model";
 
-export async function createProduct(input: ProductInput) {
+export async function createProduct(input: ProductInputTest) {
   return ProductModel.create(input);
 }
 
@@ -25,4 +26,8 @@ export async function findAndupdateProduct(
 
 export async function deleteProduct(query: FilterQuery<ProductDocument>) {
   return ProductModel.deleteOne(query);
+}
+
+export async function findAllProduct() {
+  return ProductModel.find({});
 }

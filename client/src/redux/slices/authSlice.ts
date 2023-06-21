@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "./authService";
 import { LoginType, RegisterType } from "../../types/authServiceType";
 
-const userString = localStorage.getItem("user");
+const userString = sessionStorage.getItem("user");
 const user = userString ? JSON.parse(userString) : null;
 
 const initialState = {
@@ -56,7 +56,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   try {
     await authService.logout();
   } catch (error) {
-    console.log("error", error);
+    console.log("error on logout", error);
   }
 });
 

@@ -8,6 +8,7 @@ import Missing from "./components/Missing";
 import Home from "./components/Home";
 import Test from "./components/Test";
 import Testo from "./components/Testo";
+import Product from "./components/Product";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="test" element={<Test />} />
         <Route path="testo" element={<Testo />} />
+        <Route path="product" element={<Product />} />
 
         {/* protected routes */}
         <Route path="/" element={<Home />} />

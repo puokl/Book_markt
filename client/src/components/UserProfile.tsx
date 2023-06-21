@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAppSelector } from "../redux/hooks";
 
@@ -8,6 +8,10 @@ const UserProfile: React.FC<UserProfileProps> = () => {
   const { user, isLoading, isError, isSuccess, message } = useAppSelector(
     (state) => state.auth
   );
+
+  if (isLoading) {
+    <Spinner />;
+  }
   return (
     <Box>
       <Text>Hello from user</Text>

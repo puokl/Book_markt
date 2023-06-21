@@ -3,12 +3,19 @@ import { object, number, string, TypeOf } from "zod";
 const payload = {
   body: object({
     title: string({ required_error: "Title is required" }),
-    description: string({ required_error: "Description is required" }).min(
-      120,
-      "Description should be at least 120 characters long"
-    ),
+    // description: string({ required_error: "Description is required" }),
+    // .min(
+    //   120,
+    //   "Description should be at least 120 characters long"
+    // )
     price: number({ required_error: "Price is required" }),
-    image: string({ required_error: "Image is required" }),
+    // image: string({ required_error: "Image is required" }),
+    author: string({ required_error: "Author is required" }),
+    // condition: string({ required_error: "Condition is required" }),
+    language: string({ required_error: "Language is required" }),
+    // pages: number().optional(),
+    // year: number().optional(),
+    // user: string().optional(),
   }),
 };
 

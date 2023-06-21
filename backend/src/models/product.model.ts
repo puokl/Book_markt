@@ -12,20 +12,21 @@ export interface ProductInput {
   image: string;
 }
 export interface ProductInputTest {
-  user_creater: UserDocument["_id"];
+  user: UserDocument["_id"];
   title: string;
   author: string;
-  description: string;
+  // description: string;
   price: number;
-  image: string;
-  pages: number;
+  // image: string;
+  // pages: number;
   language: string;
-  year: number;
-  location: string;
-  isAvailable: boolean;
+  // year: number;
+  // location: string;
+  // isAvailable: boolean;
+  // condition: string;
 }
 
-export interface ProductDocument extends ProductInput, mongoose.Document {
+export interface ProductDocument extends ProductInputTest, mongoose.Document {
   productId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -41,9 +42,14 @@ const productSchema = new mongoose.Schema(
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     title: { type: String, required: true },
-    description: { type: String, required: true },
+    // description: { type: String, required: false },
     price: { type: Number, required: true },
-    image: { type: String, required: true },
+    author: { type: String, requiredì: true },
+    // condition: { type: String, required: false },
+    language: { type: String, required: true },
+    // image: { type: String, required: false },
+    // pages: { type: Number, required: false },
+    // year: { type: Number, required: false },
   },
   { timestamps: true }
 );

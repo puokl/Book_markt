@@ -1,11 +1,8 @@
-// for making http requests adn sending data back and setting localstorage
+// http requests and setting sessionStorage
 import axios from "axios";
 import { LoginType, RegisterType } from "../../types/authServiceType";
 
-// add proxy in package.json to direct it to server
-// const API_URL = "/api/users";
-
-// register user
+// Register
 const registerUser = async (userData: RegisterType) => {
   console.log("ho from authservice");
   const response = await axios.post(
@@ -15,12 +12,12 @@ const registerUser = async (userData: RegisterType) => {
   console.log("hi from authservice");
 
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    sessionStorage.setItem("user", JSON.stringify(response.data));
   }
   return response.data;
 };
 
-// Login user
+// Login
 const login = async (userData: LoginType) => {
   const response = await axios.post(
     `${import.meta.env.VITE_SERVER_ENDPOINT}/api/sessions`,
@@ -31,18 +28,18 @@ const login = async (userData: LoginType) => {
   );
 
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    sessionStorage.setItem("user", JSON.stringify(response.data));
   }
 
   return response.data;
 };
 
-// Logout user
+// Logout
 const logout = async () => {
   await axios.delete(`${import.meta.env.VITE_SERVER_ENDPOINT}/api/sessions`, {
     withCredentials: true,
   });
-  localStorage.removeItem("user");
+  sessionStorage.removeItem("user");
 };
 
 const authService = {

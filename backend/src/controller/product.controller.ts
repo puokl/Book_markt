@@ -6,6 +6,7 @@ import {
 import {
   createProduct,
   deleteProduct,
+  findAllProduct,
   findAndupdateProduct,
   findProduct,
 } from "../service/product.service";
@@ -18,7 +19,6 @@ export async function createProductHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
-
   const body = req.body;
   const product = await createProduct({ ...body, user: userId });
   return res.send(product);
@@ -90,4 +90,20 @@ export async function deleteProductHandler(
   await deleteProduct({ productId });
 
   return res.sendStatus(200);
+}
+
+// @desc    Get all products
+// @route   GET /api/products
+// @access  Public
+export async function getAllProductHandler(
+  req: Request<UpdateProductInput["params"]>,
+  res: Response
+) {
+  const product = await findAllProduct();
+
+  if (!product) {
+    return res.sendStatus(404);
+  }
+
+  return res.send(product);
 }

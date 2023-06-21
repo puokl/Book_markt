@@ -71,7 +71,7 @@ const Register: React.FC = () => {
           <Input
             id="email"
             type="email"
-            placeholder="john.doe@example.com"
+            placeholder="john.doe@mail.com"
             {...register("email")}
           />
           <Text as="p">{errors.email?.message?.toString()}</Text>

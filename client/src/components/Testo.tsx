@@ -9,10 +9,11 @@ const Testo: React.FC<TestoProps> = () => {
   const { user, isLoading, isError, isSuccess, message } = useAppSelector(
     (state) => state.auth
   );
-
+  const { product } = useAppSelector((state: any) => state.product);
   useEffect(() => {
     console.log("user", user);
     console.log("isLoading", isLoading);
+    console.log("product", product);
   }, []);
 
   return (

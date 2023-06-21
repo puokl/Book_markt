@@ -24,6 +24,7 @@ import {
 import {
   createProductHandler,
   deleteProductHandler,
+  getAllProductHandler,
   getProductHandler,
   updateProductHandler,
 } from "./controller/product.controller";
@@ -60,6 +61,7 @@ function routes(app: Express) {
     validateResource(getProductSchema),
     getProductHandler
   );
+
   app.post(
     "/api/products",
     [requireUser, validateResource(createProductSchema)],
@@ -74,6 +76,12 @@ function routes(app: Express) {
     "/api/products/:productId",
     [requireUser, validateResource(deleteProductSchema)],
     deleteProductHandler
+  );
+
+  app.get(
+    "/api/products",
+
+    getAllProductHandler
   );
 }
 
