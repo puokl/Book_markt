@@ -35,7 +35,7 @@ const Home: React.FC<HomeProps> = () => {
       <Box minHeight="300px" bg="gray.300">
         <Text>HI {user.user.name}</Text>
         <Text>User is logged in</Text>
-        <Button as="a" href="/product">
+        <Button as="a" href="/addproduct">
           Product
         </Button>
         <Button as="a" href="/user">

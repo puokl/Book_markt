@@ -7,10 +7,12 @@ const requireUser = (req: Request, res: Response, next: NextFunction) => {
   console.log("res.locals", res.locals);
 
   if (!user) {
-    console.log("it seems like there is no user in res.local.user");
+    console.log(
+      "RequireUser middleware: it seems like there is no user in res.local.user"
+    );
     return res.sendStatus(403);
   }
-
+  console.log("there is a user in requireUser");
   return next();
 };
 

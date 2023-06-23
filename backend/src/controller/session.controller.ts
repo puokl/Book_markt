@@ -16,7 +16,7 @@ import jwt from "jsonwebtoken";
 import { access } from "fs";
 
 const accessTokenCookieOptions: CookieOptions = {
-  maxAge: 9000, // 15min
+  maxAge: 9000000, // 15min
   httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
   domain: process.env.DOMAIN,
   path: "/",
@@ -51,7 +51,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
       ...user,
       session: session._id,
     },
-    { expiresIn: process.env.ACCESSTOKENTTL } // 15min
+    { expiresIn: process.env.ACCESSTOKENTTL } // 1d
   );
   // 4. create a refresh token
   const refreshToken = signJwt(
@@ -172,7 +172,7 @@ export async function googleOauthHandler(req: Request, res: Response) {
         ...userJSON,
         session: session._id,
       },
-      { expiresIn: `${process.env.ACCESSTOKENTTL}` } // 15min
+      { expiresIn: `${process.env.ACCESSTOKENTTL}` } // 1d
     );
 
     const refreshToken = signJwt(

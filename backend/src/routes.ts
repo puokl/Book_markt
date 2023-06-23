@@ -27,6 +27,7 @@ import {
   getAllProductHandler,
   getProductHandler,
   updateProductHandler,
+  getAllUserProductHandler,
 } from "./controller/product.controller";
 import multer from "multer";
 // import multerUploa
@@ -78,11 +79,9 @@ function routes(app: Express) {
     deleteProductHandler
   );
 
-  app.get(
-    "/api/products",
+  app.get("/api/products", getAllProductHandler);
 
-    getAllProductHandler
-  );
+  app.get("/api/userproducts", requireUser, getAllUserProductHandler);
 }
 
 export default routes;

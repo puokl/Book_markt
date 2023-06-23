@@ -15,11 +15,11 @@ import { createProductSchema } from "../schema/productSchema";
 import { TypeOf } from "zod";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getAllProducts } from "../redux/slices/productSlice";
+import { createProduct, getAllProducts } from "../redux/slices/productSlice";
 
 type ProductInput = TypeOf<typeof createProductSchema>;
 
-const Product: React.FC = () => {
+const CreateProduct: React.FC = () => {
   const [productError, setProductError] = useState(null);
   const navigate = useNavigate();
 
@@ -36,17 +36,23 @@ const Product: React.FC = () => {
     resolver: zodResolver(createProductSchema),
   });
 
-  const handleProduct = async (values: ProductInput) => {
+  type temporaryCreateProductType = {
+    title: string;
+    author: string;
+    price: number;
+    language: string;
+  };
+  const handleProduct = async (values: temporaryCreateProductType) => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_ENDPOINT}/api/products`,
-        values,
-        { withCredentials: true }
-      );
+      // const response = await axios.post(
+      //   `${import.meta.env.VITE_SERVER_ENDPOINT}/api/products`,
+      //   values,
+      //   { withCredentials: true }
+      // );
 
-      console.log("response.data", response.data);
-      return response.data;
-      // dispatch(getAllProducts());
+      dispatch(createProduct(values));
+      // console.log("response.data", response.data);
+      // return response.data;
     } catch (error: any) {
       setProductError(error.message);
       console.log("handleClick() error", error);
@@ -106,4 +112,4 @@ const Product: React.FC = () => {
     </>
   );
 };
-export default Product;
+export default CreateProduct;

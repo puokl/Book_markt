@@ -47,7 +47,7 @@ export async function reIssueAccessToken({
       session: session._id, // the session is a promise, but we need it to be an object
     },
 
-    { expiresIn: `${process.env.ACCESSTOKENTTL}` } // 15minutes
+    { expiresIn: `${process.env.ACCESSTOKENTTL}` } // 1d
   );
   console.log("accessToken", accessToken);
   return accessToken;

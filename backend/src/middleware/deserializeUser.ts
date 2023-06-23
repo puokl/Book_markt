@@ -20,7 +20,7 @@ const deserializeUser = async (
 
   if (decoded) {
     res.locals.user = decoded;
-    console.log("DECODED");
+    console.log("DECODED, there is an accesstoken");
     return next();
   }
   if (!accessToken && refreshToken) {
@@ -30,7 +30,7 @@ const deserializeUser = async (
     if (newAccessToken) {
       res.setHeader("x-access-token", newAccessToken); // we set the new access token on the header
       res.cookie("accessToken", newAccessToken, {
-        maxAge: 9000, // 15min
+        maxAge: 9000000, // 15min
         httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
         domain: process.env.DOMAIN,
         path: "/",
@@ -44,10 +44,12 @@ const deserializeUser = async (
     res.locals.user = result.decoded; // we attach the user back to res.locals
     // if they send a request with an expired access token the req flow is just going to continue as if they sent the req with a
     // valid access token given that the refresh token was valid
+
+    console.log("new accesstoken created");
     return next();
   }
   if (!refreshToken) {
-    console.log("No Token", refreshToken);
+    console.log("No Refresh Token", refreshToken);
     return next();
   }
   return next();

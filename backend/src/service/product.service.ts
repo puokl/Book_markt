@@ -27,7 +27,11 @@ export async function findAndupdateProduct(
 export async function deleteProduct(query: FilterQuery<ProductDocument>) {
   return ProductModel.deleteOne(query);
 }
-
+//SECTION -
 export async function findAllProduct() {
   return ProductModel.find({});
+}
+
+export async function findAllUserProduct(userId: string) {
+  return ProductModel.find({ user: userId });
 }

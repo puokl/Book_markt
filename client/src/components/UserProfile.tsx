@@ -1,5 +1,4 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
-import React from "react";
 import { useAppSelector } from "../redux/hooks";
 
 type UserProfileProps = {};

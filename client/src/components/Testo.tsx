@@ -18,6 +18,7 @@ const Testo: React.FC<TestoProps> = () => {
 
   return (
     <>
+      {console.log("product intesto", product)}
       <Text>That's the testo page</Text>
       <Text>Hi {user.user.name}</Text>
       <Button>

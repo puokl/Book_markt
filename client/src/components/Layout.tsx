@@ -40,7 +40,7 @@ const Layout: React.FC<LayoutProps> = () => {
         <Box>
           <Box boxSize="60px">
             <Link to="/">
-              <Image src="/public/kenny.png" />
+              <Image src="/kenny.png" />
             </Link>
           </Box>
         </Box>

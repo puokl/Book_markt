@@ -9,6 +9,7 @@ import {
   findAllProduct,
   findAndupdateProduct,
   findProduct,
+  findAllUserProduct,
 } from "../service/product.service";
 
 // @desc    Create a single product
@@ -92,6 +93,7 @@ export async function deleteProductHandler(
   return res.sendStatus(200);
 }
 
+//SECTION -
 // @desc    Get all products
 // @route   GET /api/products
 // @access  Public
@@ -100,6 +102,24 @@ export async function getAllProductHandler(
   res: Response
 ) {
   const product = await findAllProduct();
+
+  if (!product) {
+    return res.sendStatus(404);
+  }
+
+  return res.send(product);
+}
+
+// @desc    Get all products from User
+// @route   GET /api/userproducts
+// @access  Public
+export async function getAllUserProductHandler(
+  req: Request<UpdateProductInput["params"]>,
+  res: Response
+) {
+  const userId = res.locals.user._id;
+  console.log("userId", userId);
+  const product = await findAllUserProduct(userId);
 
   if (!product) {
     return res.sendStatus(404);
