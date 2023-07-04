@@ -15,15 +15,15 @@ export interface ProductInputTest {
   user: UserDocument["_id"];
   title: string;
   author: string;
-  // description: string;
+  description: string;
   price: number;
   // image: string;
-  // pages: number;
+  pages: number;
   language: string;
-  // year: number;
+  year: number;
   // location: string;
   // isAvailable: boolean;
-  // condition: string;
+  condition: string;
 }
 
 export interface ProductDocument extends ProductInputTest, mongoose.Document {
@@ -42,14 +42,14 @@ const productSchema = new mongoose.Schema(
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     title: { type: String, required: true },
-    // description: { type: String, required: false },
+    description: { type: String, required: false },
     price: { type: Number, required: true },
     author: { type: String, requiredì: true },
-    // condition: { type: String, required: false },
+    condition: { type: String, required: false },
     language: { type: String, required: true },
     // image: { type: String, required: false },
-    // pages: { type: Number, required: false },
-    // year: { type: Number, required: false },
+    pages: { type: Number, required: false },
+    year: { type: Number, required: false },
   },
   { timestamps: true }
 );

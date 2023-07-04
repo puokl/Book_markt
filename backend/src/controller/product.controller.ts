@@ -42,6 +42,9 @@ export async function updateProductHandler(
   }
 
   if (String(product.user) !== userId) {
+    console.log("product.user", product.user);
+    console.log("userId", userId);
+
     return res.sendStatus(403);
   }
 
@@ -81,6 +84,7 @@ export async function deleteProductHandler(
   const product = await findProduct({ productId });
 
   if (!product) {
+    console.log("cannot find the product");
     return res.sendStatus(404);
   }
 

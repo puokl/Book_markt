@@ -61,13 +61,20 @@ const deleteProduct = async (productId: any) => {
 };
 
 // update a single product
-const updateProduct = async (productId: any) => {
-  const response = await axios.put(
-    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/products/${productId}`,
-
-    { withCredentials: true }
-  );
-  return response.data;
+const updateProduct = async (
+  productId: any,
+  productData: temporaryCreateProductType
+) => {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_SERVER_ENDPOINT}/api/products/${productId}`,
+      productData,
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error", error);
+  }
 };
 
 const productService = {

@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { createProductSchema } from "../schema/productSchema";
 import { TypeOf } from "zod";
-import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { createProduct, getAllProducts } from "../redux/slices/productSlice";
 
@@ -41,6 +40,10 @@ const CreateProduct: React.FC = () => {
     author: string;
     price: number;
     language: string;
+    description: string;
+    year: number;
+    condition: string;
+    pages: number;
   };
   const handleProduct = async (values: temporaryCreateProductType) => {
     try {
@@ -62,7 +65,7 @@ const CreateProduct: React.FC = () => {
   console.log("product", product);
   return (
     <>
-      <Text>Hi from product</Text>
+      <Text>Hi from CreateProduct</Text>
 
       <Box>
         <Flex maxWidth="400px" direction="column" alignItems="center">
@@ -105,6 +108,38 @@ const CreateProduct: React.FC = () => {
               {...register("language")}
             />
             <Text as="p">{errors?.language?.message?.toString()}</Text>
+            <FormLabel>Description</FormLabel>
+            <Input
+              id="description"
+              type="text"
+              placeholder="description"
+              {...register("description")}
+            />
+            <Text as="p">{errors?.description?.message?.toString()}</Text>
+            <FormLabel>Pages</FormLabel>
+            <Input
+              id="pages"
+              type="number"
+              placeholder="pages"
+              {...register("pages", { valueAsNumber: true })}
+            />
+            <Text as="p">{errors?.pages?.message?.toString()}</Text>
+            <FormLabel>Year</FormLabel>
+            <Input
+              id="year"
+              type="number"
+              placeholder="year"
+              {...register("year", { valueAsNumber: true })}
+            />
+            <Text as="p">{errors?.year?.message?.toString()}</Text>
+            <FormLabel>Condition</FormLabel>
+            <Input
+              id="condition"
+              type="text"
+              placeholder="condition"
+              {...register("condition")}
+            />
+            <Text as="p">{errors?.condition?.message?.toString()}</Text>
             <Button type="submit">Add product</Button>
           </FormControl>
         </Flex>

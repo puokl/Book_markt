@@ -6,7 +6,7 @@ import useSwr from "swr";
 import fetcher from "../utils/fetcher";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import ProductList from "./ProductList";
+import ProductList from "../components/ProductList";
 
 type HomeProps = {};
 
@@ -40,6 +40,10 @@ const Home: React.FC<HomeProps> = () => {
         </Button>
         <Button as="a" href="/user">
           User
+        </Button>
+        <Button onClick={() => navigate(`/messages/received/${user.user._id}`)}>
+          {/* // as="a" href={`/messages/${userId}`}> */}
+          Messages
         </Button>
       </Box>
       <ProductList />

@@ -7,7 +7,7 @@ type UserProductProps = {};
 const UserProduct: React.FC<UserProductProps> = () => {
   const dispatch = useAppDispatch();
 
-  const { products, isLoading, isError, isSuccess } = useAppSelector(
+  const { products, product, isLoading, isError, isSuccess } = useAppSelector(
     (state: any) => state.product
   );
 
@@ -28,8 +28,8 @@ const UserProduct: React.FC<UserProductProps> = () => {
   return (
     <>
       <Flex>Hello from UserProduct</Flex>
-      {products &&
-        products.map((item: any, index: number) => (
+      {product &&
+        product.map((item: any, index: number) => (
           <Flex key={index}>
             <Text>{item.title}</Text>
             <Text>{item.author}</Text>

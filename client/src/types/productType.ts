@@ -10,4 +10,8 @@ export type productType = {
   title: number;
   user: string;
   author: string;
+  language: string;
+  condition: string;
+  year: number;
+  pages: number;
 };

@@ -30,6 +30,13 @@ import {
   getAllUserProductHandler,
 } from "./controller/product.controller";
 import multer from "multer";
+import {
+  addConversationHandler,
+  createChatHandler,
+  getAllUserChatHandler,
+  getAllUserSentChatHandler,
+} from "./controller/chat.controller";
+import { createMessageHandler } from "./controller/message.controller";
 // import multerUploa
 
 // responsible to take the http request and forwarding it on to a controller
@@ -82,6 +89,15 @@ function routes(app: Express) {
   app.get("/api/products", getAllProductHandler);
 
   app.get("/api/userproducts", requireUser, getAllUserProductHandler);
+
+  //NOTE - CHAT
+  app.post("/api/chat", requireUser, createChatHandler);
+  app.get("/api/chat/received", requireUser, getAllUserChatHandler);
+  app.get("/api/chat/sent", requireUser, getAllUserSentChatHandler);
+  app.post("/api/chat/:chatId", requireUser, addConversationHandler);
+
+  //NOTE - MESSAGE
+  app.post("/api/message", requireUser, createMessageHandler);
 }
 
 export default routes;

@@ -15,7 +15,6 @@ const ProductList: React.FC = () => {
   const { products, isLoading, isError, isSuccess } = useAppSelector(
     (state: any) => state.product
   );
-  console.log("typeof>>>>>>>", typeof products === "object");
 
   useEffect(() => {
     dispatch(getAllProducts());
@@ -29,16 +28,30 @@ const ProductList: React.FC = () => {
 
       {console.log("product in jsx", products)}
       {console.log("product in productlist", products)}
-      {/* {typeof product !== "object" && */}
+
       {products &&
         products.map((item: productType, index: number) => (
-          <Flex key={index}>
+          <Flex
+            key={index}
+            bg="yellow.100"
+            border="1px solid red"
+            direction="column"
+          >
             <Text>{item.title}</Text>
             <Text>{item.author}</Text>
-
             <Text>ProductId: {item.productId}</Text>
             <Text>User: {item.user}</Text>
-            <Button onClick={() => navigate(`/product/${item.productId}`)}>
+            <Text>Price: {item.price}</Text>
+            <Text>Language: {item.language}</Text>
+            <Text>Description: {item.description}</Text>
+            <Text>Condition: {item.condition}</Text>
+            <Text>Year: {item.year}</Text>
+            <Text>Pages: {item.pages}</Text>
+
+            <Button
+              onClick={() => navigate(`/product/${item.productId}`)}
+              maxWidth="100px"
+            >
               Product
             </Button>
           </Flex>
