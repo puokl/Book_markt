@@ -52,7 +52,8 @@ const ConversationForm: React.FC<ConversationFormProps> = ({
       const userInput = { conversation, chatId };
       console.log("userInput", userInput);
       dispatch(addConversation(userInput));
-      navigate(`/messages/received/${user.user._id}`);
+      window.location.reload();
+      //   navigate(`/messages/received/${user.user._id}`);
     } catch (error: any) {
       console.log("error", error);
     }

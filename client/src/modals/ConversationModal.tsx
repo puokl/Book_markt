@@ -33,6 +33,7 @@ const ConversationModal: React.FC<ConversationModalProps> = ({
     setIsOpen(true);
   };
   const closeModal = () => {
+    // window.location.reload()
     setIsOpen(false);
   };
   return (

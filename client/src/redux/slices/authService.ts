@@ -1,15 +1,12 @@
-// http requests and setting sessionStorage
 import axios from "axios";
 import { LoginType, RegisterType } from "../../types/authServiceType";
 
 // Register
 const registerUser = async (userData: RegisterType) => {
-  console.log("ho from authservice");
   const response = await axios.post(
     `${import.meta.env.VITE_SERVER_ENDPOINT}/api/users`,
     userData
   );
-  console.log("hi from authservice");
 
   if (response.data) {
     sessionStorage.setItem("user", JSON.stringify(response.data));
@@ -30,7 +27,6 @@ const login = async (userData: LoginType) => {
   if (response.data) {
     sessionStorage.setItem("user", JSON.stringify(response.data));
   }
-
   return response.data;
 };
 
@@ -42,10 +38,29 @@ const logout = async () => {
   sessionStorage.removeItem("user");
 };
 
+// Update Profile
+const updateProfile = async (avatar: string, userId: string) => {
+  console.log("avatar in redux updateProfile", avatar);
+  const data = { image: avatar.image };
+
+  const response = await axios.put(
+    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/users/${userId}`,
+    data,
+    {
+      withCredentials: true,
+    }
+  );
+
+  if (response.data) {
+    sessionStorage.setItem("user", JSON.stringify(response.data));
+  }
+  return response.data;
+};
 const authService = {
   registerUser,
   logout,
   login,
+  updateProfile,
 };
 
 export default authService;

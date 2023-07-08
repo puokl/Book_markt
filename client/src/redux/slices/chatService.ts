@@ -18,7 +18,7 @@ const createChat = async (chatData: chatType) => {
 // get all chat from user
 const getAllUserChat = async () => {
   const response = await axios.get(
-    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/received`,
+    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/sent`,
     { withCredentials: true }
   );
   console.log("response", response);

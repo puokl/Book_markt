@@ -17,10 +17,13 @@ const deserializeUser = async (
     get(req, "cookies.refreshToken") || get(req, "headers.x-refresh");
 
   const { decoded } = verifyJwt(accessToken);
-
+  const example = get(req, "email");
   if (decoded) {
     res.locals.user = decoded;
     console.log("DECODED, there is an accesstoken");
+    console.log("req from deserializeruser", req.body);
+    console.log("example", example);
+
     return next();
   }
   if (!accessToken && refreshToken) {

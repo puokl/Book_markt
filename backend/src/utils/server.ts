@@ -13,9 +13,15 @@ function createServer() {
       credentials: true,
     })
   );
+  app.use(
+    express.urlencoded({
+      extended: true,
+    })
+  );
   app.use(cookieParser());
   app.use(express.json());
   app.use(deserializeUser); // middleware called on every endpoint on every request
+
   cloudinaryConfig();
   routes(app);
   console.log("routes", routes);

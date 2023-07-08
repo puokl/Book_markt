@@ -11,20 +11,10 @@ const initialState = {
   message: "",
 };
 
-type temporaryCreateProductType = {
-  title: string;
-  author: string;
-  price: number;
-  language: string;
-  description: string;
-  year: number;
-  condition: string;
-  pages: number;
-};
 // create new product
 export const createProduct = createAsyncThunk(
   "product/create",
-  async (productData: temporaryCreateProductType, thunkAPI) => {
+  async (productData: productType, thunkAPI) => {
     try {
       return await productService.createProduct(productData);
     } catch (error: any) {
@@ -121,10 +111,12 @@ export const updateProduct = createAsyncThunk(
   async ({ parametri }, thunkAPI) => {
     try {
       console.log("parametri in slice", parametri);
-      const { numero, values } = parametri;
-      console.log("productId", numero);
-      console.log("data", values);
-      const response = await productService.updateProduct(numero, values);
+      const { productID, data } = parametri;
+      console.log("productId", productID);
+      console.log("values in productslice", { data });
+      console.log("values in productslice", data);
+      console.log("first");
+      const response = await productService.updateProduct(productID, data);
 
       //NOTE -
 

@@ -7,13 +7,13 @@ import fetcher from "../utils/fetcher";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import ProductList from "../components/ProductList";
+import SideBar from "../components/SideBar";
 
 type HomeProps = {};
 
 const Home: React.FC<HomeProps> = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const { image } = useAppSelector((state) => state.image);
 
   const [userState, setUserState] = useState<UserType | null>(null);
 
@@ -23,8 +23,6 @@ const Home: React.FC<HomeProps> = () => {
   );
 
   useEffect(() => {
-    console.log("data", data);
-    console.log("user", user);
     if (data) {
       setUserState(data);
     }
@@ -32,9 +30,10 @@ const Home: React.FC<HomeProps> = () => {
 
   return user ? (
     <>
-      <Box minHeight="300px" bg="gray.300">
+      {/* <Box minHeight="300px" bg="gray.300">
         <Text>HI {user.user.name}</Text>
         <Text>User is logged in</Text>
+        <Text>this is image {image}</Text>
         <Button as="a" href="/addproduct">
           Product
         </Button>
@@ -42,16 +41,20 @@ const Home: React.FC<HomeProps> = () => {
           User
         </Button>
         <Button onClick={() => navigate(`/messages/received/${user.user._id}`)}>
-          {/* // as="a" href={`/messages/${userId}`}> */}
+        
           Messages
         </Button>
-      </Box>
-      <ProductList />
+      </Box> */}
+      <Flex direction="row">
+        <Box w="13%">
+          <SideBar />
+        </Box>
+        <Box w="87%">
+          <ProductList />
+        </Box>
+      </Flex>
       <Button as="a" href="/test">
         test
-      </Button>
-      <Button as="a" href="/testo">
-        testo
       </Button>
     </>
   ) : (

@@ -68,7 +68,8 @@ export async function createUserSessionHandler(req: Request, res: Response) {
 
   //FIXME - send user to client
 
-  return res.send({ user, accessToken });
+  // return res.send({ user, accessToken });
+  return res.send({ user });
 }
 
 // @desc    Get user's session

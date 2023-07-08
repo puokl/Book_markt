@@ -20,8 +20,15 @@ export async function createProductHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
+  const userName = res.locals.user.name;
+  console.log("res.locals.user in createProductHandler", res.locals.user);
   const body = req.body;
-  const product = await createProduct({ ...body, user: userId });
+  const product = await createProduct({
+    ...body,
+    userId: userId,
+    username: userName,
+  });
+  console.log("product", product);
   return res.send(product);
 }
 
@@ -32,26 +39,30 @@ export async function updateProductHandler(
   req: Request<UpdateProductInput["params"]>,
   res: Response
 ) {
-  const userId = res.locals.user._id;
-  const productId = req.params.productId;
-  const update = req.body;
+  try {
+    const userId = res.locals.user._id;
+    const productId = req.params.productId;
+    const update = req.body;
 
-  const product = await findProduct({ productId });
-  if (!product) {
-    return res.sendStatus(404);
+    const product = await findProduct({ productId });
+    if (!product) {
+      return res.sendStatus(404);
+    }
+
+    if (String(product.user) !== userId) {
+      console.log("product.user", product.user);
+      console.log("userId", userId);
+
+      return res.sendStatus(403);
+    }
+    console.log("req.body in product.controller", update);
+    const updatedProduct = await findAndupdateProduct({ productId }, update, {
+      new: true,
+    });
+    return res.send(updatedProduct);
+  } catch (error) {
+    console.log("error in product.controller", error);
   }
-
-  if (String(product.user) !== userId) {
-    console.log("product.user", product.user);
-    console.log("userId", userId);
-
-    return res.sendStatus(403);
-  }
-
-  const updatedProduct = await findAndupdateProduct({ productId }, update, {
-    new: true,
-  });
-  return res.send(updatedProduct);
 }
 
 // @desc    Get a single product

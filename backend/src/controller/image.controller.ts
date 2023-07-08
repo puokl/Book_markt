@@ -1,27 +1,55 @@
 import { Request, Response } from "express";
-import cloudinaryConfig from "../config/cloudinary";
 import { v2 as cloudinary } from "cloudinary";
 
-// @desc    Create a single product
-// @route   POST /api/products/
+// @desc    Upload an image
+// @route   POST /api/imageUpload/
 // @access  Private
 export const uploadImageHandler = async (req: Request, res: Response) => {
-  // upload file
+  const { folder } = req.body;
   if (req.file) {
     try {
-      // upload file
       const uploadImage = await cloudinary.uploader.upload(req.file.path, {
-        folder: "travelApp",
+        folder: folder,
       });
       console.log("uploadImage", uploadImage);
-      res.status(201).json({
-        message: "picture uploaded successfully",
-        avatar: uploadImage.url,
-      });
+      res.status(201).json({ image: uploadImage.url });
     } catch (error) {
-      console.log("error uploading file", error);
+      console.log("Error uploading file", error);
     }
   } else {
     res.status(500).json({ message: "file type not accepted" });
+  }
+};
+
+export const uploadMultipleImageHandler = async (
+  req: Request,
+  res: Response
+) => {
+  if (!req.files || req.files.length === 0) {
+    // No files uploaded
+    return res.status(400).json({ message: "No files uploaded" });
+  }
+  if (req.files) {
+    try {
+      const uploadPromises = req.file.map((file: Express.Multer.File) =>
+        cloudinary.uploader.upload(file.path, { folder: "bookMarktApp" })
+      );
+
+      const uploadedImages = await Promise.all(uploadPromises);
+
+      const imageUrls = uploadedImages.map(
+        (uploadResult: any) => uploadResult.url
+      );
+
+      console.log("uploadedImages", uploadedImages);
+      console.log("imageUrls", imageUrls);
+
+      res.status(201).json({ avatars: imageUrls });
+    } catch (error) {
+      console.log("Error uploading files", error);
+      res.status(500).json({ message: "Error uploading files" });
+    }
+  } else {
+    res.status(500).json({ message: "No files uploaded" });
   }
 };

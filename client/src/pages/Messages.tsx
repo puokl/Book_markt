@@ -23,6 +23,7 @@ const Messages: React.FC<MessagesProps> = () => {
 
     dispatch(getAllUserChat());
 
+    console.log("Messages reloaded");
     console.log("chat", chat);
   }, []);
 
@@ -37,17 +38,17 @@ const Messages: React.FC<MessagesProps> = () => {
           chat.map((item: any, index: number) => {
             return (
               <Flex
-                key={index}
+                key={item._id}
                 borderWidth="1px"
                 borderRadius="md"
                 m={4}
                 direction="column"
               >
                 <Text>Product: {item.productId}</Text>
-                {item.conversation.map((message: any, index: number) => {
+                {item.conversation.map((message: any, innerIndex: number) => {
                   return (
                     <>
-                      <Flex key={index} direction="column">
+                      <Flex key={message._id} direction="column">
                         <Text fontWeight="bold">Name: {message?.name}</Text>
                         <Text>Message: {message?.message}</Text>
                         <Text>Telephone: {message?.telephone}</Text>
@@ -55,14 +56,6 @@ const Messages: React.FC<MessagesProps> = () => {
                     </>
                   );
                 })}
-                <Button
-                  w="150px"
-                  onClick={() => {
-                    console.log("chatId", item._id);
-                  }}
-                >
-                  Reply
-                </Button>
                 <ConversationModal
                   buttonText="Reply"
                   chatId={item._id}

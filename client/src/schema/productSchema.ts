@@ -5,8 +5,11 @@ export const createProductSchema = object({
   author: string().nonempty({ message: "Author is required" }),
   language: string().optional(),
   user: string().optional(),
-  description: string().optional(),
+  description: string()
+    .min(20, { message: "Description must be at least 20 characters" })
+    .optional(),
   condition: string().optional(),
+  location: string().optional(),
   price: number({
     required_error: "Price is required",
     invalid_type_error: "Price must be a number",

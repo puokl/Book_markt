@@ -88,7 +88,8 @@ const chatSlice = createSlice({
       })
       .addCase(createChat.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.chat = action.payload;
+        //  state.chat = action.payload;
+        state.singleChat = action.payload;
       })
       .addCase(createChat.rejected, (state) => {
         state.isLoading = false;

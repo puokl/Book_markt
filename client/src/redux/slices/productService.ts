@@ -1,20 +1,18 @@
 import axios from "axios";
 import { productType } from "../../types/productType";
 
-type temporaryCreateProductType = {
-  title: string;
-  author: string;
-  price: number;
-  language: string;
-};
 // create new product
-const createProduct = async (productData: temporaryCreateProductType) => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/products`,
-    productData,
-    { withCredentials: true }
-  );
-  return response.data;
+const createProduct = async (productData: productType) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_SERVER_ENDPOINT}/api/products`,
+      productData,
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log("error", error.response.data);
+  }
 };
 
 // get single product
@@ -61,10 +59,7 @@ const deleteProduct = async (productId: any) => {
 };
 
 // update a single product
-const updateProduct = async (
-  productId: any,
-  productData: temporaryCreateProductType
-) => {
+const updateProduct = async (productId: string, productData: productType) => {
   try {
     const response = await axios.put(
       `${import.meta.env.VITE_SERVER_ENDPOINT}/api/products/${productId}`,

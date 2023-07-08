@@ -3,6 +3,7 @@ export type RegisterType = {
   name: string;
   password: string;
   passwordConfirmation: string;
+  image?: string;
 };
 
 export type LoginType = {

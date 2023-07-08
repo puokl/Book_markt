@@ -5,17 +5,16 @@ export interface UserInput {
   email: string;
   name: string;
   password: string;
-  picture?: string;
+  image?: string;
 }
 
 export interface UserInputTest {
   email: string;
   name: string;
   password: string;
-  picture?: string;
+  image?: string;
   isLoggedIn: boolean;
   publishedBooks?: string[];
-  avatar?: string;
   age?: number;
   location?: string;
   ratings?: string;
@@ -33,7 +32,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     password: { type: String, required: true },
-    picture: { type: String },
+    image: { type: String },
   },
   { timestamps: true }
 );

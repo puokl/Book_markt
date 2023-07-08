@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { omit } from "lodash";
-import { CreateUserInput } from "../schema/user.schema";
-import { createUser } from "../service/user.service";
+import { CreateUserInput, UpdateUserInput } from "../schema/user.schema";
+import {
+  createUser,
+  findAndUpdateUser,
+  findUser,
+} from "../service/user.service";
 import logger from "../utils/logger";
 
 // @desc    Create a user
@@ -12,8 +16,10 @@ export async function createUserHandler(
   res: Response
 ) {
   try {
+    console.log("req.body", req.body);
     const user = await createUser(req.body);
     // return res.send(omit(user.toJSON(), "password"));
+    console.log("user in backend createuser", user);
     return res.send(user);
   } catch (e: any) {
     logger.error(e);
@@ -22,6 +28,30 @@ export async function createUserHandler(
     // .setDefaultEncoding(e.message);
     // 409 for conflict ( we assume it has violated the unique field in the user model)
   }
+}
+
+// @desc    Update user image
+// @route   PUT /api/users/:userId
+// @access  Private
+export async function updateUserHandler(
+  req: Request<UpdateUserInput["params"]>,
+  res: Response
+) {
+  const userId = res.locals.user._id;
+
+  const update = { image: req.body.image };
+
+  const oldUser = await findUser({ _id: userId });
+  if (!oldUser) {
+    return res.sendStatus(404);
+  }
+  const user = await findAndUpdateUser({ _id: userId }, update, {
+    new: true,
+  });
+
+  const newUser = { user };
+
+  return res.send({ user });
 }
 
 // @desc    Get current user

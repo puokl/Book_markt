@@ -3,10 +3,11 @@ import {
   createUserHandler,
   getCurrentUser,
   getLog,
+  updateUserHandler,
 } from "./controller/user.controller";
 import { createUser } from "./service/user.service";
 import validateResource from "./middleware/validateResource";
-import { createUserSchema } from "./schema/user.schema";
+import { createUserSchema, updateUserSchema } from "./schema/user.schema";
 import {
   createUserSessionHandler,
   deleteSessionHandler,
@@ -36,8 +37,8 @@ import {
   getAllUserChatHandler,
   getAllUserSentChatHandler,
 } from "./controller/chat.controller";
-import { createMessageHandler } from "./controller/message.controller";
-// import multerUploa
+import { uploadImageHandler } from "./controller/image.controller";
+import multerUpload from "./middleware/multerMiddleware";
 
 // responsible to take the http request and forwarding it on to a controller
 function routes(app: Express) {
@@ -46,10 +47,19 @@ function routes(app: Express) {
   //NOTE - USERS
   app.get("/api/me", requireUser, getCurrentUser);
   app.post("/api/users", validateResource(createUserSchema), createUserHandler);
+  app.put(
+    "/api/users/:userId",
+    // validateResource(updateUserSchema),
+    updateUserHandler
+  );
 
-  //NOTE - image
-
-  // app.post("api/users", multerUpload.single("image"), uploadImageHandler);
+  //NOTE - IMAGE
+  app.post(
+    "/api/imageUpload",
+    // requireUser,
+    multerUpload.single("image"),
+    uploadImageHandler
+  );
 
   //NOTE - SESSIONS
   app.get("/api/sessions", requireUser, getUserSessionHandler);
@@ -95,9 +105,6 @@ function routes(app: Express) {
   app.get("/api/chat/received", requireUser, getAllUserChatHandler);
   app.get("/api/chat/sent", requireUser, getAllUserSentChatHandler);
   app.post("/api/chat/:chatId", requireUser, addConversationHandler);
-
-  //NOTE - MESSAGE
-  app.post("/api/message", requireUser, createMessageHandler);
 }
 
 export default routes;

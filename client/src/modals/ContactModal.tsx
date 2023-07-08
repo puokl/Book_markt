@@ -6,6 +6,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import ContactForm from "../components/ContactForm";
@@ -36,12 +37,14 @@ const ContactModal: React.FC<ContactModalProps> = ({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
           <ModalBody>
-            <ContactForm productId={productId} seller={seller} />
+            <ContactForm
+              productId={productId}
+              seller={seller}
+              closeModal={closeModal}
+            />
           </ModalBody>
-          <ModalFooter>
-            <Button onClick={closeModal}>Close</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

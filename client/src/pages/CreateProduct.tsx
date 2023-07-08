@@ -9,24 +9,23 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { createProductSchema } from "../schema/productSchema";
 import { TypeOf } from "zod";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { createProduct, getAllProducts } from "../redux/slices/productSlice";
+import { createProduct } from "../redux/slices/productSlice";
+import { uploadProductImage } from "../redux/slices/imageSlice";
 
 type ProductInput = TypeOf<typeof createProductSchema>;
 
 const CreateProduct: React.FC = () => {
   const [productError, setProductError] = useState(null);
-  const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState<File | string>("");
+
+  const { productImage } = useAppSelector((state: any) => state.image);
 
   const dispatch = useAppDispatch();
 
-  const { product, isLoading, isError, isSuccess } = useAppSelector(
-    (state: any) => state.product
-  );
   const {
     register,
     formState: { errors },
@@ -44,30 +43,29 @@ const CreateProduct: React.FC = () => {
     year: number;
     condition: string;
     pages: number;
+    image: string;
+    location: string;
   };
+
+  const handleImageUpload = () => {
+    dispatch(uploadProductImage(selectedFile));
+  };
+
   const handleProduct = async (values: temporaryCreateProductType) => {
     try {
-      // const response = await axios.post(
-      //   `${import.meta.env.VITE_SERVER_ENDPOINT}/api/products`,
-      //   values,
-      //   { withCredentials: true }
-      // );
-
-      dispatch(createProduct(values));
-      // console.log("response.data", response.data);
-      // return response.data;
+      const data = { ...values, image: productImage.image };
+      dispatch(createProduct(data));
     } catch (error: any) {
       setProductError(error.message);
       console.log("handleClick() error", error);
     }
   };
 
-  console.log("product", product);
   return (
     <>
       <Text>Hi from CreateProduct</Text>
 
-      <Box>
+      <Box m={6}>
         <Flex maxWidth="400px" direction="column" alignItems="center">
           <Text as="p">{productError}</Text>
 
@@ -140,6 +138,24 @@ const CreateProduct: React.FC = () => {
               {...register("condition")}
             />
             <Text as="p">{errors?.condition?.message?.toString()}</Text>
+            <FormLabel>Location</FormLabel>
+            <Input
+              id="location"
+              type="text"
+              placeholder="location"
+              {...register("location")}
+            />
+            <Text as="p">{errors?.location?.message?.toString()}</Text>
+            {/* //SECTION -  */}
+            <Input
+              type="file"
+              name="file"
+              id="file"
+              onChange={(e) => setSelectedFile(e.target.files?.[0])}
+            />
+            <Button onClick={handleImageUpload}>Upload Image</Button>
+
+            {/* //SECTION -  */}
             <Button type="submit">Add product</Button>
           </FormControl>
         </Flex>

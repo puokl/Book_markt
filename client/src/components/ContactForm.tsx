@@ -1,4 +1,11 @@
-import { FormControl, FormLabel, Input, Button, Text } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Text,
+  Flex,
+} from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { TypeOf } from "zod";
@@ -10,11 +17,16 @@ import { chatInputType, chatType, conversationType } from "../types/chatType";
 type ContactFormProps = {
   productId: string;
   seller: string;
+  closeModal: () => void;
 };
 
 type CreateChatInput = TypeOf<typeof createChatSchema>;
 
-const ContactForm: React.FC<ContactFormProps> = ({ productId, seller }) => {
+const ContactForm: React.FC<ContactFormProps> = ({
+  productId,
+  seller,
+  closeModal,
+}) => {
   const { user } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
@@ -27,14 +39,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ productId, seller }) => {
     handleSubmit,
     formState: { errors },
     setValue,
-    // } = useForm();
   } = useForm<CreateChatInput>({
     resolver: zodResolver(createChatSchema),
   });
 
   const handleChat = (values: chatInputType) => {
     try {
-      console.log("values", values);
       const conversation: conversationType = {
         ...values,
         sender,
@@ -43,7 +53,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ productId, seller }) => {
       };
       dispatch(createChat({ conversation, sender, productId, seller }));
       console.log("props", { conversation, sender, productId, seller });
-      console.log("hello from chat");
     } catch (error) {
       console.log("error", error);
     }
@@ -82,7 +91,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ productId, seller }) => {
           />
           <Text as="p">{errors?.telephone?.message?.toString()}</Text>
         </FormLabel>
-        <Button type="submit">Save</Button>
+        <Flex>
+          <Button type="submit">Save</Button>
+          <Button onClick={closeModal}>Cancel</Button>
+        </Flex>
       </FormControl>
     </>
   );

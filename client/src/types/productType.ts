@@ -1,17 +1,18 @@
 export type productType = {
-  _id: string;
+  // _id: string;
+  // user: string;
+  author: string;
   description: string;
-  image: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
+  image?: string;
   price: number;
   productId: number;
   title: number;
-  user: string;
-  author: string;
   language: string;
   condition: string;
+  location: string;
   year: number;
   pages: number;
+  // createdAt: Date;
+  // updatedAt: Date;
+  // __v: number;
 };

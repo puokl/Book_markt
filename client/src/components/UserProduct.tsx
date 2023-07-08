@@ -2,6 +2,7 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect } from "react";
 import { deleteProduct, getAllUserProduct } from "../redux/slices/productSlice";
+import { useNavigate } from "react-router-dom";
 type UserProductProps = {};
 
 const UserProduct: React.FC<UserProductProps> = () => {
@@ -10,33 +11,34 @@ const UserProduct: React.FC<UserProductProps> = () => {
   const { products, product, isLoading, isError, isSuccess } = useAppSelector(
     (state: any) => state.product
   );
-
+  const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.auth);
 
-  const handleDelete = (productId) => {
+  const handleDelete = (productId: string) => {
     dispatch(deleteProduct(productId));
   };
 
   useEffect(() => {
-    console.log("first");
-    console.log("user.user.id", user.user._id);
-
     dispatch(getAllUserProduct());
-    console.log("second");
-    console.log("product", products);
   }, []);
   return (
     <>
-      <Flex>Hello from UserProduct</Flex>
+      <Flex m={4}>Hello from UserProduct</Flex>
       {product &&
         product.map((item: any, index: number) => (
-          <Flex key={index}>
+          <Flex key={index} m={4}>
             <Text>{item.title}</Text>
             <Text>{item.author}</Text>
 
             <Text>ProductId: {item.productId}</Text>
             <Text>User: {item.user}</Text>
             <Button onClick={() => handleDelete(item.productId)}>Delete</Button>
+            <Button
+              onClick={() => navigate(`/product/${item.productId}`)}
+              maxWidth="100px"
+            >
+              Product
+            </Button>
           </Flex>
         ))}
     </>
