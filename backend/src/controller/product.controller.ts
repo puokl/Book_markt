@@ -132,13 +132,18 @@ export async function getAllUserProductHandler(
   req: Request<UpdateProductInput["params"]>,
   res: Response
 ) {
-  const userId = res.locals.user._id;
-  console.log("userId", userId);
-  const product = await findAllUserProduct(userId);
+  try {
+    const userId = res.locals.user._id;
+    console.log("userId", userId);
+    const product = await findAllUserProduct(userId);
 
-  if (!product) {
-    return res.sendStatus(404);
+    console.log("product", product);
+    if (!product) {
+      return res.sendStatus(404);
+    }
+
+    return res.send(product);
+  } catch (error) {
+    console.log("error on getAllUserProductHandler", error);
   }
-
-  return res.send(product);
 }

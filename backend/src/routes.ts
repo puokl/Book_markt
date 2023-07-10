@@ -39,6 +39,7 @@ import {
 } from "./controller/chat.controller";
 import { uploadImageHandler } from "./controller/image.controller";
 import multerUpload from "./middleware/multerMiddleware";
+import { searchProductHandler } from "./controller/search.controller";
 
 // responsible to take the http request and forwarding it on to a controller
 function routes(app: Express) {
@@ -105,6 +106,8 @@ function routes(app: Express) {
   app.get("/api/chat/received", requireUser, getAllUserChatHandler);
   app.get("/api/chat/sent", requireUser, getAllUserSentChatHandler);
   app.post("/api/chat/:chatId", requireUser, addConversationHandler);
+
+  app.get("/api/search", searchProductHandler);
 }
 
 export default routes;

@@ -35,7 +35,7 @@ const DisplayProduct: React.FC<DisplayProductProps> = () => {
   useEffect(() => {
     dispatch(getSingleProduct(params.id));
     console.log("product in useeffect", product);
-  }, []);
+  }, [params.id]);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);

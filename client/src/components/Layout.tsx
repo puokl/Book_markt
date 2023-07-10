@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logout, reset } from "../redux/slices/authSlice";
 import { useState } from "react";
 import { TbLogout } from "react-icons/tb";
+import Search from "../components/search/Search";
 
 type LayoutProps = {};
 
@@ -50,13 +51,14 @@ const Layout: React.FC<LayoutProps> = () => {
     <>
       {console.log("user", user)}
       <Flex justifyContent="space-around" bg="cyan.700">
-        <Box>
+        <Flex>
           <Box boxSize="60px">
             <Link to="/">
               <Image src="/kenny.png" />
             </Link>
           </Box>
-        </Box>
+          <Search />
+        </Flex>
         {user ? (
           <Box as="main">
             <Flex>
