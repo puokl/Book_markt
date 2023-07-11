@@ -52,6 +52,7 @@ const ProductList: React.FC = () => {
               as="button"
               onClick={() => navigate(`/product/${item.productId}`)}
               w="70%"
+              m={2}
             >
               <Flex w="20%">
                 <Box>
@@ -64,15 +65,15 @@ const ProductList: React.FC = () => {
                 </Box>
               </Flex>
               <Flex direction="column" w="80%" alignItems="flex-start">
-                <Flex justifyContent="space-between">
+                <Flex justifyContent="space-between" w="100%">
                   <Text>Berlin</Text>
                   <Text> {moment(item.createdAt).fromNow()}</Text>
                 </Flex>
-                <Flex alignItems="flex-end">
+                <Flex alignItems="center" w="100%">
                   <Text as="b" fontSize="lg">
                     {item.title}
                   </Text>
-                  <Text fontSize="sm">by</Text>
+                  <Text fontSize="xs">&nbsp;by&nbsp;</Text>
                   <Text as="b" fontSize="md">
                     {item.author}
                   </Text>
@@ -84,7 +85,7 @@ const ProductList: React.FC = () => {
                       : item.description}
                   </Text>
                 </Box>
-                <Flex justifyContent="space-between">
+                <Flex justifyContent="space-between" w="100%">
                   <Text as="b">{item.price} €</Text>
                   <Text>Language: {item.language}</Text>
                 </Flex>

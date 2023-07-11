@@ -22,6 +22,7 @@ export async function createChatHandler(
   try {
     const senderId = res.locals.user._id;
     const body = req.body;
+    console.log("req.body;", req.body);
     console.log("before createChat");
     console.log("createChat props in controller", {
       ...body,

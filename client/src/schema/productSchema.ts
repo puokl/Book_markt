@@ -6,7 +6,7 @@ export const createProductSchema = object({
   language: string().optional(),
   user: string().optional(),
   description: string()
-    .min(20, { message: "Description must be at least 20 characters" })
+    .min(10, { message: "Description must be at least 10 characters" })
     .optional(),
   condition: string().optional(),
   location: string().optional(),

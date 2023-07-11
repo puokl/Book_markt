@@ -90,9 +90,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
               <VStack align="start">
                 <Text noOfLines={1}>{title}</Text>
-                <Text noOfLines={1}>{author}</Text>
+                <Text noOfLines={1}>
+                  {author} -{price}€ - {location}
+                </Text>
                 {/* <Text noOfLines={1}>{location}</Text>
-              <Text noOfLines={1}>{price}</Text> */}
+                <Text noOfLines={1}>{price}</Text> */}
               </VStack>
             </Grid>
           </Box>

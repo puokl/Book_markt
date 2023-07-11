@@ -50,20 +50,25 @@ const Layout: React.FC<LayoutProps> = () => {
   return (
     <>
       {console.log("user", user)}
-      <Flex justifyContent="space-around" bg="cyan.700">
-        <Flex>
-          <Box boxSize="60px">
+      <Flex w="100%" bg="cyan.700">
+        <Flex w="70%" alignItems="center">
+          <Box w="350px" mr={3}>
             <Link to="/">
-              <Image src="/kenny.png" />
+              <Image src="/logo.png" objectFit="cover" />
             </Link>
           </Box>
+
           <Search />
         </Flex>
         {user ? (
-          <Box as="main">
-            <Flex>
-              <Text>Your are logged in as: </Text>
-              <Text as="b">{user?.user.email}</Text>
+          <Box as="main" w="30%">
+            <Flex justifyContent="space-around" alignItems="center">
+              <Box m={3}>
+                <Text fontSize="xs">Your are logged in as: </Text>
+                <Text fontSize="sm" as="b">
+                  {user?.user.email}
+                </Text>
+              </Box>
 
               {/* //SECTION */}
               <Box
@@ -71,8 +76,9 @@ const Layout: React.FC<LayoutProps> = () => {
                 position="relative"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                m={2}
               >
-                <Avatar name={user.user.name} src={user.user.image} />
+                <Avatar name={user.user.name} src={user.user.image} size="lg" />
 
                 {isHovered && (
                   <Box
@@ -144,9 +150,11 @@ const Layout: React.FC<LayoutProps> = () => {
             </Flex>
           </Box>
         ) : (
-          <Button as="a" href="/login">
-            Login
-          </Button>
+          <Box>
+            <Button as="a" href="/login">
+              Login
+            </Button>
+          </Box>
         )}
       </Flex>
       <Outlet />

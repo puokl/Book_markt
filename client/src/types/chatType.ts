@@ -5,6 +5,8 @@ export type conversationType = {
   sender: string;
   seller: string;
   productId: string;
+  _id: string;
+  title: string;
   //   chatId: string;
   //   createdAt: Date;
   //   updatedAt: Date;
@@ -23,7 +25,9 @@ export type chatType = {
   productId: string;
   sender: string;
   seller: string;
-  conversation: conversationType;
+  conversation: conversationType[];
+  title: string;
+  _id: string;
   //   createdAt: Date;
   //   updatedAt: Date;
 };

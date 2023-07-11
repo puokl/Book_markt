@@ -53,6 +53,7 @@ const Search = () => {
         position: "relative",
         zIndex: 1,
       }}
+      m={3}
     >
       <Flex pos="relative" align="strech">
         <chakra.input
@@ -63,7 +64,7 @@ const Search = () => {
           maxLength={64}
           sx={{
             w: "100%",
-            h: "68px",
+            h: "40px",
             pl: "68px",
             fontWeight: "medium",
             outline: 0,
@@ -73,7 +74,7 @@ const Search = () => {
           onChange={handleChange}
         />
 
-        <Center pos="absolute" left={7} h="68px">
+        <Center pos="absolute" left={7} h="40px">
           <SearchIcon color="teal.500" boxSize="20px" />
         </Center>
       </Flex>

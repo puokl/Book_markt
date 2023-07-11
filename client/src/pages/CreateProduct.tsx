@@ -15,6 +15,7 @@ import { TypeOf } from "zod";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { createProduct } from "../redux/slices/productSlice";
 import { uploadProductImage } from "../redux/slices/imageSlice";
+import { useNavigate } from "react-router-dom";
 
 type ProductInput = TypeOf<typeof createProductSchema>;
 
@@ -25,7 +26,7 @@ const CreateProduct: React.FC = () => {
   const { productImage } = useAppSelector((state: any) => state.image);
 
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -55,6 +56,7 @@ const CreateProduct: React.FC = () => {
     try {
       const data = { ...values, image: productImage.image };
       dispatch(createProduct(data));
+      navigate("/");
     } catch (error: any) {
       setProductError(error.message);
       console.log("handleClick() error", error);

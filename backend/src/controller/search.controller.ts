@@ -18,7 +18,7 @@ export async function searchProductHandler(req: Request, res: Response) {
         },
       },
       {
-        $limit: 5,
+        $limit: 10,
       },
       {
         $project: {

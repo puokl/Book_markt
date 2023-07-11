@@ -5,6 +5,8 @@ import { chatType } from "../../types/chatType";
 const initialState = {
   chat: [],
   singleChat: {},
+  receivedChat: [],
+  sentChat: [],
   isLoading: true,
   isError: false,
   isSuccess: false,
@@ -34,12 +36,30 @@ export const createChat = createAsyncThunk(
   }
 );
 
-// get all chat from user
-export const getAllUserChat = createAsyncThunk(
+// get all chat received from user
+export const getAllReceivedUserChat = createAsyncThunk(
   "chat/getAllUserChat",
   async (_, thunkAPI) => {
     try {
-      return await chatService.getAllUserChat();
+      return await chatService.getAllReceivedUserChat();
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// get all chat sent from user
+export const getAllSentUserChat = createAsyncThunk(
+  "chat/getAllSentUserChat",
+  async (_, thunkAPI) => {
+    try {
+      return await chatService.getAllSentUserChat();
     } catch (error: any) {
       const message =
         (error.response &&
@@ -95,14 +115,25 @@ const chatSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
       })
-      .addCase(getAllUserChat.pending, (state) => {
+      .addCase(getAllReceivedUserChat.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllUserChat.fulfilled, (state, action) => {
+      .addCase(getAllReceivedUserChat.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.chat = action.payload;
+        state.receivedChat = action.payload;
       })
-      .addCase(getAllUserChat.rejected, (state) => {
+      .addCase(getAllReceivedUserChat.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getAllSentUserChat.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllSentUserChat.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.sentChat = action.payload;
+      })
+      .addCase(getAllSentUserChat.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       })

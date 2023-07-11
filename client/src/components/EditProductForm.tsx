@@ -158,6 +158,14 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
             />
             <Text as="p">{errors?.condition?.message?.toString()}</Text>
           </FormLabel>
+          <FormLabel>Location</FormLabel>
+          <Input
+            id="location"
+            type="text"
+            defaultValue={product.location}
+            {...register("location")}
+          />
+          <Text as="p">{errors?.location?.message?.toString()}</Text>
           {/* //SECTION -  */}
           <Input
             type="file"

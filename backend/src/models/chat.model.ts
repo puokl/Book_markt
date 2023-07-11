@@ -14,6 +14,7 @@ export interface ChatInput {
   sender: string;
   seller: string;
   productId: string;
+  title: string;
   conversation: Conversation[];
 }
 
@@ -38,6 +39,7 @@ const chatSchema = new mongoose.Schema(
     productId: { type: String, required: true },
     sender: { type: String, required: true },
     seller: { type: String, required: true },
+    title: { type: String, required: true },
     conversation: [conversationSchema],
   },
   { timestamps: true }

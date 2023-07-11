@@ -4,8 +4,8 @@ const payload = {
   body: object({
     title: string({ required_error: "Title is required" }),
     description: string({ required_error: "Description is required" }).min(
-      20,
-      "Description should be at least 20 characters long"
+      10,
+      "Description should be at least 10 characters long"
     ),
     price: number({ required_error: "Price is required" }),
     author: string({ required_error: "Author is required" }),

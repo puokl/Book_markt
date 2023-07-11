@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text, Image } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect } from "react";
 import { deleteProduct, getAllUserProduct } from "../redux/slices/productSlice";
@@ -27,18 +27,38 @@ const UserProduct: React.FC<UserProductProps> = () => {
       {product &&
         product.map((item: any, index: number) => (
           <Flex key={index} m={4}>
-            <Text>{item.title}</Text>
-            <Text>{item.author}</Text>
-
-            <Text>ProductId: {item.productId}</Text>
-            <Text>User: {item.user}</Text>
-            <Button onClick={() => handleDelete(item.productId)}>Delete</Button>
-            <Button
-              onClick={() => navigate(`/product/${item.productId}`)}
-              maxWidth="100px"
-            >
-              Product
-            </Button>
+            <Image
+              src={item.image}
+              fallbackSrc="/no_image.png"
+              boxSize="100px"
+              objectFit="cover"
+            />
+            <Flex w="100%">
+              <Text as="b" fontSize="xl">
+                {item.title}
+              </Text>
+              <Text fontSize="sm">by</Text>
+              <Text as="b" fontSize="md">
+                {item.author}
+              </Text>
+            </Flex>
+            {/* <Text>{item.title}</Text>
+            <Text>{item.author}</Text> */}
+            <Flex w="100%">
+              <Text>ProductId: {item.productId}</Text>
+              <Text>User: {item.user}</Text>
+            </Flex>
+            <Flex>
+              <Button onClick={() => handleDelete(item.productId)}>
+                Delete
+              </Button>
+              <Button
+                onClick={() => navigate(`/product/${item.productId}`)}
+                maxWidth="100px"
+              >
+                Product
+              </Button>
+            </Flex>
           </Flex>
         ))}
     </>

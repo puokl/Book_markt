@@ -40,7 +40,7 @@ export async function updateProductHandler(
   res: Response
 ) {
   try {
-    const userId = res.locals.user._id;
+    const userID = res.locals.user._id;
     const productId = req.params.productId;
     const update = req.body;
 
@@ -49,9 +49,10 @@ export async function updateProductHandler(
       return res.sendStatus(404);
     }
 
-    if (String(product.user) !== userId) {
+    if (String(product.userId) !== userID) {
       console.log("product.user", product.user);
-      console.log("userId", userId);
+      console.log("userId", userID);
+      console.log("there is an error here");
 
       return res.sendStatus(403);
     }

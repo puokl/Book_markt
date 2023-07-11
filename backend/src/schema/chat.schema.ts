@@ -16,6 +16,7 @@ const payload = {
     sender: string({}),
     seller: string({}),
     productId: string({}),
+    title: string({}),
     conversation: z
       .array(conversationItemSchema)
       .refine(

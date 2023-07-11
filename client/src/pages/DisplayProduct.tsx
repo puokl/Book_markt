@@ -22,7 +22,7 @@ export type ProductInput = TypeOf<typeof createProductSchema>;
 
 type DisplayProductProps = {};
 
-const DisplayProduct: React.FC<DisplayProductProps> = () => {
+const DisplayProduct = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const params = useParams();
@@ -55,53 +55,59 @@ const DisplayProduct: React.FC<DisplayProductProps> = () => {
   if (isLoading) {
     <Spinner />;
   }
-  return (
-    <>
-      {console.log("product", product)}
-      <Flex m={5}>
-        <Text as="b">Hello from DisplayProduct</Text>
+  if (product) {
+    return (
+      <>
+        {console.log("product", product)}
+        <Flex m={5} w="100%">
+          {/* <Text as="b">Hello from DisplayProduct</Text> */}
 
-        <Flex flexDirection="column">
-          <Flex>
-            <Image
-              src={product.image}
-              fallbackSrc="/no_image.png"
-              boxSize="100px"
-              objectFit="cover"
-            />
-          </Flex>
-          <Flex>
-            <Flex alignItems="flex-end" flexDirection="column">
-              <Text as="b" fontSize="xl">
-                {product.title}
-              </Text>
-              <Text fontSize="sm">by</Text>
-              <Text as="b" fontSize="md">
-                {product.author}
-              </Text>
+          <Flex flexDirection="column">
+            <Flex>
+              <Image
+                src={product.image}
+                fallbackSrc="/no_image.png"
+                boxSize="100px"
+                objectFit="cover"
+              />
             </Flex>
+            <Flex>
+              <Flex alignItems="flex-end" flexDirection="column" w="100%">
+                <Text as="b" fontSize="xl">
+                  {product.title}
+                </Text>
+                <Text fontSize="sm">by</Text>
+                <Text as="b" fontSize="md">
+                  {product.author}
+                </Text>
+              </Flex>
+            </Flex>
+            <Text noOfLines={[1, 2, 3]}>
+              Description: {product.description}
+            </Text>
+            <Text>Language: {product.language}</Text>
+            <Text>Condition: {product.condition}</Text>
+            <Text>Year: {product.year}</Text>
+            <Text>Pages: {product.pages}</Text>
+            <Text as="b">Price: {product.price} €</Text>
+            <Text>Location: {product.location}</Text>
           </Flex>
-          <Text>Description: {product.description}</Text>
-          <Text>Language: {product.language}</Text>
-          <Text>Condition: {product.condition}</Text>
-          <Text>Year: {product.year}</Text>
-          <Text>Pages: {product.pages}</Text>
-          <Text as="b">Price: {product.price} €</Text>
+          <Flex flexDirection="column">
+            <Text>Product: {params.id}</Text>
+            <Text>User: {product.username}</Text>
+          </Flex>
         </Flex>
-        <Flex flexDirection="column">
-          <Text>Product: {params.id}</Text>
-          <Text>User: {product.username}</Text>
-        </Flex>
-      </Flex>
-      <Box>
-        <Button onClick={handleEdit}>Edit</Button>
-        <ContactModal
-          buttonText="Contact Seller"
-          productId={params.id}
-          seller={product.user}
-        />
-      </Box>
-    </>
-  );
+        <Box>
+          <Button onClick={handleEdit}>Edit</Button>
+          <ContactModal
+            buttonText="Contact Seller"
+            productId={params.id}
+            seller={product.username}
+            title={product.title}
+          />
+        </Box>
+      </>
+    );
+  }
 };
 export default DisplayProduct;

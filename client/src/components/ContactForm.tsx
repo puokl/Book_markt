@@ -18,6 +18,7 @@ type ContactFormProps = {
   productId: string;
   seller: string;
   closeModal: () => void;
+  title: string;
 };
 
 type CreateChatInput = TypeOf<typeof createChatSchema>;
@@ -26,6 +27,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
   productId,
   seller,
   closeModal,
+  title,
 }) => {
   const { user } = useAppSelector((state) => state.auth);
 
@@ -50,9 +52,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
         sender,
         productId,
         seller,
+        title,
       };
-      dispatch(createChat({ conversation, sender, productId, seller }));
-      console.log("props", { conversation, sender, productId, seller });
+      dispatch(createChat({ conversation, sender, productId, seller, title }));
+      console.log("props", { conversation, sender, productId, seller, title });
+      closeModal();
     } catch (error) {
       console.log("error", error);
     }

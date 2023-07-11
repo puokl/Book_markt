@@ -33,5 +33,6 @@ export async function findAllProduct() {
 }
 
 export async function findAllUserProduct(userId: string) {
-  return ProductModel.find({ user: userId });
+  console.log("userId  in findAllUserProduct", userId);
+  return ProductModel.find({ userId: userId });
 }

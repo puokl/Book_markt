@@ -16,7 +16,17 @@ const createChat = async (chatData: chatType) => {
 };
 
 // get all chat from user
-const getAllUserChat = async () => {
+const getAllReceivedUserChat = async () => {
+  const response = await axios.get(
+    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/received`,
+    { withCredentials: true }
+  );
+  console.log("response", response);
+  return response.data;
+};
+
+// get all chat from user
+const getAllSentUserChat = async () => {
   const response = await axios.get(
     `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/sent`,
     { withCredentials: true }
@@ -43,8 +53,9 @@ const addConversation = async (
 
 const chatService = {
   createChat,
-  getAllUserChat,
+  getAllReceivedUserChat,
   addConversation,
+  getAllSentUserChat,
 };
 
 export default chatService;

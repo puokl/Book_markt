@@ -15,12 +15,14 @@ type ContactModalProps = {
   buttonText: string;
   productId: string;
   seller: string;
+  title: string;
 };
 
 const ContactModal: React.FC<ContactModalProps> = ({
   buttonText,
   productId,
   seller,
+  title,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -43,6 +45,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
               productId={productId}
               seller={seller}
               closeModal={closeModal}
+              title={title}
             />
           </ModalBody>
         </ModalContent>
