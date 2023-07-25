@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Text } from "@chakra-ui/react";
+import { Spinner, Text, Button, Input, Box } from "@chakra-ui/react";
 import { useState, ChangeEvent } from "react";
 import { uploadAvatar } from "../redux/slices/imageSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -20,8 +19,13 @@ const Profile: React.FC<TestoProps> = () => {
 
   const handleSubmitAvatar = async () => {
     try {
-      console.log("file", selectedFile);
-      dispatch(uploadAvatar(selectedFile));
+      // console.log("file", selectedFile);
+      // dispatch(uploadAvatar(selectedFile));
+      if (selectedFile instanceof File) {
+        dispatch(uploadAvatar(selectedFile));
+      } else {
+        console.log("selectedFile is not a File type");
+      }
     } catch (error: any) {
       console.log("handleSubmitAvatar() error", error);
     }
@@ -38,21 +42,24 @@ const Profile: React.FC<TestoProps> = () => {
     dispatch(updateProfile(data));
     console.log("user after dispatch", user);
   };
+  if (isLoading) return <Spinner />;
   return (
     <>
-      <Text>That's the testo page</Text>
+      <Text>That's the profile page</Text>
       <Text>Hi {user?.user.name}</Text>
 
-      <form
-        onSubmit={(event) => {
+      <Box
+        as="form"
+        onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
           event.preventDefault();
           handleSubmitAvatar();
         }}
+        maxWidth={250}
       >
-        <input type="file" name="file" id="file" onChange={handleAttachFile} />
-        <button type="submit">send picture</button>
-      </form>
-      <button onClick={() => handleProfile()}>Update profile</button>
+        <Input type="file" name="file" id="file" onChange={handleAttachFile} />
+        <Button type="submit">upload picture</Button>
+      </Box>
+      <Button onClick={() => handleProfile()}>Update profile</Button>
     </>
   );
 };

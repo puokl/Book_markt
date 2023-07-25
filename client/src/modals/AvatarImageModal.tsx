@@ -23,20 +23,8 @@ const AvatarImageModal: React.FC<AvatarImageModalProps> = () => {
 
   const dispatch = useAppDispatch();
 
-  //   const handleSubmitAvatar = async (file: File) => {
-  //     try {
-  //       console.log("avatar clicked");
-  //       console.log("file", file);
-  //       dispatch(uploadImage(file));
-  //     } catch (error: any) {
-  //       console.log("handleSubmitAvatar() error", error);
-  //     }
-  //   };
-
   const handleSubmitAvatar = async () => {
     try {
-      console.log("avatar clicked");
-      console.log("file", selectedFile);
       dispatch(uploadImage(selectedFile));
     } catch (error: any) {
       console.log("handleSubmitAvatar() error", error);
@@ -65,7 +53,6 @@ const AvatarImageModal: React.FC<AvatarImageModalProps> = () => {
           <ModalHeader>Choose your avatar</ModalHeader>
           <ModalCloseButton />
           <ModalFooter>
-            {/* <form onSubmit={() => handleSubmitAvatar(selectedFile)}> */}
             <form
               onSubmit={(event) => {
                 event.preventDefault();

@@ -1,15 +1,15 @@
 export type conversationType = {
   message: string;
-  name: string;
-  telephone: string;
-  sender: string;
-  seller: string;
+  senderId: string;
+  sellerId: string;
+  senderName: string;
+  sellerName: string;
   productId: string;
   _id: string;
   title: string;
   //   chatId: string;
-  //   createdAt: Date;
-  //   updatedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type addConversationType = {
@@ -23,11 +23,35 @@ export type chatInputType = {
 };
 export type chatType = {
   productId: string;
-  sender: string;
-  seller: string;
+  productImage: string;
+  senderId: string;
+  sellerId: string;
+  senderName: string;
+  sellerName: string;
   conversation: conversationType[];
   title: string;
   _id: string;
-  //   createdAt: Date;
-  //   updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+export type conversationInputType = {
+  conversation: {
+    senderId: any;
+    sellerId: string;
+    senderName: any;
+    sellerName: string;
+    productId: string;
+    productImage: string;
+    message: string;
+  };
+  chatId: string;
+};
+
+export type conversationFormProps = {
+  sellerId: string;
+  sellerName: string;
+  chatId: string;
+  productId: string;
+  productImage: string;
 };

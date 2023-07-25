@@ -1,4 +1,4 @@
-import { Button, Flex, Text, Image } from "@chakra-ui/react";
+import { Button, Flex, Text, Image, Spinner, Box } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect } from "react";
 import { deleteProduct, getAllUserProduct } from "../redux/slices/productSlice";
@@ -8,11 +8,9 @@ type UserProductProps = {};
 const UserProduct: React.FC<UserProductProps> = () => {
   const dispatch = useAppDispatch();
 
-  const { products, product, isLoading, isError, isSuccess } = useAppSelector(
-    (state: any) => state.product
-  );
+  //FIXME - state: any
+  const { product, isLoading } = useAppSelector((state: any) => state.product);
   const navigate = useNavigate();
-  const { user } = useAppSelector((state) => state.auth);
 
   const handleDelete = (productId: string) => {
     dispatch(deleteProduct(productId));
@@ -21,9 +19,12 @@ const UserProduct: React.FC<UserProductProps> = () => {
   useEffect(() => {
     dispatch(getAllUserProduct());
   }, []);
+
+  if (isLoading) return <Spinner />;
   return (
     <>
       <Flex m={4}>Hello from UserProduct</Flex>
+
       {product &&
         product.map((item: any, index: number) => (
           <Flex key={index} m={4}>
@@ -33,30 +34,24 @@ const UserProduct: React.FC<UserProductProps> = () => {
               boxSize="100px"
               objectFit="cover"
             />
-            <Flex w="100%">
-              <Text as="b" fontSize="xl">
-                {item.title}
-              </Text>
-              <Text fontSize="sm">by</Text>
-              <Text as="b" fontSize="md">
+            <Flex w="50%" direction="column" m={2}>
+              <Flex
+                as="button"
+                onClick={() => navigate(`/product/${item.productId}`)}
+              >
+                <Text as="b" fontSize="xl">
+                  {item.title}
+                </Text>
+              </Flex>
+              <Text as="b" fontSize="sm">
                 {item.author}
               </Text>
+              <Text fontSize="xs">{item.price}€</Text>
             </Flex>
-            {/* <Text>{item.title}</Text>
-            <Text>{item.author}</Text> */}
-            <Flex w="100%">
-              <Text>ProductId: {item.productId}</Text>
-              <Text>User: {item.user}</Text>
-            </Flex>
-            <Flex>
-              <Button onClick={() => handleDelete(item.productId)}>
+
+            <Flex w="30%">
+              <Button onClick={() => handleDelete(item.productId)} h="30px">
                 Delete
-              </Button>
-              <Button
-                onClick={() => navigate(`/product/${item.productId}`)}
-                maxWidth="100px"
-              >
-                Product
               </Button>
             </Flex>
           </Flex>

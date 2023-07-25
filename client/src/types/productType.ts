@@ -1,5 +1,5 @@
 export type productType = {
-  // _id: string;
+  _id?: string;
   // user: string;
   author: string;
   description: string;
@@ -12,7 +12,7 @@ export type productType = {
   location: string;
   year: number;
   pages: number;
-  // createdAt: Date;
-  // updatedAt: Date;
-  // __v: number;
+  createdAt: Date;
+  updatedAt: Date;
+  __v?: number;
 };

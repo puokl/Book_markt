@@ -5,55 +5,45 @@ import { TypeOf } from "zod";
 import { addConversation } from "../redux/slices/chatSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createConversationSchema } from "../schema/chatSchema";
-import { addConversationType } from "../types/chatType";
-import { useNavigate } from "react-router-dom";
-
-type ConversationFormProps = {
-  sender: string;
-  seller: string;
-  chatId: string;
-  productId: string;
-  name: string;
-};
+import { addConversationType, conversationFormProps } from "../types/chatType";
 
 type CreateConversationInput = TypeOf<typeof createConversationSchema>;
-const ConversationForm: React.FC<ConversationFormProps> = ({
-  sender,
-  seller,
+const ConversationForm: React.FC<conversationFormProps> = ({
+  sellerId,
+  sellerName,
   chatId,
   productId,
-  name,
+  productImage,
 }) => {
   const dispatch = useAppDispatch();
 
   const { user } = useAppSelector((state) => state.auth);
 
+  const senderName = user.user.name;
+  const senderId = user.user._id;
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    // } = useForm();
   } = useForm<CreateConversationInput>({
     resolver: zodResolver(createConversationSchema),
   });
 
-  const navigate = useNavigate();
   const handleConversation = (values: addConversationType) => {
     try {
       console.log("values", values);
       const conversation = {
         ...values,
-        name,
-        sender,
-        seller,
+        senderId,
+        sellerId,
+        senderName,
+        sellerName,
         productId,
+        productImage,
       };
       const userInput = { conversation, chatId };
-      console.log("userInput", userInput);
       dispatch(addConversation(userInput));
       window.location.reload();
-      //   navigate(`/messages/received/${user.user._id}`);
     } catch (error: any) {
       console.log("error", error);
     }
@@ -72,7 +62,7 @@ const ConversationForm: React.FC<ConversationFormProps> = ({
           />
           <Text as="p">{errors?.message?.message?.toString()}</Text>
         </FormLabel>
-        <Button type="submit">Save</Button>
+        <Button type="submit">Send</Button>
       </FormControl>
     </>
   );

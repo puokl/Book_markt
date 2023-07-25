@@ -4,11 +4,8 @@ export const createChatSchema = object({
   message: string().nonempty({
     message: "Message is required",
   }),
-  name: string().nonempty({
+  senderName: string().nonempty({
     message: "Name is required",
-  }),
-  telephone: number({
-    invalid_type_error: "telephone must be a number",
   }),
 });
 

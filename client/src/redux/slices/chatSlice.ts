@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import chatService from "./chatService";
-import { chatType } from "../../types/chatType";
+import { chatType, conversationInputType } from "../../types/chatType";
 
 const initialState = {
   chat: [],
@@ -38,7 +38,7 @@ export const createChat = createAsyncThunk(
 
 // get all chat received from user
 export const getAllReceivedUserChat = createAsyncThunk(
-  "chat/getAllUserChat",
+  "chat/getAllReceivedUserChat",
   async (_, thunkAPI) => {
     try {
       return await chatService.getAllReceivedUserChat();
@@ -75,7 +75,7 @@ export const getAllSentUserChat = createAsyncThunk(
 // add a conversation to the chat
 export const addConversation = createAsyncThunk(
   "chat/addConversation",
-  async (userInput, thunkAPI) => {
+  async (userInput: conversationInputType, thunkAPI) => {
     try {
       const conversationData = userInput.conversation;
       const { chatId } = userInput;

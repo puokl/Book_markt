@@ -3,29 +3,32 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalFooter,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import ConversationForm from "../components/ConversationForm";
 
-type ConversationModalProps = {
+export type ConversationModalProps = {
   buttonText: string;
-  sender: string;
-  seller: string;
+  senderId: string;
+  sellerId: string;
+  senderName: string;
+  sellerName: string;
   chatId: string;
   productId: string;
-  name: string;
+  productImage: string;
 };
 
 const ConversationModal: React.FC<ConversationModalProps> = ({
   buttonText,
-  sender,
-  seller,
+
+  sellerId,
+
+  sellerName,
   chatId,
   productId,
-  name,
+  productImage,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,25 +36,26 @@ const ConversationModal: React.FC<ConversationModalProps> = ({
     setIsOpen(true);
   };
   const closeModal = () => {
-    // window.location.reload()
+    window.location.reload();
     setIsOpen(false);
   };
   return (
     <>
-      <Button onClick={openModal} w="150px">
+      <Button onClick={openModal} w="100px" h="25px" bg="gray.100">
         {buttonText}
       </Button>
       <Modal isOpen={isOpen} onClose={closeModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
           <ModalBody>
             <ConversationForm
               chatId={chatId}
-              sender={sender}
-              seller={seller}
+              // senderId={senderId}
+              sellerId={sellerId}
+              // senderName={senderName}
+              sellerName={sellerName}
               productId={productId}
-              name={name}
+              productImage={productImage}
             />
           </ModalBody>
           <ModalFooter>

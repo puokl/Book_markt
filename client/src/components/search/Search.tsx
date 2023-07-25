@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Box, Flex, Center, chakra, useOutsideClick } from "@chakra-ui/react";
 import axios from "axios";
-import { SearchIcon } from "@chakra-ui/icons";
 import SearchResults from "./SearchResults";
+import { TbSearch } from "react-icons/tb";
 
 const Search = () => {
   const [queryText, setQueryText] = useState("");
@@ -22,20 +22,19 @@ const Search = () => {
     if (!queryText) {
       setSearchResults([]);
       return;
-      //   return false;
     }
 
     (async () => {
-      const url = "http://localhost:1337/api/search";
-
-      const { data } = await axios.get(url, {
-        params: {
-          title: queryText,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_SERVER_ENDPOINT}/api/search`,
+        {
+          params: {
+            title: queryText,
+          },
+        }
+      );
 
       setSearchResults(data);
-      console.log("data", data);
     })();
   }, [queryText]);
 
@@ -72,10 +71,11 @@ const Search = () => {
           placeholder="Search a book"
           value={queryText}
           onChange={handleChange}
+          borderRadius={5}
         />
 
         <Center pos="absolute" left={7} h="40px">
-          <SearchIcon color="teal.500" boxSize="20px" />
+          <TbSearch color="teal.500" size="20px" />
         </Center>
       </Flex>
 
@@ -90,7 +90,7 @@ const Search = () => {
           left="0"
           right="0"
           zIndex={2}
-          bg="gray.400"
+          bg="gray.100"
         >
           <Box px={4}>
             <Box borderTopWidth="1px" pt={2} pb={4}>

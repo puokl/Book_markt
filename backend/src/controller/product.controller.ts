@@ -44,11 +44,12 @@ export async function updateProductHandler(
     const productId = req.params.productId;
     const update = req.body;
 
+    console.log("res.locals.user", res.locals.user);
     const product = await findProduct({ productId });
     if (!product) {
       return res.sendStatus(404);
     }
-
+    console.log("product in updateProductHandler", product);
     if (String(product.userId) !== userID) {
       console.log("product.user", product.user);
       console.log("userId", userID);
@@ -135,10 +136,10 @@ export async function getAllUserProductHandler(
 ) {
   try {
     const userId = res.locals.user._id;
-    console.log("userId", userId);
+    console.log("userId in getAllUserProductHandler", userId);
     const product = await findAllUserProduct(userId);
 
-    console.log("product", product);
+    console.log("product in getAllUserProductHandler", product);
     if (!product) {
       return res.sendStatus(404);
     }

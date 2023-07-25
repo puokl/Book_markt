@@ -1,21 +1,25 @@
 import { object, number, string, TypeOf, array, z } from "zod";
 
 const conversationItemSchema = object({
-  sender: string({}),
-  seller: string({}),
+  senderId: string({}),
+  sellerId: string({}),
+  senderName: string({}),
+  sellerName: string({}),
   productId: string({}),
   message: string({ required_error: "A message is required" }).min(
     4,
     "Send a meaningful message, at least 4 charactes"
   ),
-  name: string({}),
-  telephone: number({}),
 });
+
 const payload = {
   body: object({
-    sender: string({}),
-    seller: string({}),
+    senderId: string({}),
+    sellerId: string({}),
+    senderName: string({}),
+    sellerName: string({}),
     productId: string({}),
+    productName: string({}),
     title: string({}),
     conversation: z
       .array(conversationItemSchema)
@@ -60,10 +64,11 @@ export type GetChatInput = TypeOf<typeof getChatSchema>;
 const conversationPayload = {
   body: object({
     message: string({}),
-    sender: string({}),
-    seller: string({}),
+    senderId: string({}),
+    sellerId: string({}),
+    senderName: string({}),
+    sellerName: string({}),
     productId: string({}),
-    name: string({}),
     chatId: string({}),
   }),
 };

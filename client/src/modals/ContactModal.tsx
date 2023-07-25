@@ -5,7 +5,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -14,14 +13,18 @@ import ContactForm from "../components/ContactForm";
 type ContactModalProps = {
   buttonText: string;
   productId: string;
-  seller: string;
+  productImage: string;
+  sellerName: string;
+  sellerId: string;
   title: string;
 };
 
 const ContactModal: React.FC<ContactModalProps> = ({
   buttonText,
   productId,
-  seller,
+  productImage,
+  sellerName,
+  sellerId,
   title,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +37,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
   };
   return (
     <>
+      {console.log("sellerName in ContactModal", sellerName)}
       <Button onClick={openModal}>{buttonText}</Button>
       <Modal isOpen={isOpen} onClose={closeModal}>
         <ModalOverlay />
@@ -43,9 +47,11 @@ const ContactModal: React.FC<ContactModalProps> = ({
           <ModalBody>
             <ContactForm
               productId={productId}
-              seller={seller}
+              sellerId={sellerId}
+              sellerName={sellerName}
               closeModal={closeModal}
               title={title}
+              productImage={productImage}
             />
           </ModalBody>
         </ModalContent>

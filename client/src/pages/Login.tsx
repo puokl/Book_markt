@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TypeOf } from "zod";
@@ -14,9 +14,8 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { login, reset } from "../redux/slices/authSlice";
+import { login } from "../redux/slices/authSlice";
 import { createSessionSchema } from "../schema/sessionSchema";
-
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 type CreateSessionInput = TypeOf<typeof createSessionSchema>;
@@ -24,9 +23,7 @@ type CreateSessionInput = TypeOf<typeof createSessionSchema>;
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
-    (state: any) => state.auth
-  );
+  const { isLoading } = useAppSelector((state: any) => state.auth);
 
   const [loginError, setLoginError] = useState(null);
 
@@ -56,7 +53,13 @@ const Login: React.FC = () => {
   return (
     <Box>
       <Text>Hello from Login</Text>
-      <Flex maxWidth="400px" direction="column" alignItems="center">
+      <Flex
+        maxWidth="400px"
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        m={4}
+      >
         <Text as="p">{loginError}</Text>
 
         <FormControl as="form" isRequired onSubmit={handleSubmit(handleLogin)}>

@@ -4,16 +4,14 @@ import { useAppSelector } from "../redux/hooks";
 type UserProfileProps = {};
 
 const UserProfile: React.FC<UserProfileProps> = () => {
-  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
-    (state) => state.auth
-  );
+  const { user, isLoading } = useAppSelector((state) => state.auth);
 
   if (isLoading) {
     <Spinner />;
   }
   return (
     <Box>
-      <Text>Hello from user</Text>
+      <Text>Hello from userProfile</Text>
       <Text>{user?.user.name}</Text>
     </Box>
   );

@@ -13,22 +13,24 @@ import {
 } from "../service/chat.service";
 
 // @desc    Create a single chat
-// @route   POST /api/chat/
+// @route   POST /api/chat
 // @access  Private
 export async function createChatHandler(
   req: Request<{}, {}, CreateChatInput["body"]>,
   res: Response
 ) {
   try {
-    const senderId = res.locals.user._id;
+    const senderID = res.locals.user._id;
     const body = req.body;
     console.log("req.body;", req.body);
     console.log("before createChat");
     console.log("createChat props in controller", {
       ...body,
-      sender: senderId,
+      senderId: senderID,
     });
-    const chat = await createChat({ ...body, sender: senderId });
+    // senderId from client
+    // const chat = await createChat({ ...body, senderId: senderID });
+    const chat = await createChat({ ...body });
     console.log("after createChat");
     return res.send(chat);
   } catch (error) {
@@ -37,7 +39,7 @@ export async function createChatHandler(
 }
 
 // @desc    Get all chat received from a user
-// @route   GET /api/chat/:userId
+// @route   GET /api/chat/received
 // @access  Private
 export async function getAllUserChatHandler(
   req: Request<UpdateChatInput["params"]>,
@@ -48,11 +50,12 @@ export async function getAllUserChatHandler(
   if (!chat) {
     return res.sendStatus(404);
   }
+  console.log("chat in getAllUserChatHandler", chat);
   return res.send(chat);
 }
 
 // @desc    Get all chat sent from a user
-// @route   GET /api/chat/:userId
+// @route   GET /api/chat/sent
 // @access  Private
 export async function getAllUserSentChatHandler(
   req: Request<UpdateChatInput["params"]>,
@@ -63,6 +66,8 @@ export async function getAllUserSentChatHandler(
   if (!chat) {
     return res.sendStatus(404);
   }
+  console.log("userId  in getAllUserSentChatHandler", userId);
+  console.log("chat in getAllUserSentChatHandler", chat);
   return res.send(chat);
 }
 

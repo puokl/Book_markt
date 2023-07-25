@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Profile from "./pages/Profile";
 import CreateProduct from "./pages/CreateProduct";
-import User from "./components/User";
+import User from "./pages/User";
 import DisplayProduct from "./pages/DisplayProduct";
 import Messages from "./pages/Messages";
 

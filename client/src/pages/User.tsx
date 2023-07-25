@@ -1,5 +1,5 @@
-import UserProfile from "./UserProfile";
-import UserProduct from "./UserProduct";
+import UserProfile from "../components/UserProfile";
+import UserProduct from "../components/UserProduct";
 import { Flex } from "@chakra-ui/react";
 
 type UserProps = {};
@@ -7,7 +7,6 @@ type UserProps = {};
 const User: React.FC<UserProps> = () => {
   return (
     <>
-      <Flex>Hello from user</Flex>
       <UserProfile />
       <UserProduct />
     </>

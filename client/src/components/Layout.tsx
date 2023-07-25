@@ -50,11 +50,12 @@ const Layout: React.FC<LayoutProps> = () => {
   return (
     <>
       {console.log("user", user)}
-      <Flex w="100%" bg="cyan.700">
+
+      <Flex w="100%" bg="cyan.700" alignItems="center" pl={2} pr={2}>
         <Flex w="70%" alignItems="center">
-          <Box w="350px" mr={3}>
+          <Box w="200px" mr={3}>
             <Link to="/">
-              <Image src="/logo.png" objectFit="cover" />
+              <Image src="/logobook.png" objectFit="cover" />
             </Link>
           </Box>
 
@@ -66,11 +67,10 @@ const Layout: React.FC<LayoutProps> = () => {
               <Box m={3}>
                 <Text fontSize="xs">Your are logged in as: </Text>
                 <Text fontSize="sm" as="b">
-                  {user?.user.email}
+                  {user?.user?.email}
                 </Text>
               </Box>
 
-              {/* //SECTION */}
               <Box
                 as="span"
                 position="relative"
@@ -91,6 +91,7 @@ const Layout: React.FC<LayoutProps> = () => {
                     boxShadow="md"
                     p={1}
                     borderRadius="md"
+                    zIndex={3}
                   >
                     <Flex direction="column" alignItems="center">
                       <Text
@@ -146,15 +147,17 @@ const Layout: React.FC<LayoutProps> = () => {
                   </Box>
                 )}
               </Box>
-              {/* //SECTION - */}
             </Flex>
           </Box>
         ) : (
-          <Box>
-            <Button as="a" href="/login">
+          <Flex justifyContent="center" w="30%">
+            <Button as="a" href="/login" mr={3}>
               Login
             </Button>
-          </Box>
+            <Button as="a" href="/register" ml={3}>
+              Register
+            </Button>
+          </Flex>
         )}
       </Flex>
       <Outlet />

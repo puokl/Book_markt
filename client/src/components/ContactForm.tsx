@@ -5,6 +5,7 @@ import {
   Button,
   Text,
   Flex,
+  Textarea,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,7 +17,9 @@ import { chatInputType, chatType, conversationType } from "../types/chatType";
 
 type ContactFormProps = {
   productId: string;
-  seller: string;
+  productImage: string;
+  sellerName: string;
+  sellerId: string;
   closeModal: () => void;
   title: string;
 };
@@ -25,22 +28,22 @@ type CreateChatInput = TypeOf<typeof createChatSchema>;
 
 const ContactForm: React.FC<ContactFormProps> = ({
   productId,
-  seller,
+  sellerName,
+  sellerId,
   closeModal,
   title,
+  productImage,
 }) => {
   const { user } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
-  const sender = user.user._id;
-  console.log("user", user.user._id);
-  console.log("productId", productId);
-  console.log("seller", seller);
+  const senderId = user.user._id;
+  const senderName = user.user.name;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<CreateChatInput>({
     resolver: zodResolver(createChatSchema),
   });
@@ -49,16 +52,39 @@ const ContactForm: React.FC<ContactFormProps> = ({
     try {
       const conversation: conversationType = {
         ...values,
-        sender,
+        senderId,
+        senderName,
         productId,
-        seller,
+        sellerName,
+        sellerId,
         title,
+        productImage,
       };
-      dispatch(createChat({ conversation, sender, productId, seller, title }));
-      console.log("props", { conversation, sender, productId, seller, title });
+      dispatch(
+        createChat({
+          conversation,
+          senderId,
+          senderName,
+          productId,
+          sellerName,
+          sellerId,
+          title,
+          productImage,
+        })
+      );
+      console.log("props", {
+        conversation,
+        senderId,
+        senderName,
+        productId,
+        sellerName,
+        sellerId,
+        title,
+        productImage,
+      });
       closeModal();
     } catch (error) {
-      console.log("error", error);
+      console.log("error on handleChat()", error);
     }
   };
   return (
@@ -67,10 +93,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
       <FormControl as="form" onSubmit={handleSubmit(handleChat)}>
         <FormLabel>
           Message:
-          <Input
+          <Textarea
             id="message"
-            type="text"
-            placeholder="hello"
+            placeholder="Hello, "
             {...register("message")}
           />
           <Text as="p">{errors?.message?.message?.toString()}</Text>
@@ -78,22 +103,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
         <FormLabel>
           Name:
           <Input
-            id="name"
+            id="senderName"
             type="text"
-            placeholder="John Doe"
-            {...register("name")}
+            defaultValue={senderName}
+            {...register("senderName")}
           />
-          <Text as="p">{errors?.name?.message?.toString()}</Text>
-        </FormLabel>
-        <FormLabel>
-          Telephone:
-          <Input
-            id="telephone"
-            type="text"
-            placeholder="00 - 000"
-            {...register("telephone", { valueAsNumber: true })}
-          />
-          <Text as="p">{errors?.telephone?.message?.toString()}</Text>
+          <Text as="p">{errors?.senderName?.message?.toString()}</Text>
         </FormLabel>
         <Flex>
           <Button type="submit">Save</Button>

@@ -6,6 +6,7 @@ import {
   Text,
   Box,
   Spinner,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -65,44 +66,48 @@ const Register: React.FC = () => {
       <Box>
         <Text>Hello from register</Text>
       </Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isRequired>
-          <FormLabel>Email</FormLabel>
-          <Input
-            id="email"
-            type="email"
-            placeholder="john.doe@mail.com"
-            {...register("email")}
-          />
-          <Text as="p">{errors.email?.message?.toString()}</Text>
-          <FormLabel>Name</FormLabel>
-          <Input
-            id="name"
-            type="text"
-            placeholder="John Doe"
-            {...register("name")}
-          />
-          <Text as="p">{errors.name?.message?.toString()}</Text>
-          <FormLabel>Password</FormLabel>
-          <Input
-            id="password"
-            type="password"
-            placeholder="********"
-            {...register("password")}
-          />
-          <Text as="p">{errors.password?.message?.toString()}</Text>
-          <FormLabel>Confirm Password</FormLabel>
-          <Input
-            id="password"
-            type="password"
-            placeholder="********"
-            {...register("passwordConfirmation")}
-          />
-          <Text as="p">{errors.passwordConfirmation?.message?.toString()}</Text>
-          <Text as="p">{registerError}</Text>
-          <Button type="submit">SUBMIT</Button>
-        </FormControl>
-      </form>
+      <Flex m={4}>
+        <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+          <FormControl isRequired>
+            <FormLabel>Email</FormLabel>
+            <Input
+              id="email"
+              type="email"
+              placeholder="john.doe@mail.com"
+              {...register("email")}
+            />
+            <Text as="p">{errors.email?.message?.toString()}</Text>
+            <FormLabel>Name</FormLabel>
+            <Input
+              id="name"
+              type="text"
+              placeholder="John Doe"
+              {...register("name")}
+            />
+            <Text as="p">{errors.name?.message?.toString()}</Text>
+            <FormLabel>Password</FormLabel>
+            <Input
+              id="password"
+              type="password"
+              placeholder="********"
+              {...register("password")}
+            />
+            <Text as="p">{errors.password?.message?.toString()}</Text>
+            <FormLabel>Confirm Password</FormLabel>
+            <Input
+              id="password"
+              type="password"
+              placeholder="********"
+              {...register("passwordConfirmation")}
+            />
+            <Text as="p">
+              {errors.passwordConfirmation?.message?.toString()}
+            </Text>
+            <Text as="p">{registerError}</Text>
+            <Button type="submit">SUBMIT</Button>
+          </FormControl>
+        </Box>
+      </Flex>
     </>
   );
 };

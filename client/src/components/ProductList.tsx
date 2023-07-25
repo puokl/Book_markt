@@ -1,30 +1,23 @@
 import { Button, Flex, Spinner, Text, Image, Box } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getAllProducts, deleteProduct } from "../redux/slices/productSlice";
+import { getAllProducts } from "../redux/slices/productSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { productType } from "../types/productType";
-import { useParams } from "react-router-dom";
-import moment from "moment";
+import { TfiLocationPin } from "react-icons/tfi";
+import { dateFromNow } from "../utils/textFormat";
 
 const ProductList: React.FC = () => {
   const navigate = useNavigate();
-  const params = useParams();
+  const dispatch = useAppDispatch();
 
-  //SECTION -
   const [displayedProductsCount, setDisplayedProductsCount] = useState(10);
 
   const handleLoadMore = () => {
     setDisplayedProductsCount((prevCount) => prevCount + 10);
   };
 
-  //SECTION -
-
-  const dispatch = useAppDispatch();
-
-  const { products, isLoading, isError, isSuccess } = useAppSelector(
-    (state: any) => state.product
-  );
+  const { products, isLoading } = useAppSelector((state: any) => state.product);
 
   useEffect(() => {
     dispatch(getAllProducts());
@@ -34,11 +27,6 @@ const ProductList: React.FC = () => {
 
   return (
     <>
-      <Text>Hi from product list</Text>
-
-      {console.log("product in jsx", products)}
-      {console.log("product in productlist", products)}
-
       {products &&
         products
           .slice(0, displayedProductsCount)
@@ -66,8 +54,13 @@ const ProductList: React.FC = () => {
               </Flex>
               <Flex direction="column" w="80%" alignItems="flex-start">
                 <Flex justifyContent="space-between" w="100%">
-                  <Text>Berlin</Text>
-                  <Text> {moment(item.createdAt).fromNow()}</Text>
+                  <Flex alignItems="center">
+                    <TfiLocationPin />
+                    <Text ml={2} fontSize="sm">
+                      {item.location}
+                    </Text>
+                  </Flex>
+                  <Text>{dateFromNow(item.createdAt)}</Text>
                 </Flex>
                 <Flex alignItems="center" w="100%">
                   <Text as="b" fontSize="lg">
@@ -89,17 +82,14 @@ const ProductList: React.FC = () => {
                   <Text as="b">{item.price} €</Text>
                   <Text>Language: {item.language}</Text>
                 </Flex>
-                {/* <Text>ProductId: {item.productId}</Text> */}
-                {/* <Text>User: {item.user}</Text> */}
-                {/* <Text>Condition: {item.condition}</Text> */}
-                {/* <Text>Year: {item.year}</Text>
-              <Text>Pages: {item.pages}</Text> */}
               </Flex>
             </Flex>
           ))}
-      {products && products.length > displayedProductsCount && (
-        <Button onClick={handleLoadMore}>Load More</Button>
-      )}
+      <Flex>
+        {products && products.length > displayedProductsCount && (
+          <Button onClick={handleLoadMore}>Load More</Button>
+        )}
+      </Flex>
     </>
   );
 };

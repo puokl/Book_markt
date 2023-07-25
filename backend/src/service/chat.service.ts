@@ -7,11 +7,17 @@ export async function createChat(input: ChatInput) {
 }
 
 export async function findAllUserChat(userId: string) {
-  return ChatModel.find({ seller: userId });
+  return ChatModel.find({ sellerId: userId });
 }
 
 export async function findAllUserSentChat(userId: string) {
-  return ChatModel.find({ sender: userId });
+  try {
+    console.log("userId in findAllUserSentChat", userId);
+    const data = ChatModel.find({ senderId: userId });
+    console.log("data in findAllUserSentChat", data);
+    return data;
+  } catch (error) {}
+  // return ChatModel.find({ senderId: userId });
 }
 
 export async function findConversation(chatId: string) {

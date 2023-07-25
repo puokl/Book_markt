@@ -3,17 +3,20 @@ import { UserDocument } from "./user.model";
 import { ProductDocument } from "./product.model";
 
 export interface Conversation {
-  sender: string;
-  seller: string;
+  senderId: string;
+  sellerId: string;
+  senderName: string;
+  sellerName: string;
   message: string;
   productId: string;
-  name: string;
-  telephone: number;
 }
 export interface ChatInput {
-  sender: string;
-  seller: string;
+  senderId: string;
+  sellerId: string;
+  senderName: string;
+  sellerName: string;
   productId: string;
+  productImage: string;
   title: string;
   conversation: Conversation[];
 }
@@ -24,12 +27,12 @@ export interface ChatDocument extends ChatInput, mongoose.Document {
 }
 const conversationSchema = new mongoose.Schema(
   {
-    sender: { type: String, required: true },
-    seller: { type: String, required: true },
+    senderId: { type: String, required: true },
+    sellerId: { type: String, required: true },
+    senderName: { type: String, required: true },
+    sellerName: { type: String, required: true },
     message: { type: String, required: true },
     productId: { type: String, required: true },
-    name: { type: String },
-    telephone: { type: Number },
   },
   { timestamps: true }
 );
@@ -37,8 +40,11 @@ const conversationSchema = new mongoose.Schema(
 const chatSchema = new mongoose.Schema(
   {
     productId: { type: String, required: true },
-    sender: { type: String, required: true },
-    seller: { type: String, required: true },
+    productImage: { type: String, required: true },
+    senderId: { type: String, required: true },
+    sellerId: { type: String, required: true },
+    senderName: { type: String, required: true },
+    sellerName: { type: String, required: true },
     title: { type: String, required: true },
     conversation: [conversationSchema],
   },

@@ -29,7 +29,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   searchResults,
   setQueryText,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onClose } = useDisclosure();
   console.log("searchResults", searchResults);
   const navigate = useNavigate();
 
@@ -91,10 +91,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               <VStack align="start">
                 <Text noOfLines={1}>{title}</Text>
                 <Text noOfLines={1}>
-                  {author} -{price}€ - {location}
+                  {author} - {price}€ - {location}
                 </Text>
-                {/* <Text noOfLines={1}>{location}</Text>
-                <Text noOfLines={1}>{price}</Text> */}
               </VStack>
             </Grid>
           </Box>

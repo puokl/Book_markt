@@ -5,6 +5,8 @@ import {
   Button,
   Text,
   Flex,
+  Textarea,
+  Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,7 +49,6 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
     handleSubmit,
     formState: { errors },
     setValue,
-    // } = useForm();
   } = useForm<ProductInput>({
     resolver: zodResolver(createProductSchema),
   });
@@ -76,108 +77,112 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
   return (
     <>
       <Text>Hi from DisplayProduct</Text>
-      <Flex m={5}>
-        <FormControl as="form" onSubmit={handleSubmit(handleUpdate)}>
-          <FormLabel>
-            Title:
+      <Flex justifyContent="center">
+        <Flex m={5} maxW="70%" minW="50%">
+          <FormControl as="form" onSubmit={handleSubmit(handleUpdate)}>
+            <FormLabel>
+              Title:
+              <Input
+                id="title"
+                type="text"
+                defaultValue={product.title}
+                {...register("title")}
+              />
+              <Text as="p">{errors?.title?.message?.toString()}</Text>
+            </FormLabel>
+            <FormLabel>
+              Author:
+              <Input
+                id="author"
+                type="text"
+                defaultValue={product.author}
+                {...register("author")}
+              />
+              <Text as="p">{errors?.author?.message?.toString()}</Text>
+            </FormLabel>
+            <FormLabel>
+              Price:
+              <Input
+                id="price"
+                type="number"
+                defaultValue={product.price}
+                {...register("price", { valueAsNumber: true })}
+              />
+              <Text as="p">{errors?.price?.message?.toString()}</Text>
+            </FormLabel>
+            <FormLabel>
+              Language:
+              <Input
+                id="language"
+                type="text"
+                defaultValue={product.language}
+                {...register("language")}
+              />
+              <Text as="p">{errors?.language?.message?.toString()}</Text>
+            </FormLabel>
+            <FormLabel>
+              Description:
+              <Textarea
+                id="description"
+                defaultValue={product.description}
+                {...register("description")}
+              />
+              <Text as="p">{errors?.description?.message?.toString()}</Text>
+            </FormLabel>
+            <FormLabel>
+              Pages:
+              <Input
+                id="pages"
+                type="number"
+                defaultValue={product.pages}
+                {...register("pages", { valueAsNumber: true })}
+              />
+              <Text as="p">{errors?.pages?.message?.toString()}</Text>
+            </FormLabel>
+            <FormLabel>
+              Year:
+              <Input
+                id="year"
+                type="number"
+                defaultValue={product.year}
+                {...register("year", { valueAsNumber: true })}
+              />
+              <Text as="p">{errors?.year?.message?.toString()}</Text>
+            </FormLabel>
+            <FormLabel>
+              Condition:
+              <Input
+                id="condition"
+                type="text"
+                defaultValue={product.condition}
+                {...register("condition")}
+              />
+              <Text as="p">{errors?.condition?.message?.toString()}</Text>
+            </FormLabel>
+            <FormLabel>Location:</FormLabel>
             <Input
-              id="title"
+              id="location"
               type="text"
-              defaultValue={product.title}
-              {...register("title")}
+              defaultValue={product.location}
+              {...register("location")}
             />
-            <Text as="p">{errors?.title?.message?.toString()}</Text>
-          </FormLabel>
-          <FormLabel>
-            Author:
+            <Text as="p">{errors?.location?.message?.toString()}</Text>
+            {/* //SECTION -  */}
+            <FormLabel mt={4}>Picture:</FormLabel>
             <Input
-              id="author"
-              type="text"
-              defaultValue={product.author}
-              {...register("author")}
+              type="file"
+              name="file"
+              id="file"
+              onChange={(e) => setSelectedFile(e.target.files?.[0])}
             />
-            <Text as="p">{errors?.author?.message?.toString()}</Text>
-          </FormLabel>
-          <FormLabel>
-            Price:
-            <Input
-              id="price"
-              type="number"
-              defaultValue={product.price}
-              {...register("price", { valueAsNumber: true })}
-            />
-            <Text as="p">{errors?.price?.message?.toString()}</Text>
-          </FormLabel>
-          <FormLabel>
-            Language:
-            <Input
-              id="language"
-              type="text"
-              defaultValue={product.language}
-              {...register("language")}
-            />
-            <Text as="p">{errors?.language?.message?.toString()}</Text>
-          </FormLabel>
-          <FormLabel>
-            Description:
-            <Input
-              id="description"
-              type="text"
-              defaultValue={product.description}
-              {...register("description")}
-            />
-            <Text as="p">{errors?.description?.message?.toString()}</Text>
-          </FormLabel>
-          <FormLabel>
-            Pages:
-            <Input
-              id="pages"
-              type="number"
-              defaultValue={product.pages}
-              {...register("pages", { valueAsNumber: true })}
-            />
-            <Text as="p">{errors?.pages?.message?.toString()}</Text>
-          </FormLabel>
-          <FormLabel>
-            Year:
-            <Input
-              id="year"
-              type="number"
-              defaultValue={product.year}
-              {...register("year", { valueAsNumber: true })}
-            />
-            <Text as="p">{errors?.year?.message?.toString()}</Text>
-          </FormLabel>
-          <FormLabel>
-            Condition:
-            <Input
-              id="condition"
-              type="text"
-              defaultValue={product.condition}
-              {...register("condition")}
-            />
-            <Text as="p">{errors?.condition?.message?.toString()}</Text>
-          </FormLabel>
-          <FormLabel>Location</FormLabel>
-          <Input
-            id="location"
-            type="text"
-            defaultValue={product.location}
-            {...register("location")}
-          />
-          <Text as="p">{errors?.location?.message?.toString()}</Text>
-          {/* //SECTION -  */}
-          <Input
-            type="file"
-            name="file"
-            id="file"
-            onChange={(e) => setSelectedFile(e.target.files?.[0])}
-          />
-          <Button onClick={handleImageUpload}>Upload Image</Button>
-          {/* //SECTION -  */}
-          <Button type="submit">Save</Button>
-          <Button onClick={handleEdit}>Cancel</Button>
-        </FormControl>
+            <Button onClick={handleImageUpload}>Upload Image</Button>
+            <Flex mt={4} gap="30px">
+              {/* //SECTION -  */}
+              <Button type="submit">Save</Button>
+              <Button onClick={handleEdit}>Cancel</Button>
+            </Flex>
+          </FormControl>
+        </Flex>
       </Flex>
     </>
   );
