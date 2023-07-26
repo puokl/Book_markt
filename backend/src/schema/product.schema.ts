@@ -12,10 +12,11 @@ const payload = {
     condition: string({ required_error: "Condition is required" }),
     language: string({ required_error: "Language is required" }),
     image: string().optional(),
-    pages: number().optional(),
-    year: number().optional(),
+    pages: number({ required_error: "Pages is required" }),
+    year: number({ required_error: "Year is required" }),
     userId: string().optional(),
     userName: string().optional(),
+    location: string().optional(),
   }),
 };
 

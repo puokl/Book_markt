@@ -14,12 +14,6 @@ const Home: React.FC<HomeProps> = () => {
   //   fetcher
   // );
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setUserState(data);
-  //   }
-  // }, [data?.name]);
-
   return user ? (
     <>
       <Flex direction="row">
@@ -33,10 +27,15 @@ const Home: React.FC<HomeProps> = () => {
     </>
   ) : (
     <>
-      <Box minHeight="300px" bg="gray.300">
-        <Text>Hello!</Text>
-        <Text>Please log in</Text>
-      </Box>
+      {/* h="13vh" on layout */}
+      <Flex
+        minHeight="87vh"
+        bg="gray.300"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Text as="b">Please log in to join our community!</Text>
+      </Flex>
     </>
   );
 };

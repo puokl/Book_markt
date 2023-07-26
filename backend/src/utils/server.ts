@@ -20,7 +20,7 @@ function createServer() {
   );
   app.use(cookieParser());
   app.use(express.json());
-  app.use(deserializeUser); // middleware called on every endpoint on every request
+  app.use(deserializeUser); // to add the user to the req object
 
   cloudinaryConfig();
   routes(app);

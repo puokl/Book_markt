@@ -12,11 +12,9 @@ import {
 } from "../service/session.service";
 import { signJwt } from "../utils/jwt.utils";
 import log from "../utils/logger";
-import jwt from "jsonwebtoken";
-import { access } from "fs";
 
 const accessTokenCookieOptions: CookieOptions = {
-  maxAge: 9000000, // 15min
+  maxAge: 900000, // 15min
   httpOnly: true, // only accessible through http, not js. good security not provided by localstorage
   domain: process.env.DOMAIN,
   path: "/",
@@ -66,9 +64,6 @@ export async function createUserSessionHandler(req: Request, res: Response) {
 
   res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
-  //FIXME - send user to client
-
-  // return res.send({ user, accessToken });
   return res.send({ user });
 }
 
@@ -79,8 +74,6 @@ export async function getUserSessionHandler(req: Request, res: Response) {
   const userId = res.locals.user._id;
 
   const sessions = await findSessions({ user: userId, valid: true });
-
-  console.log("session", { sessions });
 
   return res.send(sessions);
 }
@@ -109,8 +102,6 @@ export async function deleteSessionHandler(req: Request, res: Response) {
 
   res.clearCookie("accessToken", accessTokenCookieOptions);
   res.clearCookie("refreshToken", refreshTokenCookieOptions);
-  console.log("cookies should be deleted");
-  console.log(res.locals);
 
   await updateSession({ _id: sessionIdsStr }, { valid: false });
   // we're not deleting the session, but turn it to false
@@ -126,19 +117,16 @@ export async function googleOauthHandler(req: Request, res: Response) {
   // res.set("Access-Control-Allow-Origin", "http://localhost:3000");
   // 1. get the code from qs
   const code = req.query.code as string;
-  console.log("code", { code });
-  // console.log("req.query", req.query);
-  // console.log("req", req);
 
   try {
     // 2. get the id and access token with the code
     const { id_token, access_token } = await getGoogleOAuthTokens({ code });
-    console.log({ id_token, access_token });
+
     // 3. get user with tokens
     // we can either use the token to get the user or through a network request
     const googleUser = await getGoogleUser({ id_token, access_token });
     // jwt.decode(id_token);
-    console.log("{googleUser}", { googleUser });
+
     //! we use jwt.decode (same as going to jwt.io) attention-> it is not going to verify the token,
     // but we know that the token is signed by google because we make this request server side
 
@@ -192,10 +180,8 @@ export async function googleOauthHandler(req: Request, res: Response) {
     // 8. redirect back to client
     res.redirect(`${process.env.ORIGIN}`);
   } catch (error: any) {
-    // console.log("oauth error", error.response.data.error);
     log.error(error, "Failed to authorize Google user");
 
-    //FIXME - check `${process.env.ORIGIN}/oauth/error` url and manage page
     return res.redirect(`${process.env.ORIGIN}/oauth/error`);
   }
 }

@@ -3,7 +3,7 @@ import chatService from "./chatService";
 import { chatType, conversationInputType } from "../../types/chatType";
 
 const initialState = {
-  chat: [],
+  chat: [] as chatType[],
   singleChat: {},
   receivedChat: [],
   sentChat: [],
@@ -13,14 +13,11 @@ const initialState = {
   errorMessage: "",
 };
 
-type addConversationType = {};
-
 // create new chat
 export const createChat = createAsyncThunk(
   "chat/create",
   async (chatData: chatType, thunkAPI) => {
     try {
-      console.log("trying to create chat");
       console.log("chatData", chatData);
       return await chatService.createChat(chatData);
     } catch (error: any) {
@@ -79,8 +76,7 @@ export const addConversation = createAsyncThunk(
     try {
       const conversationData = userInput.conversation;
       const { chatId } = userInput;
-      // console.log("chatId", chatId);
-      // console.log("conversationData", conversationData);
+
       return await chatService.addConversation(conversationData, chatId);
     } catch (error: any) {
       const message =
@@ -108,7 +104,6 @@ const chatSlice = createSlice({
       })
       .addCase(createChat.fulfilled, (state, action) => {
         state.isLoading = false;
-        //  state.chat = action.payload;
         state.singleChat = action.payload;
       })
       .addCase(createChat.rejected, (state) => {
@@ -142,9 +137,7 @@ const chatSlice = createSlice({
       })
       .addCase(addConversation.fulfilled, (state, action) => {
         state.isLoading = false;
-        // state.chat = action.payload;
         state.chat.push(action.payload);
-        console.log("action.payload", action.payload);
       })
       .addCase(addConversation.rejected, (state) => {
         state.isLoading = false;

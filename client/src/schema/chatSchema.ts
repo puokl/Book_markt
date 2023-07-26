@@ -1,4 +1,4 @@
-import { object, string, number } from "zod";
+import { object, string } from "zod";
 
 export const createChatSchema = object({
   message: string().nonempty({

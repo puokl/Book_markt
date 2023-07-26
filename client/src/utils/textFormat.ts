@@ -1,8 +1,17 @@
 import moment from "moment";
 
-export const formattedDate = (date: Date) => moment(date).format("YYYY-MM-DD");
+export const formattedDate = (dateTime: Date | undefined) => {
+  if (dateTime) {
+    const date = new Date(dateTime);
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
 
-export const dateFromNow = (date: Date) => {
+    return `${year}-${month}-${day}`;
+  }
+};
+
+export const dateFromNow = (date: Date | undefined) => {
   return moment(date).fromNow();
 };
 

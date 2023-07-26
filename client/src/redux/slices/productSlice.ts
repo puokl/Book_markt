@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import productService from "./productService";
 import { productType } from "../../types/productType";
+import { parametriType } from "../../components/EditProductForm";
 
 const initialState = {
-  product: [],
+  product: [] as productType[],
   products: [],
   isLoading: true,
   isError: false,
@@ -32,7 +33,7 @@ export const createProduct = createAsyncThunk(
 // get single product
 export const getSingleProduct = createAsyncThunk(
   "product/getSingle",
-  async (productId, thunkAPI) => {
+  async (productId: string, thunkAPI) => {
     try {
       return await productService.getSingleProduct(productId);
     } catch (error: any) {
@@ -66,7 +67,6 @@ export const getAllProducts = createAsyncThunk(
 );
 
 // get all products from user
-//FIXME - create new controller
 export const getAllUserProduct = createAsyncThunk(
   "product/getAllUserProduct",
   async (_, thunkAPI) => {
@@ -90,8 +90,6 @@ export const deleteProduct = createAsyncThunk(
     try {
       const response = await productService.deleteProduct(productId);
 
-      //NOTE -
-
       return { response, productId };
     } catch (error: any) {
       const message: string =
@@ -108,20 +106,11 @@ export const deleteProduct = createAsyncThunk(
 // update a product
 export const updateProduct = createAsyncThunk(
   "product/updateProduct",
-  async ({ parametri }, thunkAPI) => {
+  async ({ parametri }: { parametri: parametriType }, thunkAPI) => {
     try {
-      console.log("parametri in slice", parametri);
       const { productID, data } = parametri;
-      console.log("productId", productID);
-      console.log("values in productslice", { data });
-      console.log("values in productslice", data);
-      console.log("first");
       const response = await productService.updateProduct(productID, data);
-
-      //NOTE -
-
       return response;
-      // return { response, data };
     } catch (error: any) {
       const message: string =
         (error.response &&
@@ -147,15 +136,12 @@ const productSlice = createSlice({
       .addCase(createProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // state.product.push(action.payload);
         state.product = action.payload;
-        console.log("state.product", state.product);
-        console.log("action.payload", action.payload);
       })
-      .addCase(createProduct.rejected, (state) => {
+      .addCase(createProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.product = action.payload;
+        state.product = action.payload as productType[];
       })
       .addCase(getSingleProduct.pending, (state) => {
         state.isLoading = true;
@@ -163,7 +149,6 @@ const productSlice = createSlice({
       .addCase(getSingleProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // state.product.push(action.payload);
         state.product = action.payload;
       })
       .addCase(getSingleProduct.rejected, (state) => {
@@ -188,10 +173,7 @@ const productSlice = createSlice({
       .addCase(getAllUserProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-
-        //FIXME - check if product or products to manage delete products
         state.product = action.payload;
-        console.log("action.payload", action.payload);
       })
       .addCase(getAllUserProduct.rejected, (state) => {
         state.isLoading = false;
@@ -201,20 +183,14 @@ const productSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        const ID = action.payload.productId;
+        const ID = parseInt(action.payload.productId);
         state.isLoading = false;
         state.isSuccess = true;
-        // state.product = current(state).product.filter(
-        //   (item) => item.productId !== ID
-        // );
         state.product = state.product.filter((item) => item.productId !== ID);
-
-        console.log("state.product", state.product);
       })
-      .addCase(deleteProduct.rejected, (state, action) => {
+      .addCase(deleteProduct.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload;
       })
       .addCase(updateProduct.pending, (state) => {
         state.isLoading = true;
@@ -222,7 +198,6 @@ const productSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // state.product.push(action.payload);
         state.product = action.payload;
       })
       .addCase(updateProduct.rejected, (state) => {

@@ -37,7 +37,6 @@ const ContactModal: React.FC<ContactModalProps> = ({
   };
   return (
     <>
-      {console.log("sellerName in ContactModal", sellerName)}
       <Button onClick={openModal}>{buttonText}</Button>
       <Modal isOpen={isOpen} onClose={closeModal}>
         <ModalOverlay />

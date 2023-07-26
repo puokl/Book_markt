@@ -13,7 +13,7 @@ import { TypeOf } from "zod";
 import { createChatSchema } from "../schema/chatSchema";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { createChat } from "../redux/slices/chatSlice";
-import { chatInputType, chatType, conversationType } from "../types/chatType";
+import { chatInputType, conversationType } from "../types/chatType";
 
 type ContactFormProps = {
   productId: string;
@@ -60,20 +60,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
         title,
         productImage,
       };
-      dispatch(
-        createChat({
-          conversation,
-          senderId,
-          senderName,
-          productId,
-          sellerName,
-          sellerId,
-          title,
-          productImage,
-        })
-      );
-      console.log("props", {
-        conversation,
+
+      const conversationArray: conversationType[] = [conversation];
+
+      const chatData = {
+        conversation: conversationArray,
         senderId,
         senderName,
         productId,
@@ -81,7 +72,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
         sellerId,
         title,
         productImage,
-      });
+      };
+
+      dispatch(createChat(chatData));
+
       closeModal();
     } catch (error) {
       console.log("error on handleChat()", error);

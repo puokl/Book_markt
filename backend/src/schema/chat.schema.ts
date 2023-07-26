@@ -1,4 +1,4 @@
-import { object, number, string, TypeOf, array, z } from "zod";
+import { object, string, TypeOf, z } from "zod";
 
 const conversationItemSchema = object({
   senderId: string({}),
@@ -20,6 +20,7 @@ const payload = {
     sellerName: string({}),
     productId: string({}),
     productName: string({}),
+    productImage: string({}),
     title: string({}),
     conversation: z
       .array(conversationItemSchema)
@@ -55,8 +56,8 @@ export const getChatSchema = object({
   ...params,
 });
 
-// export type CreateChatInput = TypeOf<typeof createChatSchema>;
-export type CreateChatInput = TypeOf<typeof payload.body>;
+export type CreateChatInput = TypeOf<typeof createChatSchema>;
+// export type CreateChatInput = TypeOf<typeof payload.body>;
 export type UpdateChatInput = TypeOf<typeof updateChatSchema>;
 export type DeleteChatInput = TypeOf<typeof deleteChatSchema>;
 export type GetChatInput = TypeOf<typeof getChatSchema>;

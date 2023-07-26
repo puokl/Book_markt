@@ -7,11 +7,8 @@ import { updateProfile } from "../redux/slices/authSlice";
 type TestoProps = {};
 
 const Profile: React.FC<TestoProps> = () => {
-  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
-    (state) => state.auth
-  );
+  const { user, isLoading } = useAppSelector((state) => state.auth);
   const { avatar } = useAppSelector((state: any) => state.image);
-  const { product } = useAppSelector((state: any) => state.product);
 
   const [selectedFile, setSelectedFile] = useState<File | string>("");
 
@@ -19,8 +16,6 @@ const Profile: React.FC<TestoProps> = () => {
 
   const handleSubmitAvatar = async () => {
     try {
-      // console.log("file", selectedFile);
-      // dispatch(uploadAvatar(selectedFile));
       if (selectedFile instanceof File) {
         dispatch(uploadAvatar(selectedFile));
       } else {

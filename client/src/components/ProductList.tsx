@@ -73,9 +73,11 @@ const ProductList: React.FC = () => {
                 </Flex>
                 <Box>
                   <Text fontSize="sm">
-                    {item.description.length > 150
-                      ? item.description.slice(0, 150) + "..."
-                      : item.description}
+                    {/* {item.description?.length > 150
+                      ? item.description?.slice(0, 150) + "..."
+                      : item.description} */}
+                    {item.description?.slice(0, 150) ?? ""}
+                    {item.description && item.description.length > 150 && "..."}
                   </Text>
                 </Box>
                 <Flex justifyContent="space-between" w="100%">

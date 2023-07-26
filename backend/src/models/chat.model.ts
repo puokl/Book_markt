@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import { UserDocument } from "./user.model";
-import { ProductDocument } from "./product.model";
 
 export interface Conversation {
   senderId: string;

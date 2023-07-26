@@ -22,16 +22,8 @@ export async function createChatHandler(
   try {
     const senderID = res.locals.user._id;
     const body = req.body;
-    console.log("req.body;", req.body);
-    console.log("before createChat");
-    console.log("createChat props in controller", {
-      ...body,
-      senderId: senderID,
-    });
-    // senderId from client
-    // const chat = await createChat({ ...body, senderId: senderID });
     const chat = await createChat({ ...body });
-    console.log("after createChat");
+
     return res.send(chat);
   } catch (error) {
     console.log("error", error);
@@ -50,7 +42,7 @@ export async function getAllUserChatHandler(
   if (!chat) {
     return res.sendStatus(404);
   }
-  console.log("chat in getAllUserChatHandler", chat);
+
   return res.send(chat);
 }
 
@@ -66,44 +58,41 @@ export async function getAllUserSentChatHandler(
   if (!chat) {
     return res.sendStatus(404);
   }
-  console.log("userId  in getAllUserSentChatHandler", userId);
-  console.log("chat in getAllUserSentChatHandler", chat);
+
   return res.send(chat);
 }
 
 // @desc    Add a conversation to the chat
 // @route   POST /api/chat/:userId
 // @access  Private
-//FIXME - check req, res params
+
+type ChatParams = {
+  chatId: string;
+};
+
 export async function addConversationHandler(
-  req: Request<{}, {}, AddConversationInput["body"]>,
+  req: Request<ChatParams, {}, AddConversationInput["body"]>,
   res: Response
 ) {
   try {
-    console.log("req.body", req.body);
-    console.log("req.params", req.params);
     const { chatId } = req.params;
+
     const conversation = req.body;
-    console.log("chatId", chatId);
+
     // Find the chat document by ID
     const chat = await findConversation(chatId);
 
     if (!chat) {
       return res.status(404).json({ error: "Chat not found" });
     }
-    console.log("conversation in addConversationHandler", conversation);
+
     // Add the new conversation to the conversation array
     chat.conversation.push(conversation);
-    console.log("chat.conversation", chat);
-    console.log("first");
+
     // Save the updated chat document
 
     const updatedChat = await chat.save();
-    // const updatedChat = await findAndUpdateChat({ chatId }, chat, {
-    //   new: false,
-    // });
-    console.log("second");
-    console.log("updatedChat", updatedChat);
+
     // res.status(200).json({ chat: updatedChat });
     res.status(200).send(updatedChat);
   } catch (error: any) {

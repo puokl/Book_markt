@@ -11,7 +11,7 @@ export const uploadImageHandler = async (req: Request, res: Response) => {
       const uploadImage = await cloudinary.uploader.upload(req.file.path, {
         folder: folder,
       });
-      console.log("uploadImage", uploadImage);
+
       res.status(201).json({ image: uploadImage.url });
     } catch (error) {
       console.log("Error uploading file", error);
@@ -31,8 +31,9 @@ export const uploadMultipleImageHandler = async (
   }
   if (req.files) {
     try {
-      const uploadPromises = req.file.map((file: Express.Multer.File) =>
-        cloudinary.uploader.upload(file.path, { folder: "bookMarktApp" })
+      const uploadPromises = (req.files as Express.Multer.File[]).map(
+        (file: Express.Multer.File) =>
+          cloudinary.uploader.upload(file.path, { folder: "bookMarktApp" })
       );
 
       const uploadedImages = await Promise.all(uploadPromises);
@@ -41,15 +42,13 @@ export const uploadMultipleImageHandler = async (
         (uploadResult: any) => uploadResult.url
       );
 
-      console.log("uploadedImages", uploadedImages);
-      console.log("imageUrls", imageUrls);
-
       res.status(201).json({ avatars: imageUrls });
     } catch (error) {
       console.log("Error uploading files", error);
       res.status(500).json({ message: "Error uploading files" });
     }
-  } else {
-    res.status(500).json({ message: "No files uploaded" });
   }
+  // else {
+  //   res.status(500).json({ message: "No files uploaded" });
+  // }
 };

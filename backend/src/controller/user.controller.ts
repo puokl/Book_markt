@@ -16,7 +16,6 @@ export async function createUserHandler(
   res: Response
 ) {
   try {
-    console.log("req.body", req.body);
     const user = await createUser(req.body);
     // return res.send(omit(user.toJSON(), "password"));
     console.log("user in backend createuser", user);
@@ -24,8 +23,7 @@ export async function createUserHandler(
   } catch (e: any) {
     logger.error(e);
     return res.status(409).send(e.message);
-    // ("This email is already in use")
-    // .setDefaultEncoding(e.message);
+
     // 409 for conflict ( we assume it has violated the unique field in the user model)
   }
 }
@@ -38,9 +36,7 @@ export async function updateUserHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
-
   const update = { image: req.body.image };
-
   const oldUser = await findUser({ _id: userId });
   if (!oldUser) {
     return res.sendStatus(404);

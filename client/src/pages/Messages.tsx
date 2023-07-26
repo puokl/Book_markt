@@ -36,7 +36,6 @@ const Messages: React.FC<MessagesProps> = () => {
 
   const { user } = useAppSelector((state) => state.auth);
 
-  console.log("user in messages", user);
   const senderName = user.user.name;
   const senderId = user.user._id;
 
@@ -128,7 +127,7 @@ const Messages: React.FC<MessagesProps> = () => {
                       (message: conversationType) => {
                         const isCurrentUser =
                           message.senderName === user.user.name;
-                        const messageStyle = {
+                        const messageStyle: React.CSSProperties = {
                           marginLeft: isCurrentUser ? "100px" : "0",
                           marginRight: isCurrentUser ? "0" : "100px",
                           display: "flex",
@@ -162,16 +161,18 @@ const Messages: React.FC<MessagesProps> = () => {
                       }
                     )}
                     <Flex justifyContent="center">
-                      <ConversationModal
-                        buttonText="Reply"
-                        chatId={selectedChat._id}
-                        senderName={selectedChat.senderName}
-                        senderId={selectedChat.senderId}
-                        sellerId={selectedChat.senderId}
-                        sellerName={selectedChat.sellerName}
-                        productImage={selectedChat.productImage}
-                        productId={selectedChat.productId}
-                      />
+                      {selectedChat._id && (
+                        <ConversationModal
+                          buttonText="Reply"
+                          chatId={selectedChat._id}
+                          senderName={selectedChat.senderName}
+                          senderId={selectedChat.senderId}
+                          sellerId={selectedChat.senderId}
+                          sellerName={selectedChat.sellerName}
+                          productImage={selectedChat.productImage}
+                          productId={selectedChat.productId}
+                        />
+                      )}
                     </Flex>
                   </Flex>
                 </Flex>
@@ -187,7 +188,7 @@ const Messages: React.FC<MessagesProps> = () => {
             Received Chat
           </Text>
           {receivedChat &&
-            receivedChat.map((item: chatType, index: number) => {
+            receivedChat.map((item: chatType) => {
               return (
                 <Flex
                   key={item._id}
@@ -251,10 +252,10 @@ const Messages: React.FC<MessagesProps> = () => {
                   {/* <Text>{selectedChat.conversation[0]}</Text> */}
                   <Flex direction="column">
                     {selectedReceivedChat.conversation.map(
-                      (message: conversationType, innerIndex: number) => {
+                      (message: conversationType) => {
                         const isCurrentUser =
                           message.senderName === user.user.name;
-                        const messageStyle = {
+                        const messageStyle: React.CSSProperties = {
                           marginLeft: isCurrentUser ? "100px" : "0",
                           marginRight: isCurrentUser ? "0" : "100px",
                           display: "flex",
@@ -281,24 +282,24 @@ const Messages: React.FC<MessagesProps> = () => {
                               </Flex>
                               <Text fontSize="xs">
                                 {dateFromNow(message.createdAt)}
-                                {/* {moment(message.createdAt).fromNow()} */}
                               </Text>
                             </Box>
                           </Flex>
                         );
                       }
                     )}
-
-                    <ConversationModal
-                      buttonText="Reply"
-                      chatId={selectedReceivedChat._id}
-                      senderName={selectedReceivedChat.senderName}
-                      senderId={selectedReceivedChat.senderId}
-                      sellerId={selectedReceivedChat.senderId}
-                      sellerName={selectedReceivedChat.sellerName}
-                      productImage={selectedReceivedChat.productImage}
-                      productId={selectedReceivedChat.productId}
-                    />
+                    {selectedReceivedChat._id && (
+                      <ConversationModal
+                        buttonText="Reply"
+                        chatId={selectedReceivedChat._id}
+                        senderName={selectedReceivedChat.senderName}
+                        senderId={selectedReceivedChat.senderId}
+                        sellerId={selectedReceivedChat.senderId}
+                        sellerName={selectedReceivedChat.sellerName}
+                        productImage={selectedReceivedChat.productImage}
+                        productId={selectedReceivedChat.productId}
+                      />
+                    )}
                   </Flex>
                 </Flex>
               )}

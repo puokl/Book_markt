@@ -1,5 +1,4 @@
 import {
-  Button,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -7,25 +6,24 @@ import {
   ModalCloseButton,
   ModalFooter,
   useDisclosure,
-  MenuItem,
   Text,
 } from "@chakra-ui/react";
 import { useState, ChangeEvent } from "react";
-import { uploadImage } from "../redux/slices/imageSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { uploadAvatar } from "../redux/slices/imageSlice";
+import { useAppDispatch } from "../redux/hooks";
 
 type AvatarImageModalProps = {};
 
 const AvatarImageModal: React.FC<AvatarImageModalProps> = () => {
   const [selectedFile, setSelectedFile] = useState<File | string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [avatar, setAvatar] = useState<File | null>(null);
 
   const dispatch = useAppDispatch();
 
   const handleSubmitAvatar = async () => {
     try {
-      dispatch(uploadImage(selectedFile));
+      if (typeof selectedFile !== "string")
+        dispatch(uploadAvatar(selectedFile));
     } catch (error: any) {
       console.log("handleSubmitAvatar() error", error);
     }
@@ -67,7 +65,6 @@ const AvatarImageModal: React.FC<AvatarImageModalProps> = () => {
               />
               <button type="submit">send picture</button>
             </form>
-            {/* <Button onClick={handleSubmitAvatar}>Add Avatar</Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>

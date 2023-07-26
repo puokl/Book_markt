@@ -40,16 +40,17 @@ const CreateProduct: React.FC = () => {
     author: string;
     price: number;
     language: string;
-    description: string;
+    description?: string;
     year: number;
     condition: string;
     pages: number;
-    image: string;
+    image?: string;
     location: string;
   };
 
   const handleImageUpload = () => {
-    dispatch(uploadProductImage(selectedFile));
+    if (typeof selectedFile !== "string")
+      dispatch(uploadProductImage(selectedFile));
   };
 
   const handleProduct = async (values: temporaryCreateProductType) => {
@@ -65,8 +66,6 @@ const CreateProduct: React.FC = () => {
 
   return (
     <>
-      <Text>Hi from CreateProduct</Text>
-
       <Box m={6}>
         <Flex maxWidth="400px" direction="column" alignItems="center">
           <Text as="p">{productError}</Text>
@@ -148,16 +147,13 @@ const CreateProduct: React.FC = () => {
               {...register("location")}
             />
             <Text as="p">{errors?.location?.message?.toString()}</Text>
-            {/* //SECTION -  */}
             <Input
               type="file"
               name="file"
               id="file"
-              onChange={(e) => setSelectedFile(e.target.files?.[0])}
+              onChange={(e) => setSelectedFile(e.target.files?.[0] ?? "")}
             />
             <Button onClick={handleImageUpload}>Upload Image</Button>
-
-            {/* //SECTION -  */}
             <Button type="submit">Add product</Button>
           </FormControl>
         </Flex>

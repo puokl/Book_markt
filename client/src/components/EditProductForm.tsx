@@ -6,7 +6,6 @@ import {
   Text,
   Flex,
   Textarea,
-  Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,15 +16,17 @@ import { updateProduct } from "../redux/slices/productSlice";
 import { useForm } from "react-hook-form";
 import { uploadProductImage } from "../redux/slices/imageSlice";
 
-type temporaryCreateProductType = {
+export type temporaryCreateProductType = {
   title: string;
   author: string;
   price: number;
-  language: string;
-  description: string;
   year: number;
-  condition: string;
   pages: number;
+  language: string;
+  user?: string;
+  description?: string;
+  condition: string;
+  location: string;
 };
 type EditProductFormProps = {
   product: any;
@@ -35,6 +36,10 @@ type EditProductFormProps = {
   productId: string | undefined;
 };
 
+export type parametriType = {
+  productID: string;
+  data: temporaryCreateProductType;
+};
 type ProductInput = TypeOf<typeof createProductSchema>;
 
 const EditProductForm: React.FC<EditProductFormProps> = ({
@@ -48,28 +53,32 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<ProductInput>({
     resolver: zodResolver(createProductSchema),
   });
 
   const dispatch = useAppDispatch();
 
-  const [selectedFile, setSelectedFile] = useState<File | string>("");
-
   const { productImage } = useAppSelector((state: any) => state.image);
 
+  const [selectedFile, setSelectedFile] = useState<File | string>("");
+
   const handleImageUpload = () => {
-    dispatch(uploadProductImage(selectedFile));
+    if (typeof selectedFile !== "string")
+      dispatch(uploadProductImage(selectedFile));
   };
 
   const handleUpdate = async (values: temporaryCreateProductType) => {
     try {
-      const productID = productId;
-      const data = { ...values, image: productImage.image };
-      const parametri = { productID, data };
-      dispatch(updateProduct({ parametri }));
-      setIsEditing(!isEditing);
+      if (productId) {
+        const productID = productId;
+        const data = { ...values, image: productImage.image };
+        const parametri = { productID, data };
+        dispatch(updateProduct({ parametri }));
+        setIsEditing(!isEditing);
+      } else {
+        console.error("ProductId is undefined");
+      }
     } catch (error) {
       console.log("error on handleupdate", error);
     }
@@ -173,7 +182,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
               type="file"
               name="file"
               id="file"
-              onChange={(e) => setSelectedFile(e.target.files?.[0])}
+              onChange={(e) => setSelectedFile(e.target.files?.[0] ?? "")}
             />
             <Button onClick={handleImageUpload}>Upload Image</Button>
             <Flex mt={4} gap="30px">

@@ -52,7 +52,6 @@ const Login: React.FC = () => {
   }
   return (
     <Box>
-      <Text>Hello from Login</Text>
       <Flex
         maxWidth="400px"
         direction="column"

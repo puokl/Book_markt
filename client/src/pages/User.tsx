@@ -1,6 +1,5 @@
 import UserProfile from "../components/UserProfile";
 import UserProduct from "../components/UserProduct";
-import { Flex } from "@chakra-ui/react";
 
 type UserProps = {};
 

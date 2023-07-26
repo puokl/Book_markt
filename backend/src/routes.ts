@@ -5,9 +5,8 @@ import {
   getLog,
   updateUserHandler,
 } from "./controller/user.controller";
-import { createUser } from "./service/user.service";
 import validateResource from "./middleware/validateResource";
-import { createUserSchema, updateUserSchema } from "./schema/user.schema";
+import { createUserSchema } from "./schema/user.schema";
 import {
   createUserSessionHandler,
   deleteSessionHandler,
@@ -30,7 +29,6 @@ import {
   updateProductHandler,
   getAllUserProductHandler,
 } from "./controller/product.controller";
-import multer from "multer";
 import {
   addConversationHandler,
   createChatHandler,
@@ -71,7 +69,6 @@ function routes(app: Express) {
     createUserSessionHandler
   );
   app.delete("/api/sessions", requireUser, deleteSessionHandler);
-
   app.get("/api/sessions/getLog", requireUser, getLog);
 
   //NOTE - PRODUCTS
@@ -80,7 +77,6 @@ function routes(app: Express) {
     validateResource(getProductSchema),
     getProductHandler
   );
-
   app.post(
     "/api/products",
     [requireUser, validateResource(createProductSchema)],
@@ -96,9 +92,7 @@ function routes(app: Express) {
     [requireUser, validateResource(deleteProductSchema)],
     deleteProductHandler
   );
-
   app.get("/api/products", getAllProductHandler);
-
   app.get("/api/userproducts", requireUser, getAllUserProductHandler);
 
   //NOTE - CHAT
@@ -106,7 +100,6 @@ function routes(app: Express) {
   app.get("/api/chat/received", requireUser, getAllUserChatHandler);
   app.get("/api/chat/sent", requireUser, getAllUserSentChatHandler);
   app.post("/api/chat/:chatId", requireUser, addConversationHandler);
-
   app.get("/api/search", searchProductHandler);
 }
 

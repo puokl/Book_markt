@@ -7,7 +7,7 @@ import { createProductSchema } from "../schema/productSchema";
 import { TypeOf } from "zod";
 import EditProductForm from "../components/EditProductForm";
 import ContactModal from "../modals/ContactModal";
-import { formattedDate, toUpperCase } from "../utils/textFormat";
+import { formattedDate } from "../utils/textFormat";
 import { MdLocationPin } from "react-icons/md";
 import { CiCalendarDate } from "react-icons/ci";
 import { CustomText } from "../utils/customText";
@@ -24,7 +24,7 @@ const DisplayProduct: React.FC<DisplayProductProps> = () => {
   const { product, isLoading } = useAppSelector((state: any) => state.product);
 
   useEffect(() => {
-    dispatch(getSingleProduct(params.id));
+    if (typeof params.id !== "undefined") dispatch(getSingleProduct(params.id));
   }, [params.id]);
 
   const handleEdit = () => {
@@ -102,7 +102,7 @@ const DisplayProduct: React.FC<DisplayProductProps> = () => {
               )}
               <ContactModal
                 buttonText="Contact Seller"
-                productId={params.id}
+                productId={params.id || ""}
                 sellerName={product.username}
                 title={product.title}
                 productImage={product.image}

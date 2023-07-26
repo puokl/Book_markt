@@ -5,11 +5,12 @@ export type conversationType = {
   senderName: string;
   sellerName: string;
   productId: string;
-  _id: string;
-  title: string;
+  _id?: string;
+  title?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
   //   chatId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  productImage?: string;
 };
 
 export type addConversationType = {
@@ -18,8 +19,8 @@ export type addConversationType = {
 
 export type chatInputType = {
   message: string;
-  name: string;
-  telephone: string;
+  senderName: string;
+  // telephone: string;
 };
 export type chatType = {
   productId: string;
@@ -30,7 +31,7 @@ export type chatType = {
   sellerName: string;
   conversation: conversationType[];
   title: string;
-  _id: string;
+  _id?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

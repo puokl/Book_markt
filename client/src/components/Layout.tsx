@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  // const { avatar } = useAppSelector((state) => state.image);
+
   async function logOut() {
     try {
       dispatch(logout());
@@ -49,16 +49,13 @@ const Layout: React.FC<LayoutProps> = () => {
 
   return (
     <>
-      {console.log("user", user)}
-
-      <Flex w="100%" bg="cyan.700" alignItems="center" pl={2} pr={2}>
+      <Flex w="100%" bg="cyan.700" alignItems="center" pl={2} pr={2} h="13vh">
         <Flex w="70%" alignItems="center">
           <Box w="200px" mr={3}>
             <Link to="/">
               <Image src="/logobook.png" objectFit="cover" />
             </Link>
           </Box>
-
           <Search />
         </Flex>
         {user ? (

@@ -19,13 +19,13 @@ export async function createProductHandler(
   req: Request<{}, {}, CreateProductInput["body"]>,
   res: Response
 ) {
-  const userId = res.locals.user._id;
+  const userID = res.locals.user._id;
   const userName = res.locals.user.name;
-  console.log("res.locals.user in createProductHandler", res.locals.user);
+
   const body = req.body;
   const product = await createProduct({
     ...body,
-    userId: userId,
+    userId: userID,
     username: userName,
   });
   console.log("product", product);
@@ -44,20 +44,15 @@ export async function updateProductHandler(
     const productId = req.params.productId;
     const update = req.body;
 
-    console.log("res.locals.user", res.locals.user);
     const product = await findProduct({ productId });
     if (!product) {
       return res.sendStatus(404);
     }
-    console.log("product in updateProductHandler", product);
-    if (String(product.userId) !== userID) {
-      console.log("product.user", product.user);
-      console.log("userId", userID);
-      console.log("there is an error here");
 
+    if (String(product.userId) !== userID) {
       return res.sendStatus(403);
     }
-    console.log("req.body in product.controller", update);
+
     const updatedProduct = await findAndupdateProduct({ productId }, update, {
       new: true,
     });
@@ -101,7 +96,7 @@ export async function deleteProductHandler(
     return res.sendStatus(404);
   }
 
-  if (String(product.user) !== userId) {
+  if (String(product.userId) !== userId) {
     return res.sendStatus(403);
   }
 
@@ -136,10 +131,9 @@ export async function getAllUserProductHandler(
 ) {
   try {
     const userId = res.locals.user._id;
-    console.log("userId in getAllUserProductHandler", userId);
+
     const product = await findAllUserProduct(userId);
 
-    console.log("product in getAllUserProductHandler", product);
     if (!product) {
       return res.sendStatus(404);
     }
