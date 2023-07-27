@@ -20,9 +20,6 @@ const deserializeUser = async (
 
   if (decoded) {
     res.locals.user = decoded;
-    console.log("DECODED, there is an accesstoken");
-    console.log("req from deserializeruser", req.body);
-
     return next();
   }
   if (!accessToken && refreshToken) {
