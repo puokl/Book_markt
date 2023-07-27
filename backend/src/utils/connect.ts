@@ -3,7 +3,6 @@ import logger from "./logger";
 
 async function connect() {
   const dbUri = process.env.MONGO_URI;
-  console.log("dburi", dbUri);
   try {
     const conn = await mongoose.connect(dbUri);
     logger.info(`DB Connected to ${conn.connection.host}`);
