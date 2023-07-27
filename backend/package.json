@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "dev": "ts-node-dev --respawn --transpile-only index.ts",
-    "build": "tsc"
+    "build": "npx tsc"
   },
   "author": "Phuoc",
   "license": "MIT",
