@@ -37,7 +37,7 @@ const deserializeUser = async (
         domain: process.env.DOMAIN,
         path: "/",
         sameSite: "strict",
-        secure: false, // change to true in production (only https)
+        secure: true, // change to true in production (only https)
       });
     }
 

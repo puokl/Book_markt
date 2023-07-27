@@ -19,7 +19,7 @@ const accessTokenCookieOptions: CookieOptions = {
   domain: process.env.DOMAIN,
   path: "/",
   sameSite: "lax",
-  secure: false, // change to true in production (only https)
+  secure: true, // change to true in production (only https)
 };
 
 const refreshTokenCookieOptions: CookieOptions = {
