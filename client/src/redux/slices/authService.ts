@@ -39,7 +39,7 @@ const logout = async () => {
 };
 
 // Update Profile
-const updateProfile = async (avatar: string, userId: string) => {
+const updateProfile = async (avatar: { image: string }, userId: string) => {
   console.log("avatar in redux updateProfile", avatar);
   const data = { image: avatar.image };
 

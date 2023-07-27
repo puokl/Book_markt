@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import productService from "./productService";
 import { productType } from "../../types/productType";
 import { parametriType } from "../../components/EditProductForm";

@@ -63,7 +63,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 // Update profile
 
 type UpdateType = {
-  avatar: string;
+  avatar: { image: string };
   userId: string;
 };
 export const updateProfile = createAsyncThunk(

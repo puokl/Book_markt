@@ -31,9 +31,15 @@ const Profile: React.FC<TestoProps> = () => {
     const file = e.target.files?.[0] || "";
     setSelectedFile(file);
   };
-
+  interface updateProfileType {
+    avatar: {
+      image: string;
+    };
+    userId: string;
+  }
   const handleProfile = () => {
-    const data = { avatar: avatar, userId: user.user._id };
+    const data: updateProfileType = { avatar: avatar, userId: user.user._id };
+    console.log("data in handleProfile", data);
     dispatch(updateProfile(data));
     console.log("user after dispatch", user);
   };

@@ -1,4 +1,4 @@
-import { Button, Flex, Text, Image, Spinner, Box } from "@chakra-ui/react";
+import { Button, Flex, Text, Image, Spinner } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useEffect } from "react";
 import { deleteProduct, getAllUserProduct } from "../redux/slices/productSlice";

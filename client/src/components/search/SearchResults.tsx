@@ -51,7 +51,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   return (
     <Grid gridRowGap="1rem">
       {searchResults.map(
-        ({ title, image, author, location, price, _id, productId }) => (
+        ({ title, image, author, location, price, productId }) => (
           <Box
             key={nanoid()}
             _hover={{
