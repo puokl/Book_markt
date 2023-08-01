@@ -1,7 +1,7 @@
-import logger from "./src/utils/logger";
+import logger from "./utils/logger";
 import * as dotenv from "dotenv";
-import createServer from "./src/utils/server";
-import connect from "./src/utils/connect";
+import createServer from "./utils/server";
+import connect from "./utils/connect";
 
 dotenv.config({ path: __dirname + "/.env" });
 
