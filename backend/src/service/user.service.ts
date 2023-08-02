@@ -3,7 +3,7 @@ import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 import UserModel, { UserDocument, UserInput } from "../models/user.model";
 import axios from "axios";
 import qs from "qs";
-import log from "../utils/logger";
+// import log from "../utils/logger";
 
 export async function createUser(input: UserInput) {
   try {
@@ -74,7 +74,7 @@ export async function getGoogleOAuthTokens({
     return res.data;
   } catch (error: any) {
     console.log("error", error.response.data.error);
-    log.error(error, "Failed to fetch GoogleOauth Tokens");
+    console.error(error, "Failed to fetch GoogleOauth Tokens");
     throw new Error(error.message);
   }
 }
@@ -109,7 +109,7 @@ export async function getGoogleUser({
     );
     return res.data;
   } catch (error: any) {
-    log.error(error, "Error fetching Google user");
+    console.error(error, "Error fetching Google user");
     throw new Error(error.message);
   }
 }

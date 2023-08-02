@@ -11,7 +11,7 @@ import {
   updateSession,
 } from "../service/session.service";
 import { signJwt } from "../utils/jwt.utils";
-import log from "../utils/logger";
+// import log from "../utils/logger";
 
 const accessTokenCookieOptions: CookieOptions = {
   maxAge: 900000, // 15min
@@ -180,7 +180,7 @@ export async function googleOauthHandler(req: Request, res: Response) {
     // 8. redirect back to client
     res.redirect(`${process.env.ORIGIN}`);
   } catch (error: any) {
-    log.error(error, "Failed to authorize Google user");
+    console.error(error, "Failed to authorize Google user");
 
     return res.redirect(`${process.env.ORIGIN}/oauth/error`);
   }

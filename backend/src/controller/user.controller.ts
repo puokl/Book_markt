@@ -6,7 +6,7 @@ import {
   findAndUpdateUser,
   findUser,
 } from "../service/user.service";
-import logger from "../utils/logger";
+// import logger from "../utils/logger";
 
 // @desc    Create a user
 // @route   POST /api/users
@@ -21,7 +21,7 @@ export async function createUserHandler(
     console.log("user in backend createuser", user);
     return res.send(user);
   } catch (e: any) {
-    logger.error(e);
+    console.error(e);
     return res.status(409).send(e.message);
 
     // 409 for conflict ( we assume it has violated the unique field in the user model)

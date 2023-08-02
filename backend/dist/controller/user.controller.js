@@ -8,13 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLog = exports.getCurrentUser = exports.updateUserHandler = exports.createUserHandler = void 0;
 const user_service_1 = require("../service/user.service");
-const logger_1 = __importDefault(require("../utils/logger"));
+// import logger from "../utils/logger";
 // @desc    Create a user
 // @route   POST /api/users
 // @access  Public
@@ -27,7 +24,7 @@ function createUserHandler(req, res) {
             return res.send(user);
         }
         catch (e) {
-            logger_1.default.error(e);
+            console.error(e);
             return res.status(409).send(e.message);
             // 409 for conflict ( we assume it has violated the unique field in the user model)
         }

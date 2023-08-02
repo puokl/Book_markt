@@ -17,7 +17,7 @@ const lodash_1 = require("lodash");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const axios_1 = __importDefault(require("axios"));
 const qs_1 = __importDefault(require("qs"));
-const logger_1 = __importDefault(require("../utils/logger"));
+// import log from "../utils/logger";
 function createUser(input) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -71,7 +71,7 @@ function getGoogleOAuthTokens({ code, }) {
         }
         catch (error) {
             console.log("error", error.response.data.error);
-            logger_1.default.error(error, "Failed to fetch GoogleOauth Tokens");
+            console.error(error, "Failed to fetch GoogleOauth Tokens");
             throw new Error(error.message);
         }
     });
@@ -89,7 +89,7 @@ function getGoogleUser({ id_token, access_token, }) {
             return res.data;
         }
         catch (error) {
-            logger_1.default.error(error, "Error fetching Google user");
+            console.error(error, "Error fetching Google user");
             throw new Error(error.message);
         }
     });

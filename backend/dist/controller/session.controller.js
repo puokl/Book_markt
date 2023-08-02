@@ -8,15 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.googleOauthHandler = exports.deleteSessionHandler = exports.getUserSessionHandler = exports.createUserSessionHandler = void 0;
 const user_service_1 = require("../service/user.service");
 const session_service_1 = require("../service/session.service");
 const jwt_utils_1 = require("../utils/jwt.utils");
-const logger_1 = __importDefault(require("../utils/logger"));
+// import log from "../utils/logger";
 const accessTokenCookieOptions = {
     maxAge: 900000,
     httpOnly: true,
@@ -138,7 +135,7 @@ function googleOauthHandler(req, res) {
             res.redirect(`${process.env.ORIGIN}`);
         }
         catch (error) {
-            logger_1.default.error(error, "Failed to authorize Google user");
+            console.error(error, "Failed to authorize Google user");
             return res.redirect(`${process.env.ORIGIN}/oauth/error`);
         }
     });

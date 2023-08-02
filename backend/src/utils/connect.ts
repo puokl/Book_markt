@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
-import logger from "./logger";
+// import logger from "./logger";
 
 async function connect() {
   const dbUri = process.env.MONGO_URI;
   try {
     const conn = await mongoose.connect(dbUri);
-    logger.info(`DB Connected to ${conn.connection.host}`);
+    console.info(`DB Connected to ${conn.connection.host}`);
   } catch (error) {
-    logger.error("Could not connect to db");
+    console.error("Could not connect to db");
     process.exit(1);
   }
 }
