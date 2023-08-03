@@ -35,7 +35,7 @@ const Register: React.FC = () => {
 
   async function onSubmit(values: CreateUserInput) {
     try {
-      console.log("values", values);
+      // console.log("values", values);
       dispatch(registerUser(values));
       navigate("/");
     } catch (e: any) {
@@ -44,7 +44,7 @@ const Register: React.FC = () => {
       setRegisterError(e.response.data);
     }
 
-    console.log("values", values);
+    // console.log("values", values);
   }
   console.log("errors", { errors });
 
