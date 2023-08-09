@@ -20,6 +20,7 @@ function connect() {
         try {
             const conn = yield mongoose_1.default.connect(dbUri);
             console.info(`DB Connected to ${conn.connection.host}`);
+            console.log("connect to mongodb");
         }
         catch (error) {
             console.error("Could not connect to db");

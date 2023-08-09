@@ -39,7 +39,9 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   console.log("inside createUserSessionHandler");
   // 1. validate the user's password
   const user = await validatePassword(req.body);
+  console.log("user in create user session handler", user);
   if (!user) {
+    console.log("no user in create session handler");
     return res.status(401).send("Invalid email or password");
   }
   console.log("after validatePassword(req.body) in createUserSessionHandler");
