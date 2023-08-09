@@ -49,8 +49,8 @@ function createUserSessionHandler(req, res) {
         );
         // Set CORS headers to allow requests from the frontend
         // res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
-        res.header("Access-Control-Allow-Origin", "https://marktbook.vercel.app");
-        res.header("Access-Control-Allow-Credentials", "true"); // Allow credentials
+        // res.header("Access-Control-Allow-Origin", "https://marktbook.vercel.app");
+        // res.header("Access-Control-Allow-Credentials", "true"); // Allow credentials
         // 5. return access & refresh tokens
         res.cookie("accessToken", accessToken, accessTokenCookieOptions);
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
