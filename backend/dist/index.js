@@ -40,7 +40,7 @@ const dotenv = __importStar(require("dotenv"));
 const server_1 = __importDefault(require("./utils/server"));
 const connect_1 = __importDefault(require("./utils/connect"));
 dotenv.config({ path: __dirname + "/.env" });
-const port = process.env.PORT;
+const port = process.env.PORT || 1357;
 const app = (0, server_1.default)();
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`App is running at http://localhost:${port}`);

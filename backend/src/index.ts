@@ -5,7 +5,7 @@ import connect from "./utils/connect";
 
 dotenv.config({ path: __dirname + "/.env" });
 
-const port = process.env.PORT;
+const port = process.env.PORT || 1357;
 const app = createServer();
 
 app.listen(port, async () => {
