@@ -33,16 +33,22 @@ exports.createUser = createUser;
 function validatePassword({ email, password, }) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("inside validatePassword");
-        const user = yield user_model_1.default.findOne({ email });
-        if (!user) {
-            return false;
+        try {
+            const user = yield user_model_1.default.findOne({ email });
+            if (!user) {
+                console.log("there is no user");
+                return false;
+            }
+            console.log("after UserModel.findOne");
+            const isValid = yield user.comparePassword(password);
+            if (!isValid)
+                return false;
+            console.log("after user.comparePassword(password);");
+            return (0, lodash_1.omit)(user.toJSON(), "password");
         }
-        console.log("after UserModel.findOne");
-        const isValid = yield user.comparePassword(password);
-        if (!isValid)
-            return false;
-        console.log("after user.comparePassword(password);");
-        return (0, lodash_1.omit)(user.toJSON(), "password");
+        catch (error) {
+            console.log("error in validatePassword", error);
+        }
     });
 }
 exports.validatePassword = validatePassword;

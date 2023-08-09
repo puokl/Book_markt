@@ -22,15 +22,20 @@ export async function validatePassword({
   password: string;
 }) {
   console.log("inside validatePassword");
-  const user = await UserModel.findOne({ email });
-  if (!user) {
-    return false;
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      console.log("there is no user");
+      return false;
+    }
+    console.log("after UserModel.findOne");
+    const isValid = await user.comparePassword(password);
+    if (!isValid) return false;
+    console.log("after user.comparePassword(password);");
+    return omit(user.toJSON(), "password");
+  } catch (error) {
+    console.log("error in validatePassword", error);
   }
-  console.log("after UserModel.findOne");
-  const isValid = await user.comparePassword(password);
-  if (!isValid) return false;
-  console.log("after user.comparePassword(password);");
-  return omit(user.toJSON(), "password");
 }
 
 export async function findUser(query: FilterQuery<UserDocument>) {
