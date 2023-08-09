@@ -21,14 +21,15 @@ export async function validatePassword({
   email: string;
   password: string;
 }) {
+  console.log("inside validatePassword");
   const user = await UserModel.findOne({ email });
   if (!user) {
     return false;
   }
-
+  console.log("after UserModel.findOne");
   const isValid = await user.comparePassword(password);
   if (!isValid) return false;
-
+  console.log("after user.comparePassword(password);");
   return omit(user.toJSON(), "password");
 }
 

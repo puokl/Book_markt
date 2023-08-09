@@ -35,6 +35,7 @@ function createUserSessionHandler(req, res) {
         if (!user) {
             return res.status(401).send("Invalid email or password");
         }
+        console.log("after validatePassword(req.body) in createUserSessionHandler");
         // 2. create a session
         const session = yield (0, session_service_1.createSession)(user._id, req.get("user-agent") || "");
         console.log("session created");

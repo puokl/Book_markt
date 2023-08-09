@@ -42,6 +42,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   if (!user) {
     return res.status(401).send("Invalid email or password");
   }
+  console.log("after validatePassword(req.body) in createUserSessionHandler");
   // 2. create a session
   const session = await createSession(user._id, req.get("user-agent") || "");
   console.log("session created");
