@@ -61,6 +61,11 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     },
     { expiresIn: process.env.REFRESHTOKENTTL } // 1y
   );
+
+  // Set CORS headers to allow requests from the frontend
+  res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
+  res.header("Access-Control-Allow-Credentials", "true"); // Allow credentials
+
   // 5. return access & refresh tokens
   res.cookie("accessToken", accessToken, accessTokenCookieOptions);
 
