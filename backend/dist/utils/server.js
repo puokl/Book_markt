@@ -11,11 +11,28 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 function createServer() {
     const app = (0, express_1.default)();
-    app.use((0, cors_1.default)({
-        origin: process.env.ORIGIN,
-        credentials: true,
-    }));
-    // app.use(cors());
+    //SECTION -
+    const allowlist = ["https://marktbook.vercel.app"];
+    const corsOptionsDelegate = function (req, callback) {
+        var corsOptions;
+        if (allowlist.indexOf(req.header("Origin")) !== -1) {
+            console.log("inside allowlistr.index");
+            corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+        }
+        else {
+            console.log("inside corsoptions false");
+            corsOptions = { origin: false }; // disable CORS for this request
+        }
+        callback(null, corsOptions); // callback expects two parameters: error and options
+    };
+    //SECTION -
+    // app.use(
+    //   cors({
+    //     origin: process.env.ORIGIN,
+    //     credentials: true,
+    //   })
+    // );
+    app.use((0, cors_1.default)(corsOptionsDelegate));
     app.use(express_1.default.urlencoded({
         extended: true,
     }));
