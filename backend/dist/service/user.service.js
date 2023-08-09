@@ -34,7 +34,9 @@ function validatePassword({ email, password, }) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("inside validatePassword");
         try {
+            console.log("inside try");
             const user = yield user_model_1.default.findOne({ email });
+            console.log("after user model findone", user);
             if (!user) {
                 console.log("there is no user");
                 return false;
