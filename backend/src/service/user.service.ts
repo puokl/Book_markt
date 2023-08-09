@@ -24,6 +24,7 @@ export async function validatePassword({
   console.log("inside validatePassword");
   try {
     console.log("inside try");
+    console.log("email", email);
     const user = await UserModel.findOne({ email });
     console.log("after user model findone", user);
     if (!user) {
