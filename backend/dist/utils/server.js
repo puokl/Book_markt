@@ -11,11 +11,13 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 function createServer() {
     const app = (0, express_1.default)();
-    app.use((0, cors_1.default)({
-        origin: process.env.ORIGIN,
-        credentials: true,
-    }));
-    // app.use(cors())
+    // app.use(
+    //   cors({
+    //     origin: process.env.ORIGIN,
+    //     credentials: true,
+    //   })
+    // );
+    app.use((0, cors_1.default)());
     app.use(express_1.default.urlencoded({
         extended: true,
     }));

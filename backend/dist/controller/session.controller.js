@@ -29,6 +29,7 @@ const deleteCookies = Object.assign(Object.assign({}, accessTokenCookieOptions),
 // @access  Private
 function createUserSessionHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("inside createUserSessionHandler");
         // 1. validate the user's password
         const user = yield (0, user_service_1.validatePassword)(req.body);
         if (!user) {
@@ -36,6 +37,7 @@ function createUserSessionHandler(req, res) {
         }
         // 2. create a session
         const session = yield (0, session_service_1.createSession)(user._id, req.get("user-agent") || "");
+        console.log("session created");
         // 3. create an access token
         const accessToken = (0, jwt_utils_1.signJwt)(Object.assign(Object.assign({}, user), { session: session._id }), { expiresIn: process.env.ACCESSTOKENTTL } // 1d
         );
@@ -45,6 +47,9 @@ function createUserSessionHandler(req, res) {
         // 5. return access & refresh tokens
         res.cookie("accessToken", accessToken, accessTokenCookieOptions);
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+        console.log("accessToken", accessToken);
+        console.log("refreshToken", refreshToken);
+        console.log("user", user);
         return res.send({ user });
     });
 }

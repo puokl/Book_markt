@@ -36,6 +36,7 @@ const deleteCookies: CookieOptions = {
 // @route   POST /api/sessions
 // @access  Private
 export async function createUserSessionHandler(req: Request, res: Response) {
+  console.log("inside createUserSessionHandler");
   // 1. validate the user's password
   const user = await validatePassword(req.body);
   if (!user) {
@@ -43,6 +44,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   }
   // 2. create a session
   const session = await createSession(user._id, req.get("user-agent") || "");
+  console.log("session created");
   // 3. create an access token
   const accessToken = signJwt(
     {
@@ -63,6 +65,10 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   res.cookie("accessToken", accessToken, accessTokenCookieOptions);
 
   res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+
+  console.log("accessToken", accessToken);
+  console.log("refreshToken", refreshToken);
+  console.log("user", user);
 
   return res.send({ user });
 }

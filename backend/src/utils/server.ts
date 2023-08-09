@@ -7,13 +7,13 @@ import cloudinaryConfig from "../config/cloudinary";
 
 function createServer() {
   const app = express();
-  app.use(
-    cors({
-      origin: process.env.ORIGIN,
-      credentials: true,
-    })
-  );
-  // app.use(cors())
+  // app.use(
+  //   cors({
+  //     origin: process.env.ORIGIN,
+  //     credentials: true,
+  //   })
+  // );
+  app.use(cors());
   app.use(
     express.urlencoded({
       extended: true,
