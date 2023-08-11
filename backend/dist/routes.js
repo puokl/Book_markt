@@ -17,6 +17,12 @@ const multerMiddleware_1 = __importDefault(require("./middleware/multerMiddlewar
 const search_controller_1 = require("./controller/search.controller");
 // responsible to take the http request and forwarding it on to a controller
 function routes(app) {
+    app.options("*", (req, res) => {
+        res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
+        res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        res.sendStatus(200);
+    });
     app.get("/healthcheck", (req, res) => res.sendStatus(200));
     //NOTE - USERS
     app.get("/api/me", requireUser_1.default, user_controller_1.getCurrentUser);
