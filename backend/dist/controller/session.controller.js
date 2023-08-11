@@ -48,9 +48,9 @@ function createUserSessionHandler(req, res) {
         const refreshToken = (0, jwt_utils_1.signJwt)(Object.assign(Object.assign({}, user), { session: session._id }), { expiresIn: process.env.REFRESHTOKENTTL } // 1y
         );
         // Set CORS headers to allow requests from the frontend
-        // res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
+        res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
         // res.header("Access-Control-Allow-Origin", "https://marktbook.vercel.app");
-        // res.header("Access-Control-Allow-Credentials", "true"); // Allow credentials
+        res.header("Access-Control-Allow-Credentials", "true"); // Allow credentials
         // 5. return access & refresh tokens
         res.cookie("accessToken", accessToken, accessTokenCookieOptions);
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);

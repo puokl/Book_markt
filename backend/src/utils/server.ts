@@ -8,12 +8,12 @@ import cloudinaryConfig from "../config/cloudinary";
 function createServer() {
   const app = express();
   //SECTION -
-  const allowlist = ["https://marktbook.vercel.app"];
+  const allowlist = ["https://marktbook.vercel.app", "http://localhost:5173"];
   const corsOptionsDelegate = function (req: Request, callback: any) {
     var corsOptions;
     if (allowlist.indexOf(req.header("Origin") as string) !== -1) {
       console.log("inside allowlistr.index");
-      corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+      corsOptions = { origin: true, credentials: true }; // reflect (enable) the requested origin in the CORS response
     } else {
       console.log("inside corsoptions false");
       corsOptions = { origin: false }; // disable CORS for this request
@@ -30,6 +30,7 @@ function createServer() {
   //   })
   // );
   app.use(cors(corsOptionsDelegate));
+  // app.use(cors({ credentials: true }));
   app.use(
     express.urlencoded({
       extended: true,

@@ -12,12 +12,12 @@ const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 function createServer() {
     const app = (0, express_1.default)();
     //SECTION -
-    const allowlist = ["https://marktbook.vercel.app"];
+    const allowlist = ["https://marktbook.vercel.app", "http://localhost:5173"];
     const corsOptionsDelegate = function (req, callback) {
         var corsOptions;
         if (allowlist.indexOf(req.header("Origin")) !== -1) {
             console.log("inside allowlistr.index");
-            corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+            corsOptions = { origin: true, credentials: true }; // reflect (enable) the requested origin in the CORS response
         }
         else {
             console.log("inside corsoptions false");
@@ -33,6 +33,7 @@ function createServer() {
     //   })
     // );
     app.use((0, cors_1.default)(corsOptionsDelegate));
+    // app.use(cors({ credentials: true }));
     app.use(express_1.default.urlencoded({
         extended: true,
     }));
