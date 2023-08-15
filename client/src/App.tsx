@@ -22,12 +22,12 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        <Route path="test" element={<Test />} />
         <Route path="profile" element={<Profile />} />
         <Route path="addproduct" element={<CreateProduct />} />
         <Route path="product/:id" element={<DisplayProduct />} />
         <Route path="messages/received/:userId" element={<Messages />} />
 
+        <Route path="test" element={<Test />} />
         {/* protected routes */}
         <Route path="user" element={<User />} />
 
