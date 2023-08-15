@@ -38,7 +38,7 @@ import {
 import { uploadImageHandler } from "./controller/image.controller";
 import multerUpload from "./middleware/multerMiddleware";
 import { searchProductHandler } from "./controller/search.controller";
-import { createCharacter } from "./controller/test.controller";
+import { createCharacter, getCharacter } from "./controller/test.controller";
 
 // responsible to take the http request and forwarding it on to a controller
 function routes(app: Express) {
@@ -116,6 +116,7 @@ function routes(app: Express) {
   //SECTION -
 
   app.post("/api/character", createCharacter);
+  app.get("/api/character", getCharacter);
 }
 
 export default routes;

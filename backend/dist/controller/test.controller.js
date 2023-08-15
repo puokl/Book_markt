@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCharacter = void 0;
+exports.getCharacter = exports.createCharacter = void 0;
 const express_1 = __importDefault(require("express"));
 const test_model_1 = require("../models/test.model"); // Adjust the path accordingly
 const router = express_1.default.Router();
@@ -35,4 +35,17 @@ function createCharacter(req, res) {
     });
 }
 exports.createCharacter = createCharacter;
+function getCharacter(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const characters = yield test_model_1.Character.find();
+            return res.status(200).json(characters);
+        }
+        catch (error) {
+            console.error("Error fetching characters:", error);
+            return res.status(500).json({ message: "Internal server error." });
+        }
+    });
+}
+exports.getCharacter = getCharacter;
 //# sourceMappingURL=test.controller.js.map

@@ -19,3 +19,13 @@ export async function createCharacter(req: Request, res: Response) {
     return res.status(500).json({ message: "Internal server error." });
   }
 }
+
+export async function getCharacter(req: Request, res: Response) {
+  try {
+    const characters = await Character.find();
+    return res.status(200).json(characters);
+  } catch (error) {
+    console.error("Error fetching characters:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+}

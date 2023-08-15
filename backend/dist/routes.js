@@ -57,6 +57,7 @@ function routes(app) {
     app.get("/api/search", search_controller_1.searchProductHandler);
     //SECTION -
     app.post("/api/character", test_controller_1.createCharacter);
+    app.get("/api/character", test_controller_1.getCharacter);
 }
 exports.default = routes;
 //# sourceMappingURL=routes.js.map
