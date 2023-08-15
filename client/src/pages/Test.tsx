@@ -16,7 +16,7 @@ const Test: React.FC<TestProps> = () => {
   const fetchCharacters = async () => {
     try {
       const response = await axios.get<Character[]>(
-        "http://localhost:1337/api/character"
+        `${import.meta.env.VITE_SERVER_ENDPOINT}/api/character`
       );
       setCharacters(response.data);
     } catch (error) {
