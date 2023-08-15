@@ -37,6 +37,8 @@ const deleteCookies: CookieOptions = {
 // @access  Private
 export async function createUserSessionHandler(req: Request, res: Response) {
   console.log("inside createUserSessionHandler");
+  console.log("Request Headers:", req.headers);
+
   // 1. validate the user's password
   const user = await validatePassword(req.body);
   console.log("user in create user session handler", user);
@@ -65,6 +67,8 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     { expiresIn: process.env.REFRESHTOKENTTL } // 1y
   );
 
+  console.log("Request Headers22:", req.headers);
+
   // Set CORS headers to allow requests from the frontend
   res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
   // res.header("Access-Control-Allow-Origin", "https://marktbook.vercel.app");
@@ -74,6 +78,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   res.cookie("accessToken", accessToken, accessTokenCookieOptions);
 
   res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+  console.log("Request Headers33:", req.headers);
 
   console.log("accessToken", accessToken);
   console.log("refreshToken", refreshToken);
