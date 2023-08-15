@@ -26,13 +26,13 @@ function createServer() {
         callback(null, corsOptions); // callback expects two parameters: error and options
     };
     //SECTION -
-    // app.use(
-    //   cors({
-    //     origin: process.env.ORIGIN,
-    //     credentials: true,
-    //   })
-    // );
-    app.use((0, cors_1.default)(corsOptionsDelegate));
+    app.use((0, cors_1.default)({
+        origin: process.env.ORIGIN,
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    }));
+    // app.use(cors(corsOptionsDelegate));
     // app.use(cors({ credentials: true }));
     app.use(express_1.default.urlencoded({
         extended: true,
