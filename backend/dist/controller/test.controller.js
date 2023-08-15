@@ -35,14 +35,29 @@ function createCharacter(req, res) {
     });
 }
 exports.createCharacter = createCharacter;
+// export async function getCharacter(req: Request, res: Response) {
+//   try {
+//     const characters = await Character.find();
+//     return res.status(200).json(characters);
+//   } catch (error) {
+//     console.error("Error fetching characters:", error);
+//     return res.status(500).json({ message: "Internal server error." });
+//   }
+// }
 function getCharacter(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            console.log("Attempting to fetch characters...");
             const characters = yield test_model_1.Character.find();
+            console.log("Characters fetched successfully.");
             return res.status(200).json(characters);
         }
         catch (error) {
             console.error("Error fetching characters:", error);
+            // Check if the error is related to the MongoDB connection
+            if (error.name === "MongoNetworkError") {
+                return res.status(500).json({ message: "MongoDB connection error." });
+            }
             return res.status(500).json({ message: "Internal server error." });
         }
     });
