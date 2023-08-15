@@ -36,18 +36,23 @@ function validatePassword({ email, password, }) {
         try {
             console.log("inside try");
             console.log("email", email);
-            const user = yield user_model_1.default.findOne({ email });
-            console.log("after user model findone", user);
-            if (!user) {
-                console.log("there is no user");
-                return false;
+            try {
+                const user = yield user_model_1.default.findOne({ email });
+                console.log("after user model findone", user);
+                if (!user) {
+                    console.log("there is no user");
+                    return false;
+                }
+                console.log("after UserModel.findOne");
+                const isValid = yield user.comparePassword(password);
+                if (!isValid)
+                    return false;
+                console.log("after user.comparePassword(password);");
+                return (0, lodash_1.omit)(user.toJSON(), "password");
             }
-            console.log("after UserModel.findOne");
-            const isValid = yield user.comparePassword(password);
-            if (!isValid)
-                return false;
-            console.log("after user.comparePassword(password);");
-            return (0, lodash_1.omit)(user.toJSON(), "password");
+            catch (error) {
+                console.log("error in validatePassword 1st try catch", error);
+            }
         }
         catch (error) {
             console.log("error in validatePassword", error);

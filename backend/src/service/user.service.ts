@@ -25,17 +25,21 @@ export async function validatePassword({
   try {
     console.log("inside try");
     console.log("email", email);
-    const user = await UserModel.findOne({ email });
-    console.log("after user model findone", user);
-    if (!user) {
-      console.log("there is no user");
-      return false;
+    try {
+      const user = await UserModel.findOne({ email });
+      console.log("after user model findone", user);
+      if (!user) {
+        console.log("there is no user");
+        return false;
+      }
+      console.log("after UserModel.findOne");
+      const isValid = await user.comparePassword(password);
+      if (!isValid) return false;
+      console.log("after user.comparePassword(password);");
+      return omit(user.toJSON(), "password");
+    } catch (error) {
+      console.log("error in validatePassword 1st try catch", error);
     }
-    console.log("after UserModel.findOne");
-    const isValid = await user.comparePassword(password);
-    if (!isValid) return false;
-    console.log("after user.comparePassword(password);");
-    return omit(user.toJSON(), "password");
   } catch (error) {
     console.log("error in validatePassword", error);
   }
