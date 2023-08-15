@@ -15,6 +15,7 @@ const chat_controller_1 = require("./controller/chat.controller");
 const image_controller_1 = require("./controller/image.controller");
 const multerMiddleware_1 = __importDefault(require("./middleware/multerMiddleware"));
 const search_controller_1 = require("./controller/search.controller");
+const test_controller_1 = require("./controller/test.controller");
 // responsible to take the http request and forwarding it on to a controller
 function routes(app) {
     app.options("*", (req, res) => {
@@ -54,6 +55,8 @@ function routes(app) {
     app.get("/api/chat/sent", requireUser_1.default, chat_controller_1.getAllUserSentChatHandler);
     app.post("/api/chat/:chatId", requireUser_1.default, chat_controller_1.addConversationHandler);
     app.get("/api/search", search_controller_1.searchProductHandler);
+    //SECTION -
+    app.post("/api/character", test_controller_1.createCharacter);
 }
 exports.default = routes;
 //# sourceMappingURL=routes.js.map
