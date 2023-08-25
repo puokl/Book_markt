@@ -33,7 +33,7 @@ export async function createCharacter(req: Request, res: Response) {
 export async function getCharacter(req: Request, res: Response) {
   try {
     console.log("Attempting to fetch characters...");
-    const characters = await Character.find();
+    const characters = await Character.find({});
     console.log("Characters fetched successfully.");
     return res.status(200).json(characters);
   } catch (error: any) {
