@@ -49,19 +49,24 @@ const Layout: React.FC<LayoutProps> = () => {
 
   return (
     <>
-      <Flex w="100%" bg="cyan.700" alignItems="center" pl={2} pr={2} h="13vh">
-        <Flex w="70%" alignItems="center">
+      <Flex w="100%" bg="cyan.700" alignItems="center" pl={2} pr={2} h="14vh">
+        {/* <Flex w="70%" alignItems="center"> */}
+        <Flex
+          w={["100%", "70%"]}
+          alignItems={["center", "initial"]}
+          mb={[3, 0]}
+        >
           <Box w="200px" mr={3}>
             <Link to="/">
               <Image src="/logobook.png" objectFit="cover" />
             </Link>
           </Box>
-          <Search />
+          {user && <Search />}
         </Flex>
         {user ? (
           <Box as="main" w="30%">
             <Flex justifyContent="space-around" alignItems="center">
-              <Box m={3}>
+              <Box m={[0, 3]} display={["none", "block"]}>
                 <Text fontSize="xs">Your are logged in as: </Text>
                 <Text fontSize="sm" as="b">
                   {user?.user?.email}
@@ -147,11 +152,31 @@ const Layout: React.FC<LayoutProps> = () => {
             </Flex>
           </Box>
         ) : (
-          <Flex justifyContent="center" w="30%">
-            <Button as="a" href="/login" mr={3}>
+          <Flex
+            justifyContent="center"
+            w="30%"
+            flexDirection={["column", "row"]} // Display in column on mobile, row on larger screens
+            alignItems={["center", "flex-start"]}
+            mt={[1, 0]}
+          >
+            <Button
+              as="a"
+              href="/login"
+              mb={[1, 0]}
+              mr={[0, 3]}
+              fontSize={["sm", "md"]}
+              size={["sm", "md"]}
+              bgColor="gray.400"
+            >
               Login
             </Button>
-            <Button as="a" href="/register" ml={3}>
+            <Button
+              as="a"
+              href="/register"
+              fontSize={["sm", "md"]}
+              size={["sm", "md"]}
+              bgColor="gray.400"
+            >
               Register
             </Button>
           </Flex>

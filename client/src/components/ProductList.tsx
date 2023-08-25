@@ -18,68 +18,107 @@ const ProductList: React.FC = () => {
   };
 
   const { products, isLoading } = useAppSelector((state: any) => state.product);
+  const { orderBy } = useAppSelector((state: any) => state.filter);
 
   useEffect(() => {
     dispatch(getAllProducts());
   }, []);
 
+  const filteredProducts = orderBy
+    ? [...products].sort((a, b) => {
+        if (orderBy === "price-low") {
+          return a.price - b.price;
+        }
+        if (orderBy === "price-high") {
+          return b.price - a.price;
+        }
+        if (orderBy === "date-recent") {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+        if (orderBy === "date-oldest") {
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        }
+        return 0;
+      })
+    : [...products];
+
   if (isLoading) return <Spinner />;
 
   return (
     <>
-      {products &&
-        products
+      {filteredProducts &&
+        filteredProducts
           .slice(0, displayedProductsCount)
           .map((item: productType, index: number) => (
             <Flex
               key={index}
               bg="yellow.100"
               border="1px solid red"
-              // direction="column"
               p={6}
               as="button"
               onClick={() => navigate(`/product/${item.productId}`)}
-              w="70%"
-              m={2}
+              direction={{ base: "column", md: "row" }} // On mobile: column, on larger screens: row
+              alignItems={{ base: "center", md: "flex-start" }}
+              w={{ base: "80%", md: "70%" }}
+              m={{ base: 2, md: 3 }}
+              ml={{ base: 10, md: 30 }}
             >
-              <Flex w="20%">
-                <Box>
-                  <Image
-                    src={item.image}
-                    fallbackSrc="/no_image.png"
-                    boxSize="100px"
-                    objectFit="cover"
-                  />
-                </Box>
-              </Flex>
-              <Flex direction="column" w="80%" alignItems="flex-start">
-                <Flex justifyContent="space-between" w="100%">
-                  <Flex alignItems="center">
+              {/* Image */}
+              <Box mb={{ base: 2, md: 0 }} mr={{ base: 0, md: 4 }}>
+                <Image
+                  src={item.image}
+                  fallbackSrc="/no_image.png"
+                  boxSize="100px"
+                  objectFit="cover"
+                  mx="auto"
+                />
+              </Box>
+              {/* Content */}
+              <Flex direction="column" w="100%">
+                {/* Location */}
+                <Flex
+                  justifyContent={{ base: "center", md: "space-around" }}
+                  direction={{ base: "column", md: "row" }}
+                  alignItems={{ base: "center", md: "flex-start" }}
+                  w="100%"
+                  mb={2}
+                >
+                  {/* Location */}
+                  <Flex
+                    alignItems="center"
+                    mb={{ base: 2, md: 0 }}
+                    mr={{ base: 0, md: 4 }}
+                  >
                     <TfiLocationPin />
                     <Text ml={2} fontSize="sm">
                       {item.location}
                     </Text>
                   </Flex>
+                  {/* Date */}
                   <Text>{dateFromNow(item.createdAt)}</Text>
                 </Flex>
-                <Flex alignItems="center" w="100%">
+                {/* Title */}
+                <Flex direction="column" mb={2}>
                   <Text as="b" fontSize="lg">
                     {item.title}
                   </Text>
-                  <Text fontSize="xs">&nbsp;by&nbsp;</Text>
-                  <Text as="b" fontSize="md">
+                  {/* Author */}
+                  <Text fontSize="xs" as="b">
                     {item.author}
                   </Text>
                 </Flex>
-                <Box>
+                {/* Description */}
+                <Box mb={2}>
                   <Text fontSize="sm">
-                    {/* {item.description?.length > 150
-                      ? item.description?.slice(0, 150) + "..."
-                      : item.description} */}
                     {item.description?.slice(0, 150) ?? ""}
                     {item.description && item.description.length > 150 && "..."}
                   </Text>
                 </Box>
+                {/* Price and Language */}
                 <Flex justifyContent="space-between" w="100%">
                   <Text as="b">{item.price} €</Text>
                   <Text>Language: {item.language}</Text>
@@ -88,9 +127,10 @@ const ProductList: React.FC = () => {
             </Flex>
           ))}
       <Flex>
-        {products && products.length > displayedProductsCount && (
-          <Button onClick={handleLoadMore}>Load More</Button>
-        )}
+        {filteredProducts &&
+          filteredProducts.length > displayedProductsCount && (
+            <Button onClick={handleLoadMore}>Load More</Button>
+          )}
       </Flex>
     </>
   );
