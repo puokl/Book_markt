@@ -11,28 +11,36 @@ const createChat = async (chatData: chatType) => {
     );
     return response.data;
   } catch (error) {
-    console.log("error", error);
+    console.log("error on createChat", error);
   }
 };
 
 // get all chat from user
 const getAllReceivedUserChat = async () => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/received`,
-    { withCredentials: true }
-  );
-  console.log("response", response);
-  return response.data;
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/received`,
+      { withCredentials: true }
+    );
+    console.log("response", response);
+    return response.data;
+  } catch (error) {
+    console.log("error on getAllReceivedUserChat", error);
+  }
 };
 
 // get all chat from user
 const getAllSentUserChat = async () => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/sent`,
-    { withCredentials: true }
-  );
-  console.log("response", response);
-  return response.data;
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/sent`,
+      { withCredentials: true }
+    );
+    console.log("response", response);
+    return response.data;
+  } catch (error) {
+    console.log("error on getAllSentUserChat", error);
+  }
 };
 
 // add conversation
@@ -41,14 +49,17 @@ const addConversation = async (
   conversationData: conversationType,
   chatId: string
 ) => {
-  console.log("conversationData", conversationData);
-  const response = await axios.post(
-    `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/${chatId}`,
-    conversationData,
-    { withCredentials: true }
-  );
-  console.log("response.data", response.data);
-  return response.data;
+  try {
+    console.log("conversationData", conversationData);
+    const response = await axios.post(
+      `${import.meta.env.VITE_SERVER_ENDPOINT}/api/chat/${chatId}`,
+      conversationData,
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error on addConversation", error);
+  }
 };
 
 const chatService = {
