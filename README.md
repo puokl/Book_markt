@@ -20,6 +20,7 @@ The platform serves as a hub for users to buy and sell second-hand books.
   - Redux Toolkit (for state management)
   - Chakra UI (for styling)
   - Zod (for data validation)
+  - Cookies (for session managament)
 
 - Backend:
   - Node.js (with TypeScript)
@@ -29,4 +30,4 @@ The platform serves as a hub for users to buy and sell second-hand books.
   - Multer (for handling file uploads)
   - Cloudinary (for image hosting)
   - Sessions for authentication
-  - Access Tokens and Refresh Tokens for session management
+  - Access Tokens, Refresh Tokens and Cookies for session management
